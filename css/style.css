@@ -390,6 +390,146 @@ body {
 }
 
 /* ===================================================
+   WORKS / PROJECTS
+   後から作品カードを追加する場合は .work-card を
+   .work-grid の中にコピーして増やすだけで良い設計。
+=================================================== */
+.works {
+  padding: clamp(80px, 14vw, 160px) 0;
+  background: var(--black);
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+}
+
+.work-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  background: linear-gradient(160deg, var(--graphite-light), var(--graphite) 70%);
+  overflow: hidden;
+  transition: transform 0.5s var(--ease), border-color 0.5s var(--ease);
+}
+
+.work-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-strong);
+}
+
+.work-card-media {
+  position: relative;
+  height: 160px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 30% 10%, rgba(106,141,255,0.18), transparent 60%);
+}
+
+.work-card-glow {
+  position: absolute;
+  width: 70%;
+  height: 80%;
+  top: -25%;
+  right: -10%;
+  background: radial-gradient(circle at center, rgba(165,106,255,0.35), transparent 70%);
+  filter: blur(30px);
+}
+
+.work-card-tag {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  z-index: 1;
+  font-family: var(--ff-display);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  padding: 6px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  color: var(--accent-blue);
+  text-transform: uppercase;
+}
+
+.work-card-index {
+  position: relative;
+  z-index: 0;
+  font-family: var(--ff-display);
+  font-size: 3rem;
+  font-weight: 600;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.08);
+}
+
+.work-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px 28px 32px;
+}
+
+.work-card-title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+
+.work-card-title-en {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: var(--grey-dim);
+  text-transform: uppercase;
+}
+
+.work-card-desc {
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.work-card-cta {
+  align-self: flex-start;
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--ff-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--white);
+  text-decoration: none;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: var(--accent-gradient);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+.work-card-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -10px rgba(106, 141, 255, 0.5);
+}
+
+.work-card-cta-arrow {
+  transition: transform 0.35s var(--ease);
+}
+
+.work-card-cta:hover .work-card-cta-arrow {
+  transform: translateX(4px);
+}
+
+/* ===================================================
    FEATURES
 =================================================== */
 .features {

@@ -1,0 +1,96 @@
+// ===================================================
+// おかぽ広場 — Firestore セキュリティルール
+// ---------------------------------------------------
+// Firebase コンソール > Firestore Database > ルール
+// タブにこの内容をそのまま貼り付けて「公開」してください。
+//
+// 設計方針:
+// - 投稿・コメントの新規作成は誰でも可能（掲示板として）だが、
+//   フィールドの型・文字数・件数を厳格にサーバー側で検証する。
+// - 投稿の「削除」は実際には削除せず、deleted:true への更新
+//   （論理削除）として扱う。更新時に、リクエストに含まれる
+//   deleteKeyHash が既存ドキュメントの deleteKeyHash と一致する
+//   場合のみ許可する。削除キーの平文はどこにも保存・送信しない
+//   （クライアント側で SHA-256 済みの値のみをやり取りする）。
+// - 閲覧数 / コメント数のインクリメントも、他のフィールドを
+//   一切変更できない形でのみ許可する。
+// - ドキュメントの物理的な delete は禁止（allow delete: if false）。
+// ===================================================
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /hiroba_posts/{postId} {
+
+      allow read: if true;
+
+      allow create: if
+        request.resource.data.keys().hasOnly([
+          'name', 'title', 'body', 'imageBase64',
+          'deleteKeyHash', 'createdAt', 'commentCount', 'viewCount', 'deleted'
+        ]) &&
+        request.resource.data.name is string &&
+        request.resource.data.name.size() <= 30 &&
+        request.resource.data.title is string &&
+        request.resource.data.title.size() > 0 &&
+        request.resource.data.title.size() <= 100 &&
+        request.resource.data.body is string &&
+        request.resource.data.body.size() > 0 &&
+        request.resource.data.body.size() <= 2000 &&
+        request.resource.data.deleteKeyHash is string &&
+        request.resource.data.deleteKeyHash.size() == 64 &&
+        request.resource.data.commentCount == 0 &&
+        request.resource.data.viewCount == 0 &&
+        request.resource.data.deleted == false &&
+        request.resource.data.createdAt == request.time &&
+        (
+          request.resource.data.imageBase64 == null ||
+          (
+            request.resource.data.imageBase64 is string &&
+            request.resource.data.imageBase64.size() < 1000000
+          )
+        );
+
+      allow update: if
+        // (a) 論理削除: deleted フィールドのみを true に変更でき、
+        //     かつ削除キーのハッシュが既存ドキュメントと一致する場合のみ
+        (
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['deleted']) &&
+          request.resource.data.deleted == true &&
+          resource.data.deleted == false &&
+          request.resource.data.deleteKeyHash == resource.data.deleteKeyHash
+        ) ||
+        // (b) 閲覧数インクリメント（1ずつのみ）
+        (
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewCount']) &&
+          request.resource.data.viewCount == resource.data.viewCount + 1
+        ) ||
+        // (c) コメント数インクリメント（1ずつのみ）
+        (
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['commentCount']) &&
+          request.resource.data.commentCount == resource.data.commentCount + 1
+        );
+
+      allow delete: if false;
+
+      match /comments/{commentId} {
+
+        allow read: if true;
+
+        allow create: if
+          request.resource.data.keys().hasOnly(['name', 'body', 'createdAt']) &&
+          request.resource.data.name is string &&
+          request.resource.data.name.size() <= 30 &&
+          request.resource.data.body is string &&
+          request.resource.data.body.size() > 0 &&
+          request.resource.data.body.size() <= 500 &&
+          request.resource.data.createdAt == request.time;
+
+        allow update: if false;
+        allow delete: if false;
+      }
+    }
+  }
+}

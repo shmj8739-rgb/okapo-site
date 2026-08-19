@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>おかぽ広場 | おかぽるLAB</title>
+<meta name="description" content="おかぽ広場は、おかぽるLABのコミュニティ掲示板。みんなで話そう・投稿しよう。">
+<meta name="robots" content="index,follow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..600&family=Noto+Sans+JP:wght@300..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/hiroba.css">
+</head>
+
+<body>
+
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand" style="text-decoration:none;">おかぽる<span class="brand-dot">LAB</span></a>
+    <div class="header-meta">
+      <span>OKAPO HIROBA</span>
+      <span class="meta-divider">/</span>
+      <span>COMMUNITY</span>
+    </div>
+  </div>
+</header>
+
+<main class="hiroba-page">
+  <div class="hiroba-inner">
+
+    <nav class="hiroba-breadcrumb">
+      <a href="../index.html">おかぽるLAB</a>
+      <span>/</span>
+      <span>おかぽ広場</span>
+    </nav>
+
+    <div class="hiroba-page-header">
+      <p class="section-label">💬 OKAPO HIROBA</p>
+      <h1>おかぽ広場</h1>
+      <p>みんなで話そう・投稿しよう。おかぽるLABのコミュニティスペースです。</p>
+    </div>
+
+    <div class="hiroba-toolbar">
+      <form id="hiroba-search-form" class="hiroba-search" role="search">
+        <input
+          type="text"
+          id="hiroba-search-input"
+          placeholder="タイトル・本文・投稿者名で検索"
+          aria-label="おかぽ広場の投稿を検索"
+        >
+        <button type="submit" class="hiroba-btn">検索する</button>
+      </form>
+      <a href="new.html" class="hiroba-btn hiroba-btn-primary">＋ 投稿する</a>
+    </div>
+
+    <div id="hiroba-loading-state" class="hiroba-loading-state">読み込み中…</div>
+    <div id="hiroba-error-state" class="hiroba-error-state" style="display:none;"></div>
+    <div id="hiroba-empty-state" class="hiroba-empty-state" style="display:none;">
+      まだ投稿がありません。最初の投稿をしてみませんか？
+    </div>
+
+    <div id="hiroba-post-list" class="hiroba-post-list"></div>
+
+  </div>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">OKAPO<span class="brand-dot">.</span></div>
+      <p class="footer-tagline">Shape the unseen future.</p>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 OKAPO. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="../js/hiroba-list.js"></script>
+</body>
+</html>

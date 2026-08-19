@@ -1,0 +1,600 @@
+/* ===================================================
+   OKAPO HIROBA — おかぽ広場
+   既存デザインシステム（css/style.css の CSS 変数）を継承
+=================================================== */
+
+/* ---------- ページ全体の下地 ---------- */
+.hiroba-page {
+  min-height: 100vh;
+  background: var(--black);
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.hiroba-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 6vw;
+}
+
+/* ---------- パンくず / 戻る導線 ---------- */
+.hiroba-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+  font-family: var(--ff-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: var(--grey-dim);
+}
+
+.hiroba-breadcrumb a {
+  color: var(--grey);
+  text-decoration: none;
+  transition: color 0.3s var(--ease);
+}
+
+.hiroba-breadcrumb a:hover {
+  color: var(--accent-blue);
+}
+
+/* ---------- ページヘッダー ---------- */
+.hiroba-page-header {
+  margin-bottom: 48px;
+}
+
+.hiroba-page-header .section-label {
+  margin-bottom: 20px;
+}
+
+.hiroba-page-header h1 {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  line-height: 1.35;
+  color: var(--white);
+  letter-spacing: -0.01em;
+  margin-bottom: 18px;
+}
+
+.hiroba-page-header p {
+  color: var(--grey);
+  font-size: 0.95rem;
+  font-weight: 300;
+  max-width: 46ch;
+}
+
+/* ---------- ツールバー（検索 + 投稿するボタン） ---------- */
+.hiroba-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.hiroba-search {
+  display: flex;
+  flex: 1;
+  min-width: 220px;
+  gap: 8px;
+}
+
+.hiroba-search input {
+  flex: 1;
+  background: var(--graphite);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 12px 20px;
+  color: var(--white);
+  font-family: var(--ff-body);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.3s var(--ease);
+}
+
+.hiroba-search input::placeholder {
+  color: var(--grey-dim);
+}
+
+.hiroba-search input:focus {
+  border-color: var(--accent-blue);
+}
+
+/* ---------- ボタン共通 ---------- */
+.hiroba-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--ff-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  padding: 12px 24px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--white);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease), background 0.3s var(--ease);
+  white-space: nowrap;
+}
+
+.hiroba-btn:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+
+.hiroba-btn-primary {
+  border: none;
+  background: var(--accent-gradient);
+}
+
+.hiroba-btn-primary:hover {
+  box-shadow: 0 12px 30px -10px rgba(106, 141, 255, 0.5);
+}
+
+.hiroba-btn-danger {
+  border-color: rgba(255, 90, 90, 0.35);
+  color: #ff8f8f;
+}
+
+.hiroba-btn-danger:hover {
+  border-color: rgba(255, 90, 90, 0.6);
+  background: rgba(255, 90, 90, 0.08);
+}
+
+.hiroba-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.hiroba-btn-block {
+  width: 100%;
+}
+
+/* ---------- 投稿一覧 ---------- */
+.hiroba-post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hiroba-post-card {
+  display: flex;
+  gap: 20px;
+  padding: 22px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: linear-gradient(160deg, var(--graphite-light), var(--graphite) 70%);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+
+.hiroba-post-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-strong);
+}
+
+.hiroba-post-thumb {
+  flex-shrink: 0;
+  width: 92px;
+  height: 92px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--graphite);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hiroba-post-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hiroba-post-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.hiroba-post-title {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--white);
+  margin-bottom: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.hiroba-post-excerpt {
+  font-size: 0.85rem;
+  color: var(--grey);
+  font-weight: 300;
+  margin-bottom: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.hiroba-post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-family: var(--ff-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: var(--grey-dim);
+}
+
+.hiroba-post-meta strong {
+  color: var(--grey);
+  font-weight: 500;
+}
+
+.hiroba-post-meta .meta-icon {
+  opacity: 0.7;
+  margin-right: 3px;
+}
+
+.hiroba-empty-state,
+.hiroba-loading-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--grey-dim);
+  font-size: 0.9rem;
+  border: 1px dashed var(--border);
+  border-radius: 18px;
+}
+
+.hiroba-error-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #ff8f8f;
+  font-size: 0.88rem;
+  border: 1px solid rgba(255, 90, 90, 0.25);
+  border-radius: 18px;
+  background: rgba(255, 90, 90, 0.05);
+}
+
+/* ---------- フォーム ---------- */
+.hiroba-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.hiroba-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hiroba-field label {
+  font-family: var(--ff-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--grey);
+}
+
+.hiroba-field .hiroba-hint {
+  font-size: 0.75rem;
+  color: var(--grey-dim);
+  font-weight: 300;
+}
+
+.hiroba-field input[type="text"],
+.hiroba-field input[type="password"],
+.hiroba-field textarea {
+  background: var(--graphite);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: var(--white);
+  font-family: var(--ff-body);
+  font-size: 0.92rem;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.3s var(--ease);
+}
+
+.hiroba-field input:focus,
+.hiroba-field textarea:focus {
+  border-color: var(--accent-blue);
+}
+
+.hiroba-field textarea {
+  min-height: 180px;
+  line-height: 1.8;
+}
+
+.hiroba-char-count {
+  align-self: flex-end;
+  font-size: 0.72rem;
+  color: var(--grey-dim);
+}
+
+.hiroba-file-input {
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+  padding: 18px;
+  text-align: center;
+  color: var(--grey);
+  font-size: 0.85rem;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.3s var(--ease);
+}
+
+.hiroba-file-input:hover {
+  border-color: var(--accent-blue);
+}
+
+.hiroba-file-input input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.hiroba-image-preview {
+  margin-top: 12px;
+  max-width: 240px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  display: none;
+}
+
+.hiroba-image-preview img {
+  width: 100%;
+  display: block;
+}
+
+/* ハニーポット（人間には見せない） */
+.hiroba-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.hiroba-form-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.hiroba-form-message {
+  font-size: 0.85rem;
+  padding: 12px 16px;
+  border-radius: 10px;
+  display: none;
+}
+
+.hiroba-form-message.is-visible {
+  display: block;
+}
+
+.hiroba-form-message.is-error {
+  background: rgba(255, 90, 90, 0.08);
+  border: 1px solid rgba(255, 90, 90, 0.25);
+  color: #ff8f8f;
+}
+
+.hiroba-form-message.is-success {
+  background: rgba(106, 141, 255, 0.08);
+  border: 1px solid rgba(106, 141, 255, 0.25);
+  color: var(--accent-blue);
+}
+
+/* ---------- 投稿詳細 ---------- */
+.hiroba-detail-header {
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.hiroba-detail-title {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  color: var(--white);
+  line-height: 1.4;
+  margin-bottom: 16px;
+  word-break: break-word;
+}
+
+.hiroba-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-family: var(--ff-display);
+  font-size: 0.78rem;
+  color: var(--grey-dim);
+}
+
+.hiroba-detail-meta strong {
+  color: var(--grey);
+  font-weight: 500;
+}
+
+.hiroba-detail-image {
+  margin: 28px 0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.hiroba-detail-image img {
+  width: 100%;
+  display: block;
+}
+
+.hiroba-detail-body {
+  color: var(--white);
+  font-size: 0.98rem;
+  font-weight: 300;
+  line-height: 2;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: 40px;
+}
+
+.hiroba-detail-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 56px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ---------- コメント ---------- */
+.hiroba-comment-section h2 {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: 1.15rem;
+  color: var(--white);
+  margin-bottom: 24px;
+}
+
+.hiroba-comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.hiroba-comment-item {
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: var(--graphite);
+  border: 1px solid var(--border);
+}
+
+.hiroba-comment-item-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+  font-family: var(--ff-display);
+  font-size: 0.75rem;
+}
+
+.hiroba-comment-item-head strong {
+  color: var(--white);
+  font-weight: 500;
+}
+
+.hiroba-comment-item-head span {
+  color: var(--grey-dim);
+}
+
+.hiroba-comment-item-body {
+  font-size: 0.88rem;
+  color: var(--grey);
+  font-weight: 300;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.hiroba-comment-empty {
+  color: var(--grey-dim);
+  font-size: 0.85rem;
+  padding: 20px 0;
+}
+
+/* ---------- モーダル（削除確認） ---------- */
+.hiroba-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 7, 0.75);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 24px;
+}
+
+.hiroba-modal-overlay.is-open {
+  display: flex;
+}
+
+.hiroba-modal {
+  max-width: 360px;
+  width: 100%;
+  background: var(--graphite-light);
+  border: 1px solid var(--border-strong);
+  border-radius: 18px;
+  padding: 28px;
+}
+
+.hiroba-modal p {
+  color: var(--white);
+  font-size: 0.92rem;
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+.hiroba-modal .hiroba-field {
+  margin-bottom: 20px;
+}
+
+.hiroba-modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.hiroba-modal-actions .hiroba-btn {
+  flex: 1;
+}
+
+/* ---------- レスポンシブ ---------- */
+@media (max-width: 640px) {
+  .hiroba-page {
+    padding-top: 96px;
+    padding-bottom: 80px;
+  }
+
+  .hiroba-post-card {
+    padding: 16px;
+    gap: 14px;
+  }
+
+  .hiroba-post-thumb {
+    width: 72px;
+    height: 72px;
+  }
+
+  .hiroba-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hiroba-search {
+    width: 100%;
+  }
+
+  .hiroba-btn-block-mobile {
+    width: 100%;
+  }
+}

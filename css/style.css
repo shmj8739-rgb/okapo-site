@@ -790,6 +790,45 @@ body {
   font-size: 18px;
 }
 
+/* ConoHa AI Canvas への導線（A8アフィリエイト広告）まわり
+   ※ 中の <a>/<img> は広告主体タグのため
+     属性・内容は変更しないこと。 */
+.ai-tool-ad {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.ai-tool-ad-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  font-family: var(--ff-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: var(--grey);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.ai-tool-banner-wrap {
+  max-width: 468px;
+  width: 100%;
+}
+
+.ai-tool-banner-wrap a {
+  display: block;
+  max-width: 100%;
+  line-height: 0;
+}
+
+.ai-tool-banner-wrap img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
 @media (max-width: 600px) {
   .ai-tool-card {
     padding: 32px 24px;

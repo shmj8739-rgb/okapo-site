@@ -507,6 +507,58 @@ body {
 }
 
 /* ===================================================
+   PROFILE
+   シンプルに・余白広めに・広告(PROMO)より控えめな
+   トーンで、テキスト中心にまとめている。
+=================================================== */
+.profile {
+  padding: clamp(90px, 14vw, 160px) 0;
+  background: var(--black);
+}
+
+.profile-inner {
+  max-width: 680px;
+}
+
+.profile-body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin: 8px 0 56px;
+}
+
+.profile-lead {
+  font-family: var(--ff-display);
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-weight: 500;
+  color: var(--white);
+}
+
+.profile-body p:not(.profile-lead) {
+  font-size: 0.95rem;
+  line-height: 2;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.profile-tagline {
+  font-family: var(--ff-display);
+  font-size: clamp(1.5rem, 4.5vw, 2.4rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 640px) {
+  .profile {
+    padding: 70px 0;
+  }
+
+  .profile-body {
+    margin-bottom: 40px;
+  }
+}
+
+/* ===================================================
    FOOTER
 =================================================== */
 .site-footer {
@@ -603,15 +655,15 @@ body {
 /* ===== PROMO / おすすめサービス（広告）
    広告カードを増やす場合は .promo-card を
    .promo-grid の中にコピーして増やすだけで良い設計。
-   ※ .promo-card-link-wrap / .promo-banner-wrap 内の
-     <a>/<img> は広告主体タグのため属性・内容は変更しないこと。
-   このセクションは直下の AI TOOLS セクションと合わせて
-   ひとつの「AI・ものづくり」エリアとして続くよう、
-   下側の余白をあえて小さめにしている。
+   ※ 各カード内の <a>/<img>（A8広告タグ）は
+     広告主体タグのため属性・内容は変更しないこと。
+   .promo-card は .work-card-body と同様、内容量の異なる
+   カード同士でもボタン/バナーの位置がなるべく揃うよう
+   縦方向 flex + .promo-card-desc の flex:1 で下寄せにしている。
 =================================================== */
 
 .promo {
-  padding: 100px 0 40px;
+  padding: 100px 0;
   background: var(--black);
 }
 
@@ -624,6 +676,8 @@ body {
 
 .promo-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
   padding: 28px 26px 26px;
   border-radius: 18px;
   border: 1px solid var(--border);
@@ -644,6 +698,7 @@ body {
 }
 
 .promo-card-desc {
+  flex: 1;
   margin-bottom: 20px;
   font-size: 0.88rem;
   line-height: 1.8;
@@ -668,18 +723,6 @@ body {
   transform: translateX(4px);
 }
 
-.promo-card-pending {
-  display: inline-flex;
-  align-items: center;
-  font-family: var(--ff-display);
-  font-size: 0.82rem;
-  letter-spacing: 0.04em;
-  color: var(--grey-dim);
-  padding: 12px 20px;
-  border-radius: 999px;
-  border: 1px dashed var(--border-strong);
-}
-
 .promo-banner-wrap {
   display: flex;
   justify-content: center;
@@ -697,78 +740,9 @@ body {
   border-radius: 8px;
 }
 
-@media (max-width: 600px) {
-  .promo {
-    padding: 70px 0 30px;
-  }
-
-  .promo-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .promo-card {
-    padding: 24px 20px;
-  }
-}
-
-/* ===== AI TOOLS / A8 ===== */
-
-.ai-tools {
-  padding: 40px 0 120px;
-}
-
-.ai-tool-card {
-  position: relative;
-  max-width: 760px;
-  margin: 60px auto 0;
-  padding: 48px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.03);
-  overflow: hidden;
-}
-
-.ai-tool-card::before {
-  content: "";
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  top: -150px;
-  right: -100px;
-  background: radial-gradient(
-    circle,
-    rgba(130, 100, 255, 0.25),
-    transparent 70%
-  );
-  pointer-events: none;
-}
-
-.ai-tool-card-content {
-  position: relative;
-  z-index: 1;
-}
-
-.ai-tool-tag {
-  display: inline-block;
-  margin-bottom: 20px;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  opacity: 0.6;
-}
-
-.ai-tool-card h3 {
-  margin: 0 0 16px;
-  font-size: clamp(28px, 4vw, 42px);
-  font-weight: 500;
-}
-
-.ai-tool-card p {
-  max-width: 520px;
-  margin-bottom: 32px;
-  line-height: 1.9;
-  opacity: 0.7;
-}
-
+/* ConoHa AI Canvas カード内の導線（A8アフィリエイト広告）
+   ※ 中の <a>/<img> は広告主体タグのため
+     属性・内容は変更しないこと。 */
 .ai-tool-link {
   display: inline-flex;
   align-items: center;
@@ -790,31 +764,10 @@ body {
   font-size: 18px;
 }
 
-/* ConoHa AI Canvas への導線（A8アフィリエイト広告）まわり
-   ※ 中の <a>/<img> は広告主体タグのため
-     属性・内容は変更しないこと。 */
-.ai-tool-ad {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 18px;
-}
-
-.ai-tool-ad-badge {
-  display: inline-block;
-  padding: 3px 10px;
-  font-family: var(--ff-display);
-  font-size: 0.62rem;
-  letter-spacing: 0.15em;
-  color: var(--grey);
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  text-transform: uppercase;
-}
-
 .ai-tool-banner-wrap {
   max-width: 468px;
   width: 100%;
+  margin-top: 18px;
 }
 
 .ai-tool-banner-wrap a {
@@ -830,11 +783,15 @@ body {
 }
 
 @media (max-width: 600px) {
-  .ai-tool-card {
-    padding: 32px 24px;
+  .promo {
+    padding: 70px 0;
   }
 
-  .ai-tools {
-    padding: 30px 0 80px;
+  .promo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .promo-card {
+    padding: 24px 20px;
   }
 }

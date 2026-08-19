@@ -600,10 +600,121 @@ body {
   }
 }
 
+/* ===== PROMO / おすすめサービス（広告）
+   広告カードを増やす場合は .promo-card を
+   .promo-grid の中にコピーして増やすだけで良い設計。
+   ※ .promo-card-link-wrap / .promo-banner-wrap 内の
+     <a>/<img> は広告主体タグのため属性・内容は変更しないこと。
+   このセクションは直下の AI TOOLS セクションと合わせて
+   ひとつの「AI・ものづくり」エリアとして続くよう、
+   下側の余白をあえて小さめにしている。
+=================================================== */
+
+.promo {
+  padding: 100px 0 40px;
+  background: var(--black);
+}
+
+.promo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.promo-card {
+  position: relative;
+  padding: 28px 26px 26px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.promo-badge {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 3px 10px;
+  font-family: var(--ff-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: var(--grey);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.promo-card-desc {
+  margin-bottom: 20px;
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: var(--grey);
+}
+
+.promo-card-link-wrap a {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--ff-display);
+  font-size: 0.9rem;
+  color: var(--white);
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.promo-card-link-wrap a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(4px);
+}
+
+.promo-card-pending {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--ff-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--grey-dim);
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 1px dashed var(--border-strong);
+}
+
+.promo-banner-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.promo-banner-wrap a {
+  display: inline-block;
+  max-width: 100%;
+  line-height: 0;
+}
+
+.promo-banner-wrap img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  .promo {
+    padding: 70px 0 30px;
+  }
+
+  .promo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .promo-card {
+    padding: 24px 20px;
+  }
+}
+
 /* ===== AI TOOLS / A8 ===== */
 
 .ai-tools {
-  padding: 120px 0;
+  padding: 40px 0 120px;
 }
 
 .ai-tool-card {
@@ -685,98 +796,6 @@ body {
   }
 
   .ai-tools {
-    padding: 80px 0;
-  }
-}
-
-/* ===== PROMO / おすすめサービス（広告）
-   広告カードを増やす場合は .promo-card を
-   .promo-grid の中にコピーして増やすだけで良い設計。
-   ※ .promo-card-link-wrap / .promo-banner-wrap 内の
-     <a>/<img> は広告主体タグのため属性・内容は変更しないこと。
-=================================================== */
-
-.promo {
-  padding: 100px 0 140px;
-  background: var(--black);
-}
-
-.promo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-  margin-top: 8px;
-}
-
-.promo-card {
-  position: relative;
-  padding: 28px 26px 26px;
-  border-radius: 18px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.promo-badge {
-  display: inline-block;
-  margin-bottom: 16px;
-  padding: 3px 10px;
-  font-family: var(--ff-display);
-  font-size: 0.62rem;
-  letter-spacing: 0.15em;
-  color: var(--grey);
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  text-transform: uppercase;
-}
-
-.promo-card-desc {
-  margin-bottom: 20px;
-  font-size: 0.88rem;
-  line-height: 1.8;
-  color: var(--grey);
-}
-
-.promo-card-link-wrap a {
-  display: inline-flex;
-  align-items: center;
-  font-family: var(--ff-display);
-  font-size: 0.9rem;
-  color: var(--white);
-  text-decoration: none;
-  padding: 12px 20px;
-  border-radius: 999px;
-  border: 1px solid var(--border-strong);
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.promo-card-link-wrap a:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateX(4px);
-}
-
-.promo-banner-wrap {
-  display: flex;
-  justify-content: center;
-}
-
-.promo-banner-wrap a {
-  display: inline-block;
-  max-width: 100%;
-  line-height: 0;
-}
-
-.promo-banner-wrap img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-@media (max-width: 600px) {
-  .promo {
-    padding: 70px 0 100px;
-  }
-
-  .promo-card {
-    padding: 24px 20px;
+    padding: 30px 0 80px;
   }
 }

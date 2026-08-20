@@ -820,18 +820,11 @@ body {
 
 .future-viewport {
   width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   cursor: grab;
-  touch-action: pan-x;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  touch-action: pan-y;
   -webkit-mask-image: linear-gradient(to right, transparent 0, black 6vw, black calc(100% - 6vw), transparent 100%);
           mask-image: linear-gradient(to right, transparent 0, black 6vw, black calc(100% - 6vw), transparent 100%);
-}
-
-.future-viewport::-webkit-scrollbar {
-  display: none;
 }
 
 .future-viewport:active {
@@ -844,6 +837,7 @@ body {
   gap: 20px;
   width: max-content;
   padding: 6px 6vw 28px;
+  will-change: transform;
 }
 
 /* ---------- 広告風バナーカード ---------- */
@@ -855,8 +849,8 @@ body {
   display: flex;
   flex-direction: column;
   width: min(80vw, 300px);
-  aspect-ratio: 5 / 2;
-  padding: 16px 18px;
+  aspect-ratio: 5 / 3;
+  padding: 18px 20px;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   background: linear-gradient(135deg, var(--card-grad-a), var(--card-grad-b));
@@ -880,9 +874,9 @@ body {
 
 .future-card-visual {
   position: absolute;
-  right: -8px;
-  bottom: -16px;
-  font-size: 5.2rem;
+  right: -10px;
+  bottom: -22px;
+  font-size: 6.6rem;
   line-height: 1;
   opacity: 0.28;
   pointer-events: none;
@@ -905,7 +899,7 @@ body {
   display: flex;
   flex-direction: column;
   margin-top: auto;
-  gap: 3px;
+  gap: 6px;
 }
 
 .future-card-title {
@@ -923,7 +917,7 @@ body {
 }
 
 .future-card-date {
-  margin-top: 8px;
+  margin-top: 10px;
   font-family: var(--ff-display);
   font-size: 0.66rem;
   letter-spacing: 0.12em;
@@ -964,15 +958,5 @@ body {
 
   .future-card {
     width: min(78vw, 260px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .future-viewport {
-    scroll-snap-type: x proximity;
-  }
-
-  .future-card {
-    scroll-snap-align: start;
   }
 }

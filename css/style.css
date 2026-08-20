@@ -644,11 +644,24 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  /* サイト全体は reduced-motion 環境でアニメーションを最小化するが、
+     「未来のおかぽ」の広告バナーは演出ではなくコンテンツそのものの
+     見せ方（次々に流れる広告風バナー）であり、これが止まると内容を
+     見せられなくなってしまう。そのためここだけは意図的に対象から
+     除外し、無限スクロールを維持する仕様とする。 */
+  *:not(.future-track) {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* 上記の除外だけでは「元々このセレクタで指定されていた値が
+     そのまま生きる」だけなので、意図が伝わるように「未来のおかぽ」の
+     無限スクロールを明示的に再宣言しておく。 */
+  .future-track.is-marquee-ready {
+    -webkit-animation: future-marquee-right var(--future-duration, 40s) linear infinite;
+            animation: future-marquee-right var(--future-duration, 40s) linear infinite;
   }
 }
 
@@ -893,11 +906,19 @@ body {
 }
 
 /* ホバー中・キーボードフォーカス中は一時停止し、離れると即座に再開する。
+   (hover: hover) and (pointer: fine) で「マウス等、実際にホバー操作が
+   できるポインターデバイス」に限定しているのが重要なポイント。
+   iOS Safari はリンクをタップすると :hover が固着し、ページ遷移など
+   何かのきっかけがない限り解除されない既知の挙動があるため、これを
+   付けずに .future-viewport:hover だけで書くと、iPhoneでカードに
+   触れた瞬間から二度と自動再生が再開しなくなってしまう。
    スマホ（タッチ操作）では一時停止させない仕様のため、タッチ関連の
    クラスはここでは扱わない（PCのみホバー動作の対象）。 */
-.future-viewport:hover .future-track,
-.future-viewport:focus-within .future-track {
-  animation-play-state: paused;
+@media (hover: hover) and (pointer: fine) {
+  .future-viewport:hover .future-track,
+  .future-viewport:focus-within .future-track {
+    animation-play-state: paused;
+  }
 }
 
 /* ---------- 広告風バナーカード ---------- */

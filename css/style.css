@@ -604,10 +604,12 @@ body {
   gap: 10px;
 }
 
-.footer-col span:not(.footer-col-title) {
+.footer-col span:not(.footer-col-title),
+.footer-col a {
   color: var(--grey);
   font-size: 0.9rem;
   font-weight: 300;
+  text-decoration: none;
 }
 
 .footer-col-title {

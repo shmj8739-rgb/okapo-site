@@ -184,6 +184,62 @@
   </div>
 </section>
 
+<!-- ===== FUTURE OKAPO / 未来のおかぽ（動く広告風バナー） ===== -->
+<!-- カードを追加・削除する場合は、下の <a class="future-card"> ブロックを
+     コピーして .future-track の中に増やす/減らすだけでOKです。
+     ・カードは future-marquee.js が自動で複製し、シームレスにループ表示します。
+     ・配色を変えたい場合は future-card--xxxx というクラス名を新しく作り、
+       style.css 側で --card-grad-a / --card-grad-b を指定してください。
+     ・リンク先が決まったら href="#" を実際のURLに差し替えるだけでOK
+       （href="#" のままだとクリックしてもページ内ジャンプしないようJS側で無効化しています）。 -->
+<section class="future" id="future" aria-labelledby="future-title">
+  <div class="section-inner future-header">
+    <p class="section-label reveal">FUTURE OKAPO</p>
+    <h2 class="section-title reveal" id="future-title">未来のおかぽ、予告中。<br>これから挑戦すること。</h2>
+  </div>
+
+  <div class="future-viewport" role="region" aria-label="おかぽの今後の挑戦（自動スクロール表示。ホバーまたはタップで一時停止できます）">
+    <div class="future-track">
+
+      <!-- ---- FUTURE 01: キックボクシング大会 ---- -->
+      <a href="#" class="future-card future-card--kick">
+        <span class="future-card-badge">CHALLENGE 01</span>
+        <span class="future-card-visual" aria-hidden="true">🥊</span>
+        <span class="future-card-body">
+          <span class="future-card-title">キックボクシング大会</span>
+          <span class="future-card-copy">殴られてでも、前に出る。</span>
+          <span class="future-card-date">COMING SOON</span>
+        </span>
+      </a>
+
+      <!-- ---- FUTURE 02: フルマラソン ---- -->
+      <a href="#" class="future-card future-card--marathon">
+        <span class="future-card-badge">CHALLENGE 02</span>
+        <span class="future-card-visual" aria-hidden="true">🏃</span>
+        <span class="future-card-body">
+          <span class="future-card-title">フルマラソン完走</span>
+          <span class="future-card-copy">42.195km、次はここまで走る。</span>
+          <span class="future-card-date">COMING SOON</span>
+        </span>
+      </a>
+
+      <!-- ---- FUTURE 03: 琵琶湖一周（ビワイチ） ---- -->
+      <a href="#" class="future-card future-card--biwako">
+        <span class="future-card-badge">CHALLENGE 03</span>
+        <span class="future-card-visual" aria-hidden="true">🚴</span>
+        <span class="future-card-body">
+          <span class="future-card-title">琵琶湖一周（ビワイチ）</span>
+          <span class="future-card-copy">約200km、自分の足で一周する。</span>
+          <span class="future-card-date">COMING SOON</span>
+        </span>
+      </a>
+
+      <!-- ---- 今後の挑戦はこの下に同じ構造で追加 ---- -->
+
+    </div>
+  </div>
+</section>
+
 <!-- ===== PROMO / おすすめサービス（広告） ===== -->
 <!-- 広告を増やす場合は .promo-card を .promo-grid の中にコピーして増やすだけでOK -->
 <!-- ※ 各カード内の <a>/<img>（A8広告タグ）は広告主体タグのため
@@ -322,5 +378,6 @@
 </footer>
 
 <script src="js/script.js"></script>
+<script src="js/future-marquee.js" defer></script>
 </body>
 </html>

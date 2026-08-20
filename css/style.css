@@ -795,3 +795,184 @@ body {
     padding: 24px 20px;
   }
 }
+
+/* ===================================================
+   FUTURE OKAPO — 未来のおかぽ（動く広告風バナー）
+   おかぽ自身の今後の挑戦を、昔ながらのWeb広告バナーの
+   ような見た目・動きで見せるコンテンツ。
+   カードを増やす場合は index.html 側の .future-card を
+   コピーして .future-track の中に増やすだけでOK。
+   自動複製＆無限スクロールは js/future-marquee.js が担当。
+=================================================== */
+.future {
+  padding: clamp(70px, 12vw, 140px) 0;
+  background: var(--black);
+  overflow: hidden;
+}
+
+.future-header {
+  margin-bottom: 8px;
+}
+
+.future .section-title {
+  margin-bottom: 48px;
+}
+
+.future-viewport {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  touch-action: pan-x;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, black 6vw, black calc(100% - 6vw), transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, black 6vw, black calc(100% - 6vw), transparent 100%);
+}
+
+.future-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.future-viewport:active {
+  cursor: grabbing;
+}
+
+.future-track {
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+  width: max-content;
+  padding: 6px 6vw 28px;
+}
+
+/* ---------- 広告風バナーカード ---------- */
+.future-card {
+  --card-grad-a: var(--accent-blue);
+  --card-grad-b: var(--accent-violet);
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: min(80vw, 300px);
+  aspect-ratio: 5 / 2;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(135deg, var(--card-grad-a), var(--card-grad-b));
+  color: var(--white);
+  text-decoration: none;
+  overflow: hidden;
+  box-shadow: 0 16px 34px -18px rgba(0, 0, 0, 0.6);
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+.future-card:hover,
+.future-card:focus-visible {
+  transform: translateY(-4px) scale(1.035);
+  box-shadow: 0 22px 42px -16px rgba(0, 0, 0, 0.65);
+}
+
+.future-card:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 3px;
+}
+
+.future-card-visual {
+  position: absolute;
+  right: -8px;
+  bottom: -16px;
+  font-size: 5.2rem;
+  line-height: 1;
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+.future-card-badge {
+  align-self: flex-start;
+  font-family: var(--ff-display);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+}
+
+.future-card-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  gap: 3px;
+}
+
+.future-card-title {
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+
+.future-card-copy {
+  font-family: var(--ff-body);
+  font-size: 0.76rem;
+  font-weight: 400;
+  opacity: 0.94;
+}
+
+.future-card-date {
+  margin-top: 8px;
+  font-family: var(--ff-display);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  opacity: 0.9;
+  text-transform: uppercase;
+}
+
+/* ---------- カードごとの配色バリエーション ---------- */
+.future-card--kick {
+  --card-grad-a: #ff5f6d;
+  --card-grad-b: #ffab4a;
+}
+
+.future-card--marathon {
+  --card-grad-a: #22c58f;
+  --card-grad-b: #6a8dff;
+}
+
+.future-card--biwako {
+  --card-grad-a: #2fb8e0;
+  --card-grad-b: #a56aff;
+}
+
+/* 複製カード（無限ループ用）はスクリーンリーダーから隠す */
+.future-card[aria-hidden="true"] {
+  pointer-events: auto;
+}
+
+@media (max-width: 600px) {
+  .future {
+    padding: 60px 0;
+  }
+
+  .future-track {
+    gap: 14px;
+    padding: 4px 6vw 24px;
+  }
+
+  .future-card {
+    width: min(78vw, 260px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .future-viewport {
+    scroll-snap-type: x proximity;
+  }
+
+  .future-card {
+    scroll-snap-align: start;
+  }
+}

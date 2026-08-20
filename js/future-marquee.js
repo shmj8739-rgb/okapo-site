@@ -5,10 +5,13 @@
 // ・.future-track 内のカードを複製して2セット分並べ、CSSの
 //   @keyframes（future-marquee-right, animation-iteration-count: infinite）
 //   で右方向へ無限にループさせる。
-// ・ページを開いた瞬間から自動で動き続け、途中で止まらない。
+// ・ページを開いた瞬間から自動で動き続け、PC・スマホ問わず途中で止まらない。
 // ・マウスホバー / キーボードフォーカス中は CSS の :hover / :focus-within
 //   だけで一時停止・再開する（JSのタイマー管理に依存しない）。
-// ・タッチ操作中だけ JS でクラスを付け外しして一時停止する。
+// ・スマホ（タッチ操作）では一時停止させない。ページを指でスクロールする
+//   際に必ずこの領域を指が通過するため、タッチ中だけ止める実装にすると
+//   touchend が正しく後続しなかった場合に止まったまま戻らなくなるリスクが
+//   あるため、タッチによる一時停止は行わない仕様にしている。
 //
 // 実装メモ:
 // ・以前は JS の setTimeout ループで transform を毎フレーム書き換えて
@@ -16,9 +19,8 @@
 //   タブの状態次第で「途中で止まる」リスクがあった。
 //   CSS animation はブラウザのコンポジタスレッドが駆動するため、
 //   JSに何が起きても infinite ループ自体は止まらない。
-//   JSの役割は「カードの複製」「1周分の距離から再生時間を算出して
-//   CSS変数にセット」「タッチ中だけ一時停止クラスを付け外し」の3つに
-//   限定している。
+//   JSの役割は「カードの複製」と「1周分の距離から再生時間を算出して
+//   CSS変数にセットする」の2つに限定している。
 // ===================================================
 document.addEventListener("DOMContentLoaded", () => {
   const viewport = document.querySelector(".future-viewport");
@@ -41,8 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // シームレスループのためにカード一式を複製して後ろに連結する。
   // これで .future-track は「オリジナル1セット + 複製1セット」の
-  // 2セット構成になり、CSS側は translateX(-50%) から translateX(0%)
-  // へアニメーションするだけで、ループの継ぎ目が見えなくなる。
+  // 2セット構成になり、CSS側は translate3d(-50%,0,0) から
+  // translate3d(0,0,0) へアニメーションするだけで、ループの継ぎ目が
+  // 見えなくなる。
   cards.forEach((card) => {
     const clone = card.cloneNode(true);
     clone.setAttribute("aria-hidden", "true");
@@ -51,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const SPEED_PX_PER_SEC = 34; // ゆっくり読める速度
-  const TOUCH_RESUME_DELAY_MS = 300; // 指を離してから再開するまでの待ち時間
 
   // 1セット分の幅（px）から、その距離を SPEED_PX_PER_SEC で進むのに
   // かかる秒数を計算し、CSSアニメーションの再生時間として渡す。
@@ -73,28 +75,4 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(measure).catch(() => {});
   }
-
-  // タッチ操作中だけ一時停止し、指を離したら再開する
-  // （ホバー・キーボードフォーカスは CSS 側の :hover / :focus-within
-  //   だけで完結しているので、ここではタッチだけを扱う）。
-  let touchResumeTimer = null;
-
-  const pauseForTouch = () => {
-    if (touchResumeTimer) {
-      clearTimeout(touchResumeTimer);
-      touchResumeTimer = null;
-    }
-    track.classList.add("is-touch-paused");
-  };
-
-  const scheduleTouchResume = () => {
-    if (touchResumeTimer) clearTimeout(touchResumeTimer);
-    touchResumeTimer = setTimeout(() => {
-      track.classList.remove("is-touch-paused");
-    }, TOUCH_RESUME_DELAY_MS);
-  };
-
-  viewport.addEventListener("touchstart", pauseForTouch, { passive: true });
-  viewport.addEventListener("touchend", scheduleTouchResume, { passive: true });
-  viewport.addEventListener("touchcancel", scheduleTouchResume, { passive: true });
 });

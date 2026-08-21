@@ -113,7 +113,7 @@ body {
 
 .header-inner {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
 
@@ -442,6 +442,115 @@ body {
   transform: translateX(4px);
 }
 
+/* ---------------------------------------------------
+   おかぽ掲示板カード専用スタイル（WORK 04）
+   オカリス／KICK MEALなど「ゲーム・アプリ」系カードと明確に区別するため、
+   .work-card / .work-card-media の基本レイアウトはそのまま使いつつ、
+   媒体部分だけ「レトロなBBS（電子掲示板）のタイトル画面」風に上書きする。
+   カード自体の外形（グリッド幅）は他カードと揃えたまま、
+   中の .hiroba-banner を横長（約1.6:1）の額縁バナーとして見せている。
+--------------------------------------------------- */
+.work-card-media--hiroba {
+  align-items: center;
+  justify-content: center;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.035) 0,
+      rgba(255, 255, 255, 0.035) 2px,
+      transparent 2px,
+      transparent 9px
+    ),
+    radial-gradient(ellipse at 50% 15%, rgba(165, 106, 255, 0.16), transparent 65%);
+}
+
+.work-card-media--hiroba .work-card-index {
+  position: absolute;
+  right: 20px;
+  bottom: 14px;
+  z-index: 0;
+}
+
+.hiroba-banner {
+  position: relative;
+  z-index: 1;
+  width: 82%;
+  aspect-ratio: 1.6 / 1;
+  max-height: 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  background-color: rgba(0, 0, 0, 0.32);
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.45) 0 1.4px, transparent 1.6px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.45) 0 1.4px, transparent 1.6px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.45) 0 1.4px, transparent 1.6px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.45) 0 1.4px, transparent 1.6px);
+  background-repeat: no-repeat;
+  background-position:
+    7px 7px,
+    calc(100% - 7px) 7px,
+    7px calc(100% - 7px),
+    calc(100% - 7px) calc(100% - 7px);
+  background-size: 6px 6px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 8px 20px -10px rgba(0, 0, 0, 0.7);
+}
+
+.hiroba-banner-title {
+  display: inline-flex;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: clamp(1.05rem, 4vw, 1.3rem);
+  letter-spacing: 0.02em;
+}
+
+.hiroba-banner-title span {
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.55);
+}
+
+.hiroba-banner-title span:nth-child(6n + 1) { color: #ff6b8b; }
+.hiroba-banner-title span:nth-child(6n + 2) { color: #ffd166; }
+.hiroba-banner-title span:nth-child(6n + 3) { color: var(--accent-blue); }
+.hiroba-banner-title span:nth-child(6n + 4) { color: #4ce0d2; }
+.hiroba-banner-title span:nth-child(6n + 5) { color: var(--accent-violet); }
+.hiroba-banner-title span:nth-child(6n + 6) { color: #ff9f5b; }
+
+.hiroba-banner-sub {
+  font-family: var(--ff-display);
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* CTAは他カードと同じ .work-card-cta をベースに、掲示板らしい
+   遊び心（チャンキーな角丸・押し込み風ホバー）だけ上書きする。 */
+.work-card-cta--retro {
+  background: linear-gradient(120deg, #ff6b8b 0%, var(--accent-blue) 55%, var(--accent-violet) 100%);
+  border-radius: 10px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.55);
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.work-card-cta--retro:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.55);
+}
+
+@media (max-width: 480px) {
+  .hiroba-banner {
+    width: 90%;
+    max-height: 92px;
+  }
+}
+
 /* ===================================================
    VISUAL
 =================================================== */
@@ -647,6 +756,20 @@ body {
   display: block;
 }
 
+/* noteは文字ロゴのため、正方形アイコンと高さを揃えつつ幅は自然に */
+.social-icon.social-icon-note {
+  width: auto;
+  height: 20px;
+  padding: 0 1px;
+  font-family: var(--ff-display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
 .social-icon:hover,
 .social-icon:focus-visible {
   color: var(--white);
@@ -746,34 +869,60 @@ body {
 }
 
 .promo-card-desc {
-  flex: 1;
   margin-bottom: 20px;
   font-size: 0.88rem;
   line-height: 1.8;
   color: var(--grey);
 }
 
-.promo-card-link-wrap a {
+/* 3カード共通のCTAボタン。
+   ・.promo-card-link-wrap a … Aiartyの広告主体タグ（内容は変更しない、矢印は::afterで付与）
+   ・.ai-tool-link … ConoHa／ココナラのCTA（ココナラ側は既存バナーと同じ遷移先を使う自前リンク）
+   テキストと矢印を横一列・上下中央揃えにし、white-space:nowrapで
+   「試す」等の折り返しを防ぎつつ3カードのボタンの高さ・余白・デザインを統一している。 */
+.promo-card-link-wrap a,
+.ai-tool-link {
   display: inline-flex;
+  flex-direction: row;
   align-items: center;
+  gap: 18px;
+  min-width: 190px;
+  max-width: 100%;
+  padding: 14px 22px;
   font-family: var(--ff-display);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
   color: var(--white);
   text-decoration: none;
-  padding: 12px 20px;
+  white-space: nowrap;
   border-radius: 999px;
   border: 1px solid var(--border-strong);
   transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.promo-card-link-wrap a:hover {
+.promo-card-link-wrap a:hover,
+.ai-tool-link:hover {
   background: rgba(255, 255, 255, 0.08);
   transform: translateX(4px);
+}
+
+.promo-card-link-wrap a::after {
+  content: "→";
+  margin-left: auto;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.ai-tool-link span {
+  margin-left: auto;
+  font-size: 1rem;
+  line-height: 1;
 }
 
 .promo-banner-wrap {
   display: flex;
   justify-content: center;
+  margin-top: 18px;
 }
 
 .promo-banner-wrap a {
@@ -786,30 +935,6 @@ body {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
-}
-
-/* ConoHa AI Canvas カード内の導線（A8アフィリエイト広告）
-   ※ 中の <a>/<img> は広告主体タグのため
-     属性・内容は変更しないこと。 */
-.ai-tool-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-  padding: 14px 22px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 999px;
-  color: inherit;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.ai-tool-link:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateX(4px);
-}
-
-.ai-tool-link span {
-  font-size: 18px;
 }
 
 .ai-tool-banner-wrap {
@@ -1074,5 +1199,163 @@ body {
 
   .future-card {
     width: min(78vw, 260px);
+  }
+}
+
+/* ===================================================
+   DIARY — おかぽ日記（noteへの導線）
+   カルーセル（.future）の直下に置く単体カード。
+   オカリス＝ゲーム／KICK MEAL＝チャレンジ／おかぽ掲示板＝コミュニティ、
+   に続く4つ目のカテゴリ「日記・ブログ」として、他の派手な原色トーンとは
+   違う、紙・ノートを思わせる暖色（アンバー）とうっすら罫線の質感だけで
+   差別化している。noteのURL自体は他コード同様このファイルでは扱わない。
+=================================================== */
+.diary {
+  padding: 12px 0 clamp(70px, 12vw, 140px);
+  background: var(--black);
+}
+
+.diary-card {
+  position: relative;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 34px 36px;
+  border-radius: 20px;
+  border: 1px solid var(--border-strong);
+  background:
+    linear-gradient(160deg, rgba(255, 179, 102, 0.08), rgba(255, 255, 255, 0.02) 55%),
+    var(--graphite);
+  overflow: hidden;
+}
+
+/* うっすらとしたノート罫線 */
+.diary-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 27px,
+    rgba(255, 255, 255, 0.035) 27px,
+    rgba(255, 255, 255, 0.035) 28px
+  );
+  pointer-events: none;
+}
+
+/* マスキングテープ風のワンポイント */
+.diary-card-tape {
+  position: absolute;
+  top: -9px;
+  left: 34px;
+  width: 68px;
+  height: 22px;
+  background: linear-gradient(120deg, #ffc478, #ff8a65);
+  opacity: 0.9;
+  transform: rotate(-4deg);
+  border-radius: 3px;
+  box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.4);
+}
+
+.diary-card-visual {
+  position: absolute;
+  right: -6px;
+  bottom: -18px;
+  font-size: 6.4rem;
+  line-height: 1;
+  opacity: 0.14;
+  pointer-events: none;
+  transform: rotate(-6deg);
+}
+
+.diary-card-badge {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 3px 10px;
+  font-family: var(--ff-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: #ffb366;
+  border: 1px solid rgba(255, 179, 102, 0.45);
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.diary-card-title {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+
+.diary-card-title-en {
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: var(--grey-dim);
+  text-transform: uppercase;
+}
+
+.diary-card-copy {
+  position: relative;
+  max-width: 32em;
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--grey);
+}
+
+.diary-card-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--ff-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--black);
+  text-decoration: none;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #ffc478, #ff8a65);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+.diary-card-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -10px rgba(255, 138, 101, 0.5);
+}
+
+.diary-card-cta-arrow {
+  transition: transform 0.35s var(--ease);
+}
+
+.diary-card-cta:hover .diary-card-cta-arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 600px) {
+  .diary {
+    padding: 4px 0 60px;
+  }
+
+  .diary-card {
+    padding: 28px 22px;
+  }
+
+  .diary-card-visual {
+    font-size: 5rem;
+    opacity: 0.1;
+  }
+
+  .diary-card-title {
+    font-size: 1.3rem;
   }
 }

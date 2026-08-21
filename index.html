@@ -22,7 +22,6 @@
 <!-- ===== HEADER ===== -->
 <header class="site-header">
   <div class="header-inner">
-    <div class="brand">おかぽる<span class="brand-dot">LAB</span></div>
     <div class="header-meta">
       <span>AI PRODUCT STUDIO</span>
       <span class="meta-divider">/</span>
@@ -152,26 +151,37 @@
 </article>
 
 
-<!-- ---- WORK 04: おかぽ広場 ---- -->
-<article class="work-card reveal">
-  <div class="work-card-media">
+<!-- ---- WORK 04: おかぽ掲示板 ----
+     ※ オカリス／KICK MEALなどの「ゲーム・アプリ」系カードとは狙いを変え、
+       レトロなBBS（電子掲示板）風のタイトルロゴを乗せたバナー型の見た目にして
+       「コミュニティ」であることが一目で伝わるようにしている。
+       他3カードと同じ .work-card 構造は維持し、専用クラス（--hiroba）で上書きのみ行う。 -->
+<article class="work-card work-card--hiroba reveal">
+  <div class="work-card-media work-card-media--hiroba">
     <div class="work-card-glow" aria-hidden="true"></div>
-    <span class="work-card-tag">COMMUNITY</span>
     <span class="work-card-index" aria-hidden="true">04</span>
+
+    <!-- 装飾用のレトロタイトルロゴ。実際の見出しはこの下の<h3>が担うため装飾扱い（aria-hidden）。 -->
+    <div class="hiroba-banner" aria-hidden="true">
+      <span class="hiroba-banner-title">
+        <span>お</span><span>か</span><span>ぽ</span><span>掲</span><span>示</span><span>板</span>
+      </span>
+      <span class="hiroba-banner-sub">OKAPO BBS</span>
+    </div>
   </div>
 
   <div class="work-card-body">
     <h3 class="work-card-title">
-      おかぽ広場
-      <span class="work-card-title-en">OKAPO HIROBA</span>
+      おかぽ掲示板
+      <span class="work-card-title-en">OKAPO BBS</span>
     </h3>
 
     <p class="work-card-desc">
       みんなで話そう・投稿しよう。おかぽるLABのコミュニティ掲示板。
     </p>
 
-    <a class="work-card-cta" href="okapo-hiroba/index.html">
-      おかぽ広場に入る
+    <a class="work-card-cta work-card-cta--retro" href="okapo-hiroba/index.html">
+      おかぽ掲示板を見る
       <span class="work-card-cta-arrow" aria-hidden="true">→</span>
     </a>
   </div>
@@ -212,13 +222,13 @@
         </span>
       </a>
 
-      <!-- ---- FUTURE 02: フルマラソン ---- -->
+      <!-- ---- FUTURE 02: ハーフマラソン ---- -->
       <a href="#" class="future-card future-card--marathon">
         <span class="future-card-badge">CHALLENGE 02</span>
         <span class="future-card-visual" aria-hidden="true">🏃</span>
         <span class="future-card-body">
-          <span class="future-card-title">フルマラソン完走</span>
-          <span class="future-card-copy">42.195km、次はここまで走る。</span>
+          <span class="future-card-title">ハーフマラソン完走</span>
+          <span class="future-card-copy">21.0975km、次はここまで走る。</span>
           <span class="future-card-date">COMING SOON</span>
         </span>
       </a>
@@ -240,13 +250,46 @@
   </div>
 </section>
 
+<!-- ===== DIARY / おかぽ日記（note誘導） =====
+     ※ SNSフッターのnoteアイコンと同じリンク先（note.com/glad_okapi5040）への
+       別の導線。noteのURL自体は変更しないこと。
+     ・オカリス＝ゲーム／KICK MEAL＝チャレンジ／おかぽ掲示板＝コミュニティ、
+       に続く4つ目のカテゴリ「日記・ブログ」として、ノート風の質感
+       （罫線・マスキングテープ風の付箋）で他カードと違う雰囲気にしている。 -->
+<section class="diary" id="diary">
+  <div class="section-inner">
+    <div class="diary-card reveal">
+      <span class="diary-card-tape" aria-hidden="true"></span>
+      <span class="diary-card-visual" aria-hidden="true">📔</span>
+
+      <span class="diary-card-badge">DIARY</span>
+      <h2 class="diary-card-title">
+        おかぽ日記
+        <span class="diary-card-title-en">OKAPO DIARY</span>
+      </h2>
+      <p class="diary-card-copy">
+        日々の冒険を記録。おかぽるLABの活動を、noteでゆるく綴っています。
+      </p>
+
+      <a
+        class="diary-card-cta"
+        href="https://note.com/glad_okapi5040"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        おかぽ日記を見る
+        <span class="diary-card-cta-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- ===== PROMO / おすすめサービス（広告） ===== -->
 <!-- 広告を増やす場合は .promo-card を .promo-grid の中にコピーして増やすだけでOK -->
 <!-- ※ 各カード内の <a>/<img>（A8広告タグ）は広告主体タグのため
      属性・内容を変更しないこと。 -->
 <section class="promo" id="promo">
   <div class="section-inner">
-    <p class="section-label reveal">PR</p>
     <h2 class="section-title reveal">おすすめサービス</h2>
 
     <div class="promo-grid">
@@ -302,6 +345,18 @@
         <p class="promo-card-desc">
           得意なスキルをオンラインで売り買いできるマーケット「ココナラ」。
         </p>
+
+        <!-- 他2カードとボタンの見た目を揃えるための独自CTA。
+             リンク先は下のバナー広告タグと同じa8mat（既存の広告コードは変更しない）。 -->
+        <a
+          href="https://px.a8.net/svt/ejp?a8mat=4BA8PD+H9LBM+2PEO+1HZSUP"
+          rel="nofollow"
+          class="ai-tool-link"
+        >
+          ココナラを見てみる
+          <span>→</span>
+        </a>
+
         <div class="promo-banner-wrap">
 <a href="https://px.a8.net/svt/ejp?a8mat=4BA8PD+H9LBM+2PEO+1HZSUP" rel="nofollow">
 <img border="0" width="468" height="60" alt="" src="https://www27.a8.net/svt/bgt?aid=260818321029&wid=001&eno=01&mid=s00000012624009069000&mc=1"></a>
@@ -316,15 +371,10 @@
 <!-- ===== FOOTER ===== -->
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">OKAPO<span class="brand-dot">.</span></div>
-      <p class="footer-tagline">Shape the unseen future.</p>
-    </div>
-
     <div class="footer-columns">
       <div class="footer-col">
         <span class="footer-col-title">STUDIO</span>
-        <span>Tokyo, Japan</span>
+        <span>Nagoya, Japan</span>
       </div>
       <div class="footer-col">
         <span class="footer-col-title">CONTACT</span>
@@ -345,9 +395,7 @@
           <a class="social-icon" href="https://www.tiktok.com/@okapomal?_r=1&_t=ZS-994M7NAzVCC" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48z"/></svg>
           </a>
-          <a class="social-icon" href="https://note.com/glad_okapi5040" target="_blank" rel="noopener noreferrer" aria-label="note">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 2h9.68c4.65 0 7.32 2.87 7.32 7.4v5.2c0 4.53-2.67 7.4-7.32 7.4H5.5c-.28 0-.5-.22-.5-.5V2.5c0-.28.22-.5.5-.5zm3.5 4v13.2h4.8c3.35 0 5-1.7 5-5.6V9.6c0-3.9-1.65-5.6-5-5.6H9zm2 2.6h2.6c1.75 0 2.55.86 2.55 2.98v1.84c0 2.12-.8 2.98-2.55 2.98H11V8.6z"/></svg>
-          </a>
+          <a class="social-icon social-icon-note" href="https://note.com/glad_okapi5040" target="_blank" rel="noopener noreferrer" aria-label="note">note</a>
         </div>
       </div>
     </div>

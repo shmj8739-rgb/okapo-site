@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZKJT7MEQVL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ZKJT7MEQVL');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>商品詳細 | おかぽるPLANET GREEN</title>
+<meta name="description" content="おかぽるPLANET GREENの商品詳細ページです。">
+<meta name="robots" content="noindex,follow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..600&family=Noto+Sans+JP:wght@300..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="../../css/planet.css">
+</head>
+
+<body>
+
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../../index.html" class="brand" style="text-decoration:none;">おかぽる<span class="brand-dot">LAB</span></a>
+    <div class="header-meta">
+      <span>OKAPO PLANET</span>
+      <span class="meta-divider">/</span>
+      <span>GREEN</span>
+    </div>
+  </div>
+</header>
+
+<main class="planet-page">
+
+  <nav class="planet-breadcrumb planet-inner">
+    <a href="../../index.html">おかぽるLAB</a>
+    <span aria-hidden="true">/</span>
+    <a href="../index.html">おかぽるPLANET</a>
+    <span aria-hidden="true">/</span>
+    <a href="index.html">GREEN</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page" id="planet-breadcrumb-current">商品詳細</span>
+  </nav>
+
+  <div class="planet-inner planet-detail-wrap">
+
+    <p class="planet-not-found" id="planet-not-found">
+      指定された商品が見つかりませんでした。<a href="index.html" style="color:var(--planet-green-light);">GREEN一覧に戻る →</a>
+    </p>
+
+    <div class="planet-detail" id="planet-detail">
+      <div class="planet-detail-media">
+        <span class="planet-detail-icon" aria-hidden="true"></span>
+      </div>
+
+      <div class="planet-detail-info">
+        <div class="planet-detail-tags"></div>
+        <p class="planet-detail-en"></p>
+        <h1 class="planet-detail-name"></h1>
+        <p class="planet-detail-price"></p>
+        <p class="planet-detail-desc"></p>
+
+        <div class="planet-detail-specs">
+          <div class="spec-row"><span>サイズ</span><strong class="planet-detail-size"></strong></div>
+        </div>
+
+        <div class="planet-detail-care">
+          <p class="planet-detail-care-title">🌱 育て方ガイド</p>
+          <div class="care-row"><span>置き場所</span><strong class="care-light"></strong></div>
+          <div class="care-row"><span>水やり</span><strong class="care-water"></strong></div>
+          <div class="care-row"><span>難易度</span><strong class="care-level"></strong></div>
+        </div>
+
+        <button type="button" class="planet-cart-btn" id="planet-cart-btn">
+          カートに入れる
+          <span aria-hidden="true">→</span>
+        </button>
+        <p class="planet-cart-note">※ 現在オンライン販売の準備中です。もうしばらくお待ちください。</p>
+      </div>
+    </div>
+
+    <section class="planet-related">
+      <h2 class="planet-related-title">この商品と合わせて見られています</h2>
+      <div class="planet-product-grid" id="planet-related-list"></div>
+    </section>
+
+  </div>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">PLANET<span class="brand-dot">.</span></div>
+      <p class="footer-tagline">GREEN｜観葉植物 — by おかぽるPLANET</p>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 OKAPO. All rights reserved.</span>
+      <a href="index.html" style="color:var(--grey);text-decoration:none;">GREEN一覧へ戻る →</a>
+    </div>
+  </div>
+</footer>
+
+<div class="planet-toast" id="planet-toast" role="status" aria-live="polite"></div>
+
+<script src="../../js/script.js"></script>
+<script type="module" src="../../js/planet-detail.js"></script>
+</body>
+</html>

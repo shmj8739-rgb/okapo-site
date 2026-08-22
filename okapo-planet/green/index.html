@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZKJT7MEQVL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ZKJT7MEQVL');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GREEN｜観葉植物 | おかぽるPLANET</title>
+<meta name="description" content="おかぽるPLANETのGREENは、観葉植物を中心とした最初の商品カテゴリー。緑のある暮らしを、あなたの部屋に。">
+<meta name="robots" content="index,follow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..600&family=Noto+Sans+JP:wght@300..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="../../css/planet.css">
+</head>
+
+<body>
+
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../../index.html" class="brand" style="text-decoration:none;">おかぽる<span class="brand-dot">LAB</span></a>
+    <div class="header-meta">
+      <span>OKAPO PLANET</span>
+      <span class="meta-divider">/</span>
+      <span>GREEN</span>
+    </div>
+  </div>
+</header>
+
+<main class="planet-page">
+
+  <nav class="planet-breadcrumb planet-inner">
+    <a href="../../index.html">おかぽるLAB</a>
+    <span aria-hidden="true">/</span>
+    <a href="../index.html">おかぽるPLANET</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">GREEN</span>
+  </nav>
+
+  <div class="planet-inner">
+    <div class="planet-category-header">
+      <p class="planet-category-badge reveal">🌿 GREEN｜観葉植物</p>
+      <h1 class="planet-category-title reveal">観葉植物が、<br class="br-pc">部屋の空気を変える。</h1>
+      <p class="planet-category-desc reveal">
+        おかぽるPLANETが最初に届けるカテゴリーは、観葉植物。忙しい毎日の中でも、緑を見上げる数秒で呼吸が整う。そんな一鉢との出会いを届けます。
+      </p>
+    </div>
+
+    <!-- ===== PRODUCT GRID =====
+         商品を増やす場合は ../../js/planet-data.js の PLANET_PRODUCTS に
+         category:"green" のオブジェクトを1件追加するだけでOK。 -->
+    <div class="planet-product-grid" id="planet-product-grid"></div>
+  </div>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">PLANET<span class="brand-dot">.</span></div>
+      <p class="footer-tagline">GREEN｜観葉植物 — by おかぽるPLANET</p>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 OKAPO. All rights reserved.</span>
+      <a href="../index.html" style="color:var(--grey);text-decoration:none;">おかぽるPLANETへ戻る →</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../../js/script.js"></script>
+<script type="module">
+  import { renderProductGrid } from "../../js/planet-catalog.js";
+  renderProductGrid(document.getElementById("planet-product-grid"), "green");
+</script>
+</body>
+</html>

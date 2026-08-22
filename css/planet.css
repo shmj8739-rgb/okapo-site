@@ -1,0 +1,713 @@
+/* ===================================================
+   OKAPO PLANET — おかぽるPLANET（EC・暮らしブランド）
+   既存デザインシステム（css/style.css の CSS変数）を継承しつつ、
+   「自然 × 暮らし × 少し未来感」を表すセージグリーンのアクセントを追加。
+   PLANET配下のページ（okapo-planet/ 以下）でのみ読み込む。
+=================================================== */
+
+/* --planet-* 変数は css/style.css の :root で定義済み（このファイルは
+   style.css を読み込んだ後に適用される前提のため、ここでは再定義しない） */
+
+/* ---------- ページ全体の下地 ---------- */
+.planet-page {
+  min-height: 100vh;
+  background: var(--black);
+}
+
+.planet-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 6vw;
+}
+
+.planet-inner--narrow {
+  max-width: 900px;
+}
+
+/* ---------- パンくず ---------- */
+.planet-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 120px;
+  margin-bottom: 32px;
+  font-family: var(--ff-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: var(--grey-dim);
+}
+
+.planet-breadcrumb a {
+  color: var(--grey);
+  text-decoration: none;
+  transition: color 0.3s var(--ease);
+}
+
+.planet-breadcrumb a:hover {
+  color: var(--planet-green-light);
+}
+
+.planet-breadcrumb span[aria-current] {
+  color: var(--grey);
+}
+
+/* ===================================================
+   HERO（PLANETトップ）
+=================================================== */
+.planet-hero {
+  position: relative;
+  padding: 160px 0 100px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.planet-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.planet-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.5;
+  animation: drift 24s ease-in-out infinite alternate;
+}
+
+.planet-orb-1 {
+  width: 44vw;
+  height: 44vw;
+  max-width: 560px;
+  max-height: 560px;
+  top: -14%;
+  left: -10%;
+  background: radial-gradient(circle at 40% 40%, var(--planet-green), transparent 70%);
+}
+
+.planet-orb-2 {
+  width: 36vw;
+  height: 36vw;
+  max-width: 480px;
+  max-height: 480px;
+  bottom: -14%;
+  right: -8%;
+  background: radial-gradient(circle at 60% 60%, var(--accent-violet), transparent 70%);
+  animation-delay: -9s;
+}
+
+.planet-hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 0 6vw;
+}
+
+.planet-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--ff-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.35em;
+  color: var(--grey);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.planet-hero-eyebrow .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--planet-green);
+  box-shadow: 0 0 12px 2px var(--planet-green-glow);
+}
+
+.planet-hero-title {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: clamp(2.4rem, 7.5vw, 5.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--white);
+}
+
+.planet-hero-title .accent {
+  background: var(--planet-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.planet-hero-copy {
+  max-width: 46ch;
+  margin: 32px auto 0;
+  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.planet-hero-from {
+  margin-top: 24px;
+  font-family: var(--ff-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--grey-dim);
+}
+
+/* ===================================================
+   CONCEPT（自然 × 暮らし × 少し未来感）
+=================================================== */
+.planet-concept {
+  padding: clamp(60px, 10vw, 110px) 0;
+}
+
+.planet-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.planet-pillar {
+  padding: 30px 26px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: linear-gradient(160deg, var(--graphite-light), var(--graphite) 70%);
+}
+
+.planet-pillar-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 20px;
+  border-radius: 14px;
+  font-size: 1.4rem;
+  background: rgba(127, 174, 134, 0.12);
+}
+
+.planet-pillar-title {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.planet-pillar-desc {
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: var(--grey);
+}
+
+/* ===================================================
+   CATEGORY GRID
+   カテゴリーを増やす場合は js/planet-data.js の
+   PLANET_CATEGORIES に1件追加するだけでよい設計。
+=================================================== */
+.planet-categories {
+  padding: clamp(40px, 8vw, 80px) 0 clamp(90px, 12vw, 140px);
+}
+
+.planet-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.planet-cat-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 28px 24px 26px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: linear-gradient(160deg, var(--graphite-light), var(--graphite) 70%);
+  text-decoration: none;
+  overflow: hidden;
+  transition: transform 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+
+.planet-cat-card:not(.planet-cat-card--soon):hover {
+  transform: translateY(-6px);
+  border-color: var(--border-strong);
+}
+
+.planet-cat-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 20% 0%, var(--planet-green-glow), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+.planet-cat-card:not(.planet-cat-card--soon):hover::before {
+  opacity: 1;
+}
+
+.planet-cat-card--soon {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.planet-cat-index {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  font-family: var(--ff-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.08);
+}
+
+.planet-cat-status {
+  position: relative;
+  align-self: flex-start;
+  font-family: var(--ff-display);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  color: var(--grey);
+  text-transform: uppercase;
+}
+
+.planet-cat-card:not(.planet-cat-card--soon) .planet-cat-status {
+  color: var(--planet-green-light);
+  border-color: rgba(127, 174, 134, 0.45);
+}
+
+.planet-cat-icon {
+  position: relative;
+  font-size: 2rem;
+  margin-top: 6px;
+}
+
+.planet-cat-en {
+  position: relative;
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: 1.15rem;
+  color: var(--white);
+  letter-spacing: 0.02em;
+}
+
+.planet-cat-ja {
+  position: relative;
+  font-size: 0.78rem;
+  color: var(--grey-dim);
+}
+
+.planet-cat-tagline {
+  position: relative;
+  margin-top: 4px;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--grey);
+}
+
+.planet-cat-arrow {
+  position: relative;
+  margin-top: 6px;
+  font-family: var(--ff-display);
+  color: var(--planet-green-light);
+  transition: transform 0.35s var(--ease);
+}
+
+.planet-cat-card:hover .planet-cat-arrow {
+  transform: translateX(4px);
+}
+
+/* ===================================================
+   カテゴリーページヘッダー（GREEN一覧など）
+=================================================== */
+.planet-category-header {
+  padding-bottom: 44px;
+}
+
+.planet-category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ff-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  color: var(--planet-green-light);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.planet-category-title {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  line-height: 1.3;
+  color: var(--white);
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+}
+
+.planet-category-desc {
+  max-width: 52ch;
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: var(--grey);
+}
+
+/* ===================================================
+   PRODUCT GRID / CARD
+   商品を増やす場合は js/planet-data.js の PLANET_PRODUCTS に
+   1件追加するだけでよい設計。
+=================================================== */
+.planet-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 26px;
+  padding-bottom: clamp(90px, 12vw, 140px);
+}
+
+.planet-product-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  background: linear-gradient(160deg, var(--graphite-light), var(--graphite) 70%);
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+
+.planet-product-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-strong);
+}
+
+.planet-product-media {
+  position: relative;
+  height: 168px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 30% 20%, var(--planet-green-glow), transparent 65%);
+}
+
+.planet-product-glow {
+  position: absolute;
+  width: 60%;
+  height: 70%;
+  top: -15%;
+  right: -8%;
+  background: radial-gradient(circle at center, rgba(165, 106, 255, 0.28), transparent 70%);
+  filter: blur(28px);
+}
+
+.planet-product-icon {
+  position: relative;
+  font-size: 3.6rem;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.4));
+}
+
+.planet-product-tags {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.planet-product-tag {
+  font-family: var(--ff-display);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  padding: 4px 9px;
+  border-radius: 999px;
+  color: var(--black);
+  background: var(--planet-green-light);
+}
+
+.planet-product-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 22px 24px;
+}
+
+.planet-product-name {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--white);
+}
+
+.planet-product-en {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--grey-dim);
+  text-transform: uppercase;
+}
+
+.planet-product-desc {
+  margin-top: 4px;
+  font-size: 0.84rem;
+  line-height: 1.7;
+  color: var(--grey);
+}
+
+.planet-product-price {
+  margin-top: 10px;
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--planet-green-light);
+}
+
+.planet-empty {
+  padding: 60px 0;
+  color: var(--grey);
+  font-size: 0.9rem;
+}
+
+/* ===================================================
+   PRODUCT DETAIL
+=================================================== */
+.planet-detail-wrap {
+  padding-bottom: clamp(80px, 12vw, 130px);
+}
+
+.planet-not-found {
+  display: none;
+  padding: 60px 0 100px;
+  color: var(--grey);
+}
+
+.planet-detail {
+  display: none;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: start;
+}
+
+.planet-detail-media {
+  position: relative;
+  aspect-ratio: 4 / 3.4;
+  border-radius: 26px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 30% 20%, var(--planet-green-glow), transparent 65%), var(--graphite);
+}
+
+.planet-detail-media::before {
+  content: "";
+  position: absolute;
+  width: 60%;
+  height: 60%;
+  top: -10%;
+  right: -10%;
+  background: radial-gradient(circle at center, rgba(165, 106, 255, 0.28), transparent 70%);
+  filter: blur(36px);
+}
+
+.planet-detail-icon {
+  position: relative;
+  font-size: 7.5rem;
+  filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.45));
+}
+
+.planet-detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.planet-detail-en {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--grey-dim);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.planet-detail-name {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+  color: var(--white);
+  letter-spacing: -0.01em;
+  margin-bottom: 18px;
+}
+
+.planet-detail-price {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: 1.6rem;
+  color: var(--planet-green-light);
+  margin-bottom: 26px;
+}
+
+.planet-detail-desc {
+  font-size: 0.95rem;
+  line-height: 2;
+  color: var(--grey);
+  margin-bottom: 28px;
+}
+
+.planet-detail-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 22px;
+  margin-bottom: 22px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.85rem;
+}
+
+.planet-detail-specs .spec-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--grey);
+}
+
+.planet-detail-specs .spec-row strong {
+  font-weight: 500;
+  color: var(--white);
+}
+
+.planet-detail-care {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 22px;
+  margin-bottom: 30px;
+  border-radius: 16px;
+  border: 1px solid rgba(127, 174, 134, 0.3);
+  background: rgba(127, 174, 134, 0.06);
+  font-size: 0.85rem;
+}
+
+.planet-detail-care-title {
+  font-family: var(--ff-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: var(--planet-green-light);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.planet-detail-care .care-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--grey);
+}
+
+.planet-detail-care .care-row strong {
+  font-weight: 500;
+  color: var(--white);
+}
+
+.planet-cart-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--ff-display);
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  color: var(--black);
+  border: none;
+  cursor: pointer;
+  padding: 15px 28px;
+  border-radius: 999px;
+  background: var(--planet-gradient);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+.planet-cart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -10px var(--planet-green-glow);
+}
+
+.planet-cart-note {
+  margin-top: 14px;
+  font-size: 0.76rem;
+  color: var(--grey-dim);
+}
+
+/* ---------- トースト通知 ---------- */
+.planet-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translate(-50%, 16px);
+  z-index: 200;
+  padding: 14px 24px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--graphite-light);
+  color: var(--white);
+  font-size: 0.85rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+  box-shadow: 0 16px 40px -14px rgba(0, 0, 0, 0.6);
+}
+
+.planet-toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ---------- 関連商品 ---------- */
+.planet-related {
+  margin-top: clamp(70px, 10vw, 120px);
+}
+
+.planet-related-title {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: 1.4rem;
+  color: var(--white);
+  margin-bottom: 28px;
+}
+
+/* ===================================================
+   RESPONSIVE
+=================================================== */
+@media (max-width: 860px) {
+  .planet-pillars {
+    grid-template-columns: 1fr;
+  }
+
+  .planet-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .planet-detail-media {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .planet-hero {
+    padding: 130px 0 70px;
+  }
+
+  .planet-breadcrumb {
+    padding-top: 100px;
+  }
+}

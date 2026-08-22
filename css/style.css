@@ -18,6 +18,14 @@
   --accent-violet: #a56aff;
   --accent-gradient: linear-gradient(120deg, var(--accent-blue) 0%, var(--accent-violet) 100%);
 
+  /* おかぽるPLANET（EC・暮らし系ブランド）共通のアクセント。
+     css/planet.css からも同じ変数名で参照するため、値の定義はここに一本化する。 */
+  --planet-green: #7fae86;
+  --planet-green-light: #b7d9ba;
+  --planet-green-dark: #3f5e46;
+  --planet-green-glow: rgba(127, 174, 134, 0.32);
+  --planet-gradient: linear-gradient(120deg, var(--planet-green) 0%, var(--accent-blue) 100%);
+
   --ff-display: "Space Grotesk", "Noto Sans JP", sans-serif;
   --ff-body: "Inter", "Noto Sans JP", sans-serif;
 
@@ -115,6 +123,7 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  gap: 20px;
 }
 
 .brand {
@@ -552,6 +561,158 @@ body {
 }
 
 /* ===================================================
+   OKAPO PLANET — おかぽるPLANET（新ブランド予告バナー）
+   詳細ページは okapo-planet/ 以下（css/planet.css）に分離しているため、
+   ここではトップページに置く「単体の大きなバナーカード」のスタイルのみ。
+   .diary-card と同じ構成方針（余白広め・1カード完結）を踏襲しつつ、
+   PLANET共通のグリーン基調（--planet-green系）で新ブランド感を出す。
+=================================================== */
+.planet-teaser {
+  padding: clamp(70px, 12vw, 140px) 0;
+  background: var(--black);
+}
+
+.planet-teaser-card {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 44px 40px;
+  border-radius: 24px;
+  border: 1px solid var(--border-strong);
+  background:
+    linear-gradient(160deg, var(--planet-green-glow), rgba(255, 255, 255, 0.02) 55%),
+    var(--graphite);
+  overflow: hidden;
+  text-align: center;
+}
+
+.planet-teaser-glow {
+  position: absolute;
+  width: 60%;
+  height: 90%;
+  top: -30%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle at center, rgba(165, 106, 255, 0.22), transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.planet-teaser-badge {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 4px 14px;
+  font-family: var(--ff-display);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  color: var(--planet-green-light);
+  border: 1px solid rgba(127, 174, 134, 0.45);
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.planet-teaser-title {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: clamp(1.7rem, 4.5vw, 2.5rem);
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+
+.planet-teaser-title-en {
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  color: var(--grey-dim);
+  text-transform: uppercase;
+}
+
+.planet-teaser-copy {
+  position: relative;
+  max-width: 40em;
+  margin: 0 auto 28px;
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: var(--grey);
+}
+
+.planet-teaser-copy strong {
+  color: var(--planet-green-light);
+  font-weight: 500;
+}
+
+/* カテゴリー予告（GREENのみ有効、他はグレーアウトの点として並べる） */
+.planet-teaser-cats {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.cat-dot {
+  font-family: var(--ff-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: var(--grey-dim);
+  border: 1px solid var(--border);
+}
+
+.cat-dot--open {
+  color: var(--planet-green-light);
+  border-color: rgba(127, 174, 134, 0.5);
+  background: rgba(127, 174, 134, 0.08);
+}
+
+.planet-teaser-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--ff-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--black);
+  text-decoration: none;
+  padding: 12px 26px;
+  border-radius: 999px;
+  background: var(--planet-gradient);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+.planet-teaser-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -10px var(--planet-green-glow);
+}
+
+.planet-teaser-cta-arrow {
+  transition: transform 0.35s var(--ease);
+}
+
+.planet-teaser-cta:hover .planet-teaser-cta-arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 600px) {
+  .planet-teaser {
+    padding: 60px 0;
+  }
+
+  .planet-teaser-card {
+    padding: 34px 24px;
+  }
+}
+
+/* ===================================================
    VISUAL
 =================================================== */
 .visual {
@@ -701,7 +862,7 @@ body {
 
 .footer-columns {
   display: grid;
-  grid-template-columns: repeat(3, minmax(160px, 1fr));
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
   gap: 40px;
   padding-bottom: 56px;
   border-bottom: 1px solid var(--border);

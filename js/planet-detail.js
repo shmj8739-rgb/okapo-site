@@ -1,5 +1,6 @@
 // ===================================================
-// おかぽるPLANET — 商品詳細ページの描画
+// おかぽるPLANTS — 商品詳細ページの描画
+// （ファイル名・変数名は okapo-planet / PLANET_* のまま。表示文言のみPLANTS表記）
 // ===================================================
 // URLの ?id=商品ID を見て、該当商品を planet-data.js から探し出し、
 // このテンプレート1枚に流し込む方式。商品が増えてもファイルは増えない。
@@ -21,7 +22,7 @@ if (!product) {
   relatedEl.closest(".planet-related").style.display = "none";
 } else {
   detailEl.style.display = "grid";
-  document.title = `${product.name} | おかぽるPLANET`;
+  document.title = `${product.name} | おかぽるPLANTS`;
 
   detailEl.querySelector(".planet-detail-icon").textContent = product.icon;
   detailEl.querySelector(".planet-detail-name").textContent = product.name;

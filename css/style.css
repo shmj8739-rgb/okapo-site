@@ -18,8 +18,9 @@
   --accent-violet: #a56aff;
   --accent-gradient: linear-gradient(120deg, var(--accent-blue) 0%, var(--accent-violet) 100%);
 
-  /* おかぽるPLANET（EC・暮らし系ブランド）共通のアクセント。
-     css/planet.css からも同じ変数名で参照するため、値の定義はここに一本化する。 */
+  /* おかぽるPLANTS（EC・暮らし系ブランド）共通のアクセント。
+     変数名は既存の --planet-green 等のまま（値はここに一本化）。
+     css/planet.css からも同じ変数名で参照する。 */
   --planet-green: #7fae86;
   --planet-green-light: #b7d9ba;
   --planet-green-dark: #3f5e46;
@@ -561,11 +562,13 @@ body {
 }
 
 /* ===================================================
-   OKAPO PLANET — おかぽるPLANET（新ブランド予告バナー）
+   OKAPO PLANTS — おかぽるPLANTS（新ブランド予告バナー）
+   （ディレクトリ名・クラス名・変数名は okapo-planet / .planet-* /
+     --planet-* のまま。ブランドの表示文言のみ「PLANTS」表記）
    詳細ページは okapo-planet/ 以下（css/planet.css）に分離しているため、
    ここではトップページに置く「単体の大きなバナーカード」のスタイルのみ。
    .diary-card と同じ構成方針（余白広め・1カード完結）を踏襲しつつ、
-   PLANET共通のグリーン基調（--planet-green系）で新ブランド感を出す。
+   PLANTS共通のグリーン基調（--planet-green系）で新ブランド感を出す。
 =================================================== */
 .planet-teaser {
   padding: clamp(70px, 12vw, 140px) 0;

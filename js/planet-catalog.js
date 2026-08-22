@@ -1,9 +1,10 @@
 // ===================================================
-// おかぽるPLANET — カテゴリーグリッド／商品一覧の描画
+// おかぽるPLANTS — カテゴリーグリッド／商品一覧の描画
+// （ファイル名・変数名は okapo-planet / PLANET_* のまま。表示文言のみPLANTS表記）
 // ===================================================
 import { PLANET_CATEGORIES, getProductsByCategory, formatPrice } from "./planet-data.js";
 
-// ---------- カテゴリーグリッド（PLANETトップで使用） ----------
+// ---------- カテゴリーグリッド（PLANTSトップで使用） ----------
 export function renderCategoryGrid(container) {
   const frag = document.createDocumentFragment();
 

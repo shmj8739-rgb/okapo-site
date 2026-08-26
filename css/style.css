@@ -1002,6 +1002,20 @@ body {
   background: var(--black);
 }
 
+/* 見出し直下の広告開示文。カードを見る前に認識できるよう
+   .promo セクション内でのみ section-title の下余白を詰める
+  (他セクションの .section-title には影響しない)。 */
+.promo .section-title {
+  margin-bottom: 14px;
+}
+
+.promo-disclosure {
+  margin-bottom: 44px;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--grey-dim);
+}
+
 .promo-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));

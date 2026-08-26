@@ -1004,7 +1004,7 @@ body {
 
 .promo-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 24px;
   margin-top: 8px;
 }
@@ -1039,11 +1039,11 @@ body {
   color: var(--grey);
 }
 
-/* 3カード共通のCTAボタン。
-   ・.promo-card-link-wrap a … Aiartyの広告主体タグ（内容は変更しない、矢印は::afterで付与）
-   ・.ai-tool-link … ConoHa／ココナラのCTA（ココナラ側は既存バナーと同じ遷移先を使う自前リンク）
+/* 各カード共通のCTAボタン。
+   ・.promo-card-link-wrap a … Aiarty等の広告タグ、および新規カードの自前リンク（矢印は::afterで付与）
+   ・.ai-tool-link … ConoHaのCTA（自前リンク）
    テキストと矢印を横一列・上下中央揃えにし、white-space:nowrapで
-   「試す」等の折り返しを防ぎつつ3カードのボタンの高さ・余白・デザインを統一している。 */
+   折り返しを防ぎつつ各カードのボタンの高さ・余白・デザインを統一している。 */
 .promo-card-link-wrap a,
 .ai-tool-link {
   display: inline-flex;
@@ -1081,24 +1081,6 @@ body {
   margin-left: auto;
   font-size: 1rem;
   line-height: 1;
-}
-
-.promo-banner-wrap {
-  display: flex;
-  justify-content: center;
-  margin-top: 18px;
-}
-
-.promo-banner-wrap a {
-  display: inline-block;
-  max-width: 100%;
-  line-height: 0;
-}
-
-.promo-banner-wrap img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
 }
 
 .ai-tool-banner-wrap {

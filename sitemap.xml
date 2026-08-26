@@ -18,4 +18,12 @@
 <loc>https://okapo-site.netlify.app/okapo-planet/green/index.html</loc>
 </url>
 
+<url>
+<loc>https://okapo-site.netlify.app/articles/index.html</loc>
+</url>
+
+<url>
+<loc>https://okapo-site.netlify.app/articles/claude-code-web-site.html</loc>
+</url>
+
 </urlset>

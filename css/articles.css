@@ -1,0 +1,292 @@
+/* ===================================================
+   OKAPO LAB — ARTICLES（記事）
+   既存デザインシステム（css/style.css の CSS変数）を継承。
+   構成は css/hiroba.css の一覧・詳細パターンを踏襲している。
+=================================================== */
+
+/* ---------- ページ全体の下地 ---------- */
+.articles-page {
+  min-height: 100vh;
+  background: var(--black);
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.articles-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 6vw;
+}
+
+/* ---------- パンくず ---------- */
+.articles-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+  font-family: var(--ff-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: var(--grey-dim);
+}
+
+.articles-breadcrumb a {
+  color: var(--grey);
+  text-decoration: none;
+  transition: color 0.3s var(--ease);
+}
+
+.articles-breadcrumb a:hover {
+  color: var(--accent-blue);
+}
+
+.articles-breadcrumb span[aria-current] {
+  color: var(--grey);
+}
+
+/* ---------- ページヘッダー（一覧） ---------- */
+.articles-page-header {
+  margin-bottom: 48px;
+}
+
+.articles-page-header .section-label {
+  margin-bottom: 20px;
+}
+
+.articles-page-header h1 {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  line-height: 1.35;
+  color: var(--white);
+  letter-spacing: -0.01em;
+  margin-bottom: 18px;
+}
+
+.articles-page-header p {
+  color: var(--grey);
+  font-size: 0.95rem;
+  font-weight: 300;
+  max-width: 50ch;
+}
+
+/* ---------- 記事一覧 ---------- */
+.articles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.articles-card {
+  display: block;
+  padding: 26px 28px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: linear-gradient(160deg, var(--graphite-light), var(--graphite) 70%);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+
+.articles-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-strong);
+}
+
+.articles-card-badge {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 3px 10px;
+  font-family: var(--ff-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: var(--accent-blue);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.articles-card-title {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.articles-card-excerpt {
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: var(--grey);
+  margin-bottom: 14px;
+}
+
+.articles-card-meta {
+  font-family: var(--ff-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--grey-dim);
+}
+
+/* ---------- 記事詳細：ヘッダー ---------- */
+.articles-detail-header {
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.articles-detail-header .section-label {
+  margin-bottom: 20px;
+}
+
+.articles-detail-title {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  color: var(--white);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+  word-break: break-word;
+}
+
+.articles-detail-meta {
+  font-family: var(--ff-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  color: var(--grey-dim);
+}
+
+/* ---------- 記事詳細：本文 ---------- */
+.articles-detail-body {
+  color: var(--grey);
+  font-size: 0.98rem;
+  font-weight: 300;
+  line-height: 2;
+}
+
+.articles-detail-body p {
+  margin-bottom: 28px;
+}
+
+.articles-detail-body h2 {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  color: var(--white);
+  letter-spacing: -0.01em;
+  margin: 56px 0 22px;
+}
+
+.articles-detail-body h2:first-child {
+  margin-top: 0;
+}
+
+.articles-detail-body ul {
+  margin: 0 0 28px;
+  padding-left: 1.3em;
+}
+
+.articles-detail-body li {
+  margin-bottom: 10px;
+}
+
+.articles-detail-body strong {
+  color: var(--white);
+  font-weight: 500;
+}
+
+.articles-detail-body a {
+  color: var(--accent-blue);
+  text-decoration: none;
+}
+
+.articles-detail-body a:hover {
+  text-decoration: underline;
+}
+
+/* 制作の流れなど、手順を縦に並べて見せる軽量な図。 */
+.articles-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 8px 0 32px;
+  padding: 24px 20px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--graphite);
+  text-align: center;
+}
+
+.articles-flow-step {
+  font-family: var(--ff-display);
+  font-size: 0.88rem;
+  color: var(--white);
+}
+
+.articles-flow-arrow {
+  font-size: 0.8rem;
+  color: var(--grey-dim);
+  line-height: 1.4;
+}
+
+/* ---------- 関連コンテンツ ---------- */
+.articles-related {
+  margin-top: 56px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+
+.articles-related h2 {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: 1.15rem;
+  color: var(--white);
+  margin-bottom: 24px;
+}
+
+.articles-related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.articles-related-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--graphite);
+  color: var(--white);
+  font-family: var(--ff-display);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
+.articles-related-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+}
+
+/* ---------- レスポンシブ ---------- */
+@media (max-width: 640px) {
+  .articles-page {
+    padding-top: 96px;
+    padding-bottom: 80px;
+  }
+
+  .articles-card {
+    padding: 20px 22px;
+  }
+
+  .articles-detail-body h2 {
+    margin: 44px 0 18px;
+  }
+}

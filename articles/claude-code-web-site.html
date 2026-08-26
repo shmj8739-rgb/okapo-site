@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZKJT7MEQVL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ZKJT7MEQVL');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Claude Codeで初心者がWebサイトを作ってみた｜おかぽるLAB制作記</title>
+<meta name="description" content="Claude Codeを使って実際にWebサイト「おかぽるLAB」を制作。GitHubやNetlifyを使って公開するまでの過程を初心者目線で紹介します。">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://okapo-site.netlify.app/articles/claude-code-web-site.html">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="おかぽるLAB">
+<meta property="og:title" content="Claude Codeで初心者がWebサイトを作ってみた｜おかぽるLAB制作記">
+<meta property="og:description" content="Claude Codeを使って実際にWebサイト「おかぽるLAB」を制作。GitHubやNetlifyを使って公開するまでの過程を初心者目線で紹介します。">
+<meta property="og:url" content="https://okapo-site.netlify.app/articles/claude-code-web-site.html">
+<meta property="og:locale" content="ja_JP">
+<meta property="article:published_time" content="2026-08-26T00:00:00+09:00">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..600&family=Noto+Sans+JP:wght@300..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/articles.css">
+</head>
+
+<body>
+
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand" style="text-decoration:none;">おかぽる<span class="brand-dot">LAB</span></a>
+    <div class="header-meta">
+      <span>OKAPO LAB</span>
+      <span class="meta-divider">/</span>
+      <span>ARTICLES</span>
+    </div>
+  </div>
+</header>
+
+<main class="articles-page">
+  <div class="articles-inner">
+
+    <nav class="articles-breadcrumb">
+      <a href="../index.html">おかぽるLAB</a>
+      <span aria-hidden="true">/</span>
+      <a href="index.html">記事一覧</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Claude Codeで初心者がWebサイトを作ってみた</span>
+    </nav>
+
+    <article>
+      <header class="articles-detail-header">
+        <p class="section-label reveal">MAKING OF</p>
+        <h1 class="articles-detail-title reveal">Claude Codeで初心者がWebサイトを作ってみた｜おかぽるLAB制作記</h1>
+        <p class="articles-detail-meta reveal"><time datetime="2026-08-26">2026.08.26 公開</time></p>
+      </header>
+
+      <div class="articles-detail-body">
+
+        <h2>はじめに</h2>
+        <p><strong>「AIを使えば、プログラミング初心者でもWebサイトを作れるのか？」</strong></p>
+        <p>そんな疑問から、実際にWebサイトを作ってみることにしました。</p>
+        <p>今回使ったのは、AnthropicのAIコーディングツール「Claude Code」です。</p>
+        <p>
+          実際にClaude Codeを使って「おかぽるLAB」というWebサイトを制作し、GitHubとNetlifyを使って公開するまでの過程を紹介します。
+        </p>
+        <p>
+          プログラミングの専門家ではない自分が、AIに相談しながらどこまでWebサイトを作れるのか。実際の制作過程を記録します。
+        </p>
+
+        <h2>Claude Codeを使ってみようと思った理由</h2>
+        <p>Webサイトを作るにはHTML、CSS、JavaScriptなどの知識が必要です。</p>
+        <p>そこで、AIに相談しながらWebサイトを作る方法を試してみることにしました。</p>
+        <p>
+          「こういうWebサイトを作りたい」と自然な言葉で伝え、Claude Codeにコードの作成や修正を手伝ってもらいます。
+        </p>
+
+        <h2>作ったWebサイト「おかぽるLAB」</h2>
+        <p>今回作ったのが「おかぽるLAB」です。</p>
+        <p>
+          「AIで、見えない世界をカタチに。」をテーマに、AI、Web制作、ゲーム、植物など、自分が興味を持ったものを形にしていく場所として制作しています。
+        </p>
+        <p>現在は、</p>
+        <ul>
+          <li>AI関連コンテンツ</li>
+          <li>Web制作</li>
+          <li>オリジナルゲーム</li>
+          <li>おかぽるPLANTS</li>
+          <li>AIサービスの紹介</li>
+        </ul>
+        <p>などを少しずつ追加しています。</p>
+        <p>
+          サイトURL：<a href="https://okapo-site.netlify.app/" target="_blank" rel="noopener noreferrer">https://okapo-site.netlify.app/</a>
+        </p>
+
+        <h2>Claude CodeにWebサイトを作ってもらう</h2>
+        <p>最初から完成形を作るのではなく、少しずつAIに指示を出しながら制作しました。</p>
+        <p>例えば、</p>
+        <ul>
+          <li>「黒を基調にした未来的なデザインにしたい」</li>
+          <li>「AI・Web・ゲームなどをカテゴリごとに表示したい」</li>
+          <li>「スマートフォンでも見やすくしてほしい」</li>
+        </ul>
+        <p>といった形で、作りたいものを言葉で伝えます。</p>
+        <p>ブラウザで実際の表示を確認し、</p>
+        <ul>
+          <li>「ここをもう少し大きくしたい」</li>
+          <li>「このボタンを右側に移したい」</li>
+          <li>「スマートフォンでは1列にしたい」</li>
+        </ul>
+        <p>など、修正点を再びClaude Codeに伝えます。</p>
+        <p>この繰り返しでサイトを作っていきました。</p>
+
+        <h2>GitHubでコードを管理する</h2>
+        <p>WebサイトのコードはGitHubで管理しています。</p>
+        <p>Claude Codeで変更したファイルをGitにコミットし、GitHubへPushします。</p>
+        <p>変更履歴が残るため、以前の状態を確認したり、問題が起きた場合に戻したりできます。</p>
+
+        <h2>NetlifyでWebサイトを公開する</h2>
+        <p>
+          GitHubとNetlifyを連携し、GitHubに変更をPushするとWebサイトにも変更が反映される仕組みにしています。
+        </p>
+        <p>制作の流れは、</p>
+        <div class="articles-flow" role="img" aria-label="制作の流れ：Claude Code から コードを修正、GitHub、Netlify を経て、インターネット上に公開される">
+          <span class="articles-flow-step">Claude Code</span>
+          <span class="articles-flow-arrow" aria-hidden="true">↓</span>
+          <span class="articles-flow-step">コードを修正</span>
+          <span class="articles-flow-arrow" aria-hidden="true">↓</span>
+          <span class="articles-flow-step">GitHub</span>
+          <span class="articles-flow-arrow" aria-hidden="true">↓</span>
+          <span class="articles-flow-step">Netlify</span>
+          <span class="articles-flow-arrow" aria-hidden="true">↓</span>
+          <span class="articles-flow-step">インターネット上に公開</span>
+        </div>
+        <p>という形です。</p>
+
+        <h2>AIを使って実際にどこまで作れた？</h2>
+        <p>実際にAIを使って、</p>
+        <ul>
+          <li>HTMLの作成</li>
+          <li>CSSの調整</li>
+          <li>レスポンシブ対応</li>
+          <li>ページ追加</li>
+          <li>ボタンやリンクの修正</li>
+          <li>デザイン変更</li>
+          <li>Gitの操作確認</li>
+          <li>エラー調査</li>
+          <li>Webサイト改善</li>
+        </ul>
+        <p>などを行いました。</p>
+        <p>
+          さらに、オリジナルゲーム「オカリス」や観葉植物ショップ「おかぽるPLANTS」もサイトに追加しています。
+        </p>
+
+        <h2>実際に使ってみて分かったこと</h2>
+        <p>
+          一番感じたのは、「AIがあるからプログラミングを知らなくてもいい」というわけではないということです。
+        </p>
+        <p>AIに正確な指示を出すには、自分が何を作りたいのかを理解する必要があります。</p>
+        <p>
+          また、AIが変更したコードをそのまま信用するのではなく、実際にブラウザで確認することも重要でした。
+        </p>
+        <div class="articles-flow" role="img" aria-label="確認の流れ：AIに作ってもらう、自分で確認する、修正を依頼する、を繰り返す">
+          <span class="articles-flow-step">AIに作ってもらう。</span>
+          <span class="articles-flow-arrow" aria-hidden="true">↓</span>
+          <span class="articles-flow-step">自分で確認する。</span>
+          <span class="articles-flow-arrow" aria-hidden="true">↓</span>
+          <span class="articles-flow-step">修正を依頼する。</span>
+        </div>
+        <p>この繰り返しが重要だと感じました。</p>
+
+        <h2>AIを使うことで変わったこと</h2>
+        <p>
+          以前なら、「Webサイトを作りたい」と思っても、コードを書く知識が足りず、最初の段階で諦めていたかもしれません。
+        </p>
+        <p>
+          しかしAIを使うことで、「分からないから作れない」から、「分からないけど、とりあえず作ってみる」に変わりました。
+        </p>
+        <p>
+          AIにすべてを任せるのではなく、自分がアイデアを出し、AIに実装を手伝ってもらう。そんな使い方が、これから増えていくのではないかと思っています。
+        </p>
+
+        <h2>これからやりたいこと</h2>
+        <p>おかぽるLABはまだ完成ではありません。</p>
+        <p>これから、</p>
+        <ul>
+          <li>オリジナルゲームを増やす</li>
+          <li>おかぽるPLANTSの商品を増やす</li>
+          <li>AIツールの活用方法を紹介する</li>
+        </ul>
+        <p>など、少しずつコンテンツを増やしていきます。</p>
+        <p>
+          最終的には、「自分のアイデアをAIで可視化していく場所」にしていきたいと考えています。
+        </p>
+
+        <h2>まとめ</h2>
+        <p>Claude Codeを使って実際にWebサイトを作ってみました。</p>
+        <p>
+          GitHubやNetlifyなど、最初は分からないこともありましたが、AIに質問しながら一つずつ進めることで、実際にインターネット上で公開できるWebサイトを作ることができました。
+        </p>
+        <p>Claude Codeは、プログラミングを知らなくても魔法のようにサイトを作ってくれるツールではありません。</p>
+        <p>しかし、</p>
+        <div class="articles-flow" role="img" aria-label="作りたいものを言葉にする、AIに実装を手伝ってもらう、自分で確認する、また改善する、というサイクル">
+          <span class="articles-flow-step">作りたいものを言葉にする</span>
+          <span class="articles-flow-arrow" aria-hidden="true">↓</span>
+          <span class="articles-flow-step">AIに実装を手伝ってもらう</span>
+          <span class="articles-flow-arrow" aria-hidden="true">↓</span>
+          <span class="articles-flow-step">自分で確認する</span>
+          <span class="articles-flow-arrow" aria-hidden="true">↓</span>
+          <span class="articles-flow-step">また改善する</span>
+        </div>
+        <p>という使い方をすれば、これまで作れなかったものにも挑戦できるようになります。</p>
+        <p>これからも、おかぽるLABでAIを使っていろいろなものを作っていきます。</p>
+
+      </div>
+    </article>
+
+    <!-- ===== 関連コンテンツ =====
+         記事が増えたら、ここを「関連記事」カードに置き換え/追加していく想定。
+         現時点では記事がこの1本のみのため、関連する既存コンテンツと
+         記事一覧への導線を設置している。 -->
+    <div class="articles-related reveal">
+      <h2>こちらもおすすめ</h2>
+      <div class="articles-related-grid">
+        <a href="../games/okaris/index.html" class="articles-related-card">
+          オカリスを遊んでみる
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href="../okapo-planet/index.html" class="articles-related-card">
+          おかぽるPLANTSを見る
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href="index.html" class="articles-related-card">
+          記事一覧に戻る
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">LAB<span class="brand-dot">.</span></div>
+      <p class="footer-tagline">おかぽるLABの制作記録 — ARTICLES</p>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 OKAPO. All rights reserved.</span>
+      <a href="index.html" style="color:var(--grey);text-decoration:none;">記事一覧へ戻る →</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/script.js"></script>
+</body>
+</html>

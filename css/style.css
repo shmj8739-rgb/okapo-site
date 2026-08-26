@@ -1077,6 +1077,16 @@ body {
   line-height: 1;
 }
 
+/* ロリポップ！AIエージェントクラウドのCTAのみ、文言が長くボタンから
+   はみ出すため折り返し表示にする。他3カード（Aiarty／ConoHa／DMM）の
+   ピル型ボタンは .promo-card-link-wrap a の元スタイルのまま変更しない。 */
+.promo-card-link-wrap a.promo-cta--wrap {
+  white-space: normal;
+  text-align: left;
+  line-height: 1.5;
+  border-radius: 20px;
+}
+
 .ai-tool-link span {
   margin-left: auto;
   font-size: 1rem;

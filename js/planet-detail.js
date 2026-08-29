@@ -5,6 +5,7 @@
 // URLの ?id=商品ID を見て、該当商品を planet-data.js から探し出し、
 // このテンプレート1枚に流し込む方式。商品が増えてもファイルは増えない。
 import { getProductById, getProductsByCategory, formatPrice } from "./planet-data.js";
+import { initOrderModal, openOrderModal } from "./planet-order.js";
 
 const params = new URLSearchParams(location.search);
 const productId = params.get("id");
@@ -15,7 +16,8 @@ const notFoundEl = document.getElementById("planet-not-found");
 const relatedEl = document.getElementById("planet-related-list");
 const breadcrumbCurrentEl = document.getElementById("planet-breadcrumb-current");
 const cartBtn = document.getElementById("planet-cart-btn");
-const toastEl = document.getElementById("planet-toast");
+
+initOrderModal();
 
 if (!product) {
   notFoundEl.style.display = "block";
@@ -79,16 +81,11 @@ if (!product) {
     });
   }
 
-  // ---- 「カートに入れる」導線 ----
-  // 決済・EC機能は未実装のため、押下時は準備中トーストのみ表示する。
+  // ---- 「購入する」導線 ----
+  // オンライン決済は未導入のため、注文受付フォーム（モーダル）を開く。
   if (cartBtn) {
     cartBtn.addEventListener("click", () => {
-      toastEl.textContent = "🌱 オンライン販売は準備中です。もうしばらくお待ちください。";
-      toastEl.classList.add("is-visible");
-      window.clearTimeout(cartBtn._toastTimer);
-      cartBtn._toastTimer = window.setTimeout(() => {
-        toastEl.classList.remove("is-visible");
-      }, 3200);
+      openOrderModal(product);
     });
   }
 }

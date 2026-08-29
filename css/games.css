@@ -1,0 +1,82 @@
+/* ===================================================
+   OKAPO LAB — GAMES（ゲーム一覧）
+   既存デザインシステム（css/style.css の CSS変数）を継承。
+   ページ全体の骨組みは css/articles.css の構成を踏襲し、
+   カード自体は index.html で使っていた .work-grid / .work-card を
+   そのまま再利用している（新規CSSはページ枠まわりのみ）。
+=================================================== */
+
+/* ---------- ページ全体の下地 ---------- */
+.games-page {
+  min-height: 100vh;
+  background: var(--black);
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.games-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 6vw;
+}
+
+/* ---------- パンくず ---------- */
+.games-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+  font-family: var(--ff-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: var(--grey-dim);
+}
+
+.games-breadcrumb a {
+  color: var(--grey);
+  text-decoration: none;
+  transition: color 0.3s var(--ease);
+}
+
+.games-breadcrumb a:hover {
+  color: var(--accent-blue);
+}
+
+.games-breadcrumb span[aria-current] {
+  color: var(--grey);
+}
+
+/* ---------- ページヘッダー ---------- */
+.games-page-header {
+  margin-bottom: 48px;
+}
+
+.games-page-header .section-label {
+  margin-bottom: 20px;
+}
+
+.games-page-header h1 {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  line-height: 1.35;
+  color: var(--white);
+  letter-spacing: -0.01em;
+  margin-bottom: 18px;
+}
+
+.games-page-header p {
+  color: var(--grey);
+  font-size: 0.95rem;
+  font-weight: 300;
+  max-width: 50ch;
+}
+
+/* ---------- レスポンシブ ---------- */
+@media (max-width: 640px) {
+  .games-page {
+    padding-top: 96px;
+    padding-bottom: 80px;
+  }
+}

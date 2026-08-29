@@ -82,10 +82,10 @@
         </div>
 
         <button type="button" class="planet-cart-btn" id="planet-cart-btn">
-          カートに入れる
+          購入する
           <span aria-hidden="true">→</span>
         </button>
-        <p class="planet-cart-note">※ 現在オンライン販売の準備中です。もうしばらくお待ちください。</p>
+        <p class="planet-cart-note">※ 現在オンライン決済システムは未導入のため、注文受付フォームでのご注文となります。</p>
       </div>
     </div>
 
@@ -107,12 +107,113 @@
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 OKAPO. All rights reserved.</span>
+      <a href="about.html" style="color:var(--grey);text-decoration:none;">おかぽるPLANTSについて</a>
+      <a href="legal.html" style="color:var(--grey);text-decoration:none;">特定商取引法に基づく表記</a>
       <a href="index.html" style="color:var(--grey);text-decoration:none;">GREEN一覧へ戻る →</a>
     </div>
   </div>
 </footer>
 
-<div class="planet-toast" id="planet-toast" role="status" aria-live="polite"></div>
+<!-- ===== ORDER MODAL（注文受付フォーム） =====
+     ※ オンライン決済は未導入のため、送信しても実際の決済・データ保存は
+     行わない「注文受付フォーム」。詳細は js/planet-order.js を参照。 -->
+<div class="planet-order-modal" id="planet-order-modal" aria-hidden="true">
+  <div class="planet-order-backdrop" data-order-close></div>
+
+  <div class="planet-order-dialog" role="dialog" aria-modal="true" aria-labelledby="planet-order-heading">
+    <button type="button" class="planet-order-close" data-order-close aria-label="閉じる">&times;</button>
+
+    <div class="planet-order-view planet-order-view--form">
+      <p class="planet-order-eyebrow">ORDER FORM</p>
+      <h2 id="planet-order-heading" class="planet-order-heading">ご注文内容の入力</h2>
+      <p class="planet-order-lead">
+        ※現在オンライン決済システムは未導入のため、こちらは「注文受付フォーム」です。送信いただいた内容を確認のうえ、担当者よりご連絡いたします。
+      </p>
+
+      <form id="planet-order-form" novalidate>
+        <div class="planet-order-row">
+          <div class="planet-order-field">
+            <label for="order-product-name">商品名</label>
+            <input type="text" id="order-product-name" readonly>
+          </div>
+          <div class="planet-order-field">
+            <label for="order-product-price">単価</label>
+            <input type="text" id="order-product-price" readonly>
+          </div>
+        </div>
+
+        <div class="planet-order-field">
+          <label for="order-qty">数量<span class="req">必須</span></label>
+          <input type="number" id="order-qty" min="1" step="1" value="1" required>
+        </div>
+
+        <div class="planet-order-field">
+          <label for="order-name">氏名<span class="req">必須</span></label>
+          <input type="text" id="order-name" autocomplete="name" required>
+        </div>
+
+        <div class="planet-order-row">
+          <div class="planet-order-field">
+            <label for="order-email">メールアドレス<span class="req">必須</span></label>
+            <input type="email" id="order-email" autocomplete="email" required>
+          </div>
+          <div class="planet-order-field">
+            <label for="order-tel">電話番号<span class="req">必須</span></label>
+            <input type="tel" id="order-tel" autocomplete="tel" required>
+          </div>
+        </div>
+
+        <div class="planet-order-field">
+          <label for="order-zip">郵便番号<span class="req">必須</span></label>
+          <input type="text" id="order-zip" autocomplete="postal-code" placeholder="例）123-4567" required>
+        </div>
+
+        <div class="planet-order-field">
+          <label for="order-address">住所<span class="req">必須</span></label>
+          <textarea id="order-address" rows="2" autocomplete="street-address" required></textarea>
+        </div>
+
+        <div class="planet-order-field">
+          <label for="order-note">備考</label>
+          <textarea id="order-note" rows="3" placeholder="ご要望などございましたらご記入ください"></textarea>
+        </div>
+
+        <!-- ハニーポット：人間には見せないスパム対策用の入力欄 -->
+        <div class="planet-order-honeypot" aria-hidden="true">
+          <label for="order-field-website">Website</label>
+          <input type="text" id="order-field-website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button type="submit" class="planet-order-submit-btn">
+          注文内容を確認する
+          <span aria-hidden="true">→</span>
+        </button>
+      </form>
+    </div>
+
+    <div class="planet-order-view planet-order-view--confirm" hidden>
+      <p class="planet-order-eyebrow">CONFIRM</p>
+      <h2 class="planet-order-heading">注文内容のご確認</h2>
+      <p class="planet-order-lead">以下の内容でご注文を受け付けます。内容に誤りがないかご確認ください。</p>
+
+      <div class="planet-order-confirm-list"></div>
+
+      <p class="planet-order-message" role="status" aria-live="polite"></p>
+
+      <div class="planet-order-btn-row">
+        <button type="button" class="planet-order-back-btn" data-order-back>内容を修正する</button>
+        <button type="button" class="planet-order-submit-btn" data-order-send>この内容で注文する</button>
+      </div>
+    </div>
+
+    <div class="planet-order-view planet-order-view--done" hidden>
+      <p class="planet-order-done-icon" aria-hidden="true">🌿</p>
+      <h2 class="planet-order-heading">ご注文ありがとうございます。</h2>
+      <p class="planet-order-lead">ご注文内容を確認のうえ、送料を含めたお支払い総額と振込先をメールでご案内いたします。</p>
+      <button type="button" class="planet-order-submit-btn" data-order-close>閉じる</button>
+    </div>
+  </div>
+</div>
 
 <script src="../../js/script.js"></script>
 <script type="module" src="../../js/planet-detail.js"></script>

@@ -49,7 +49,12 @@ body {
   font-family: var(--ff-body);
   font-weight: 300;
   line-height: 1.7;
-  overflow-x: hidden;
+  /* overflow-x は hidden ではなく clip。hidden はスクロールコンテナを生成し、
+     iOS Safari で position:fixed の子（.site-header）が absolute 相当に化けて
+     一緒にスクロールしてしまう既知の不具合があるため。clip なら横はみ出しは
+     防ぎつつ fixed が確実に画面上部へ固定される（未対応の旧環境では visible
+     相当にフォールバックするが、当サイトは横スクロールが発生しない構成）。 */
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -117,7 +122,18 @@ body {
   right: 0;
   z-index: 100;
   padding: 32px 6vw;
-  mix-blend-mode: difference;
+  /* スクロール中もナビ（記事／植物／ゲーム／掲示板）を常に押せるように、
+     背後のコンテンツが透けて重なって見えないよう半透明の暗色＋ぼかしを敷く。
+     黒×グリッド×ミニマルの雰囲気を保つため完全な不透明にはせず、背後の光や
+     グリッドがうっすら残る程度に留める。-webkit-backdrop-filter は iOS Safari 用。 */
+  background: rgba(5, 7, 10, 0.72);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+  /* 以前は mix-blend-mode: difference を掛けていたが、ヘッダー右上のメタ表記
+     だけに効いていた一方でサイト内ナビの文字色が背景の光（orb）の上で
+     不安定に反転してしまうため撤去。サイト全体が黒基調で、下の各要素は
+     --white / --grey のリテラル色でも十分なコントラストが出る。 */
 }
 
 .header-inner {
@@ -153,9 +169,72 @@ body {
   color: var(--grey-dim);
 }
 
+/* ---------- サイト内ナビゲーション ----------
+   ヘッダー左に配置し、メタ表記（AI PRODUCT STUDIO / EST. 2026）は右のまま。
+   黒×グリッド×ミニマルのトーンに合わせ、下線が下から伸びるテキストナビ。
+   .header-inner は justify-content:flex-end のまま（他ページのヘッダーに影響
+   させない）で、.site-nav の margin-right:auto だけで左寄せを実現する。 */
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 3vw, 34px);
+  margin-right: auto;
+  font-family: var(--ff-display);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.site-nav a {
+  position: relative;
+  padding: 4px 1px;
+  color: var(--white);
+  text-decoration: none;
+  transition: color 0.3s var(--ease);
+}
+
+/* ホバー／キーボードフォーカスで、下からアクセントラインが伸びる */
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 1px;
+  background: var(--accent-gradient);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  color: var(--accent-blue);
+}
+
+.site-nav a:hover::after,
+.site-nav a:focus-visible::after {
+  transform: scaleX(1);
+}
+
 @media (max-width: 640px) {
   .header-meta span:not(.meta-divider):first-child { display: none; }
   .header-meta .meta-divider { display: none; }
+
+  /* 画面上部に固定されるバーなので、モバイルでは上下パディングを詰めて
+     コンテンツの占有を抑える。ナビ「記事／植物／ゲーム／掲示板」と
+     メタ表記（EST. 2026）は横1行に収める。 */
+  .site-header {
+    padding: 16px 6vw;
+  }
+
+  .site-nav {
+    flex: 1 1 auto;
+    justify-content: space-between;
+    gap: 4px;
+    margin-right: 14px;
+    font-size: 0.82rem;
+  }
 }
 
 /* ===================================================
@@ -163,7 +242,10 @@ body {
 =================================================== */
 .hero {
   position: relative;
+  /* min-height: 100vh は古いブラウザ用フォールバック。100svh は iOS Safari で
+     アドレスバー表示時でも「1画面ぶん」に収まる高さ（Small Viewport Height）。 */
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -171,6 +253,13 @@ body {
   text-align: center;
   overflow: hidden;
   background: var(--black);
+  /* 上：固定ヘッダー、下：画面下部に絶対配置する .scroll-cue のぶんの領域を
+     確保し、justify-content:center で中央寄せされるコンテンツ（タイトル／
+     カウンター／キャッチコピー）がヘッダーや SCROLL と重ならないようにする。
+     env(...) はセーフエリア（ノッチ／ホームインジケータ）ぶんの追い出し。
+     viewport-fit=cover 未指定の環境では env は 0 になり実害なし。 */
+  padding-top: calc(76px + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
 }
 
 .hero-bg {
@@ -269,10 +358,20 @@ body {
 }
 
 .scroll-cue {
+  /* left:50%+translateX(-50%)ではなく、幅を内容に合わせた上で
+     左右0+margin autoで中央寄せする（iPhoneでtransformの端数処理により
+     中心が右にずれて見える機種があったための対策）。 */
   position: absolute;
-  bottom: 44px;
-  left: 50%;
-  transform: translateX(-50%);
+  /* .hero の padding ではなく border/padding ボックス下端を基準に配置されるため、
+     .hero に padding-bottom を足しても SCROLL は画面下部に貼り付いたまま。
+     基準は 12px まで下げ、ホームインジケータぶんは env() で常に持ち上げる
+     （viewport-fit=cover 時は inset 実値、未指定時は 0＝iOS 側で既に安全域に
+     収まっているため 12px の余白で足りる）。 */
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  left: 0;
+  right: 0;
+  width: max-content;
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -944,6 +1043,7 @@ body {
 .footer-bottom {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
   gap: 12px;
   padding-top: 32px;
@@ -952,9 +1052,96 @@ body {
   letter-spacing: 0.02em;
 }
 
+/* ---------- 訪問者カウンター ----------
+   昔のホームページの「あなたは○○人目のお客様です」を、おかぽるLABの
+   黒・グリッド・ミニマルなトーンで再解釈した小さな遊び心要素。
+   トップページのファーストビュー内・タイトルとキャッチコピーの間に置く。
+   主張しすぎないよう外枠や背景は持たせず、6桁の数字だけを1桁ずつ
+   「桁箱」に入れてレトロなアクセスカウンター／オドメーターの気配を出す。 */
+.visitor-counter {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 100%;
+}
+
+/* ファーストビュー内での配置。.hero-title には margin-bottom が無いので
+   ここで上マージンを取り、下の .hero-copy（margin-top:36px）との間で
+   間隔のバランスを取る。.hero-content が text-align:center のため、
+   inline-flex の本要素はそのまま中央寄せされる。 */
+.hero-content .visitor-counter {
+  margin-top: 24px;
+}
+
+/* 表示方針: 数字が入る前も静的な "000000"（プレースホルダ）が見えるだけで
+   レイアウトは崩れないため、カウンターは常に表示する。確実性を優先し
+   opacity のフェード演出には依存しない。JS は数字差し込み時に .is-ready を
+   付けるが、現状これに紐づく見た目の変化はない（将来の微調整用フック）。
+   Firestore 取得に失敗した場合のみ JS が hidden 属性を付けて要素ごと隠す。
+   .visitor-counter { display: inline-flex } と同じ詳細度のため、[hidden] を
+   明示的に上書きしないと表示されたままになってしまう点に注意。 */
+.visitor-counter[hidden] {
+  display: none;
+}
+
+.visitor-counter-label {
+  font-family: var(--ff-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--grey-dim);
+  white-space: nowrap;
+}
+
+.visitor-counter-number {
+  display: inline-flex;
+  gap: 3px;
+}
+
+/* 1桁ずつの箱。near-black の面にヘアラインの枠、等幅数字で桁位置を固定。 */
+.visitor-counter-digit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35em;
+  padding: 3px 0;
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--white);
+  background: var(--black);
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+}
+
+/* JS 実行前の静的プレースホルダ（"000000" のプレーンテキスト）用。
+   桁箱に置き換わる前でも極端に崩れないよう最低限だけ整える。 */
+.visitor-counter-number:not(:has(.visitor-counter-digit)) {
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.18em;
+  color: var(--grey);
+}
+
 @media (max-width: 640px) {
   .footer-columns {
     grid-template-columns: 1fr 1fr;
+  }
+
+  /* スマホでは桁箱を少し詰めて、狭い端末でも1〜2行に収める
+     （収まらない場合は .visitor-counter の flex-wrap で中央寄せ折り返し）。 */
+  .visitor-counter {
+    gap: 6px;
+  }
+
+  .visitor-counter-digit {
+    width: 1.25em;
+    font-size: 0.82rem;
   }
 }
 
@@ -1007,6 +1194,14 @@ body {
   (他セクションの .section-title には影響しない)。 */
 .promo .section-title {
   margin-bottom: 14px;
+}
+
+.promo-lead {
+  margin-bottom: 10px;
+  max-width: 56ch;
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 .promo-disclosure {

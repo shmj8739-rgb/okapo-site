@@ -1,10 +1,10 @@
 // ===================================================
-// おかぽ広場 — Firestore セキュリティルール
+// おかぽ広場 / おかぽるPLANTS — Firestore セキュリティルール
 // ---------------------------------------------------
 // Firebase コンソール > Firestore Database > ルール
 // タブにこの内容をそのまま貼り付けて「公開」してください。
 //
-// 設計方針:
+// 【おかぽ広場（hiroba_posts）の設計方針】
 // - 投稿・コメントの新規作成は誰でも可能（掲示板として）だが、
 //   フィールドの型・文字数・件数を厳格にサーバー側で検証する。
 // - 投稿の「削除」は実際には削除せず、deleted:true への更新
@@ -15,6 +15,28 @@
 // - 閲覧数 / コメント数のインクリメントも、他のフィールドを
 //   一切変更できない形でのみ許可する。
 // - ドキュメントの物理的な delete は禁止（allow delete: if false）。
+//
+// 【おかぽるPLANTS（orders）の設計方針】
+// - 注文フォームからの新規作成（create）のみ許可する。
+// - 氏名・住所・電話番号・メールアドレス等の個人情報を含むため、
+//   read / update / delete はすべて禁止（if false）。一般ユーザーは
+//   ブラウザ経由で注文データを一切閲覧・変更・削除できない。
+// - 管理者（サイト運営者）はFirebaseコンソール側の管理者権限で
+//   閲覧する（コンソールはこのルールをバイパスするため参照可能）。
+//
+// 【トップページ訪問者カウンター（site_meta/visitorCounter）の設計方針】
+// - 2026-08-26 追加。既存の hiroba_posts / orders のルールには
+//   一切手を加えていない（独立した match ブロックとして追加のみ）。
+// - ドキュメントは site_meta/visitorCounter の1件のみを想定。
+//   フィールドは count（数値）だけを許可する。
+// - 新規作成は count == 1 の場合のみ（＝カウンター初期化の1回だけ）。
+// - 更新は「count を直前の値からちょうど+1する」場合のみ許可し、
+//   他のフィールドの追加・値の巻き戻し・大きなジャンプは一切拒否する。
+//   これによりクライアント側の不正な値の書き込みを防ぎつつ、
+//   同時アクセス時の重複はクライアント側の runTransaction
+//   （js/visitor-counter.js）と、Firestoreのトランザクション自体の
+//   競合検知・自動リトライの両方で防止している。
+// - 物理的な削除は禁止（allow delete: if false）。
 // ===================================================
 
 rules_version = '2';
@@ -91,6 +113,76 @@ service cloud.firestore {
         allow update: if false;
         allow delete: if false;
       }
+    }
+
+    match /orders/{orderId} {
+
+      // 個人情報を含むため、一般ユーザーからの読み取り・更新・削除は禁止。
+      // 管理者はFirebaseコンソールから確認する。
+      allow read: if false;
+      allow update: if false;
+      allow delete: if false;
+
+      allow create: if
+        request.resource.data.keys().hasOnly([
+          'productId', 'productName', 'quantity', 'unitPrice', 'totalPrice',
+          'customerName', 'email', 'tel', 'zip', 'address', 'note',
+          'status', 'createdAt'
+        ]) &&
+        request.resource.data.productId is string &&
+        request.resource.data.productId.size() > 0 &&
+        request.resource.data.productId.size() <= 50 &&
+        request.resource.data.productName is string &&
+        request.resource.data.productName.size() > 0 &&
+        request.resource.data.productName.size() <= 100 &&
+        request.resource.data.quantity is int &&
+        request.resource.data.quantity > 0 &&
+        request.resource.data.quantity <= 99 &&
+        request.resource.data.unitPrice is int &&
+        request.resource.data.unitPrice > 0 &&
+        request.resource.data.totalPrice is int &&
+        request.resource.data.totalPrice == request.resource.data.unitPrice * request.resource.data.quantity &&
+        request.resource.data.customerName is string &&
+        request.resource.data.customerName.size() > 0 &&
+        request.resource.data.customerName.size() <= 50 &&
+        request.resource.data.email is string &&
+        request.resource.data.email.size() > 0 &&
+        request.resource.data.email.size() <= 100 &&
+        request.resource.data.tel is string &&
+        request.resource.data.tel.size() > 0 &&
+        request.resource.data.tel.size() <= 20 &&
+        request.resource.data.zip is string &&
+        request.resource.data.zip.size() > 0 &&
+        request.resource.data.zip.size() <= 10 &&
+        request.resource.data.address is string &&
+        request.resource.data.address.size() > 0 &&
+        request.resource.data.address.size() <= 200 &&
+        request.resource.data.note is string &&
+        request.resource.data.note.size() <= 500 &&
+        request.resource.data.status == 'new' &&
+        request.resource.data.createdAt == request.time;
+    }
+
+    // ---- トップページ訪問者カウンター ----
+    // hiroba_posts / orders とは無関係の独立したドキュメント。
+    match /site_meta/visitorCounter {
+
+      allow read: if true;
+
+      // 初期化（ドキュメントがまだ存在しない状態からの作成）は
+      // count == 1 の場合のみ許可する。
+      allow create: if
+        request.resource.data.keys().hasOnly(['count']) &&
+        request.resource.data.count == 1;
+
+      // 既存カウントからちょうど+1する更新のみ許可する
+      // （巻き戻し・飛び値・他フィールドの追加は拒否）。
+      allow update: if
+        request.resource.data.keys().hasOnly(['count']) &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['count']) &&
+        request.resource.data.count == resource.data.count + 1;
+
+      allow delete: if false;
     }
   }
 }

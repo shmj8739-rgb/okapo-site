@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZKJT7MEQVL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ZKJT7MEQVL');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AIエージェントとは？初心者にもわかりやすく仕組み・できること・活用例を解説｜おかぽるLAB</title>
+<meta name="description" content="AIエージェントとは何かを初心者向けに解説。生成AIやChatGPTとの違い、仕組み、できること、仕事での活用例、Claude Codeとの関係までわかりやすく紹介します。">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://okapo-site.netlify.app/articles/what-is-ai-agent.html">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="おかぽるLAB">
+<meta property="og:title" content="AIエージェントとは？初心者にもわかりやすく仕組み・できること・活用例を解説｜おかぽるLAB">
+<meta property="og:description" content="AIエージェントとは何かを初心者向けに解説。生成AIやChatGPTとの違い、仕組み、できること、仕事での活用例、Claude Codeとの関係までわかりやすく紹介します。">
+<meta property="og:url" content="https://okapo-site.netlify.app/articles/what-is-ai-agent.html">
+<meta property="og:locale" content="ja_JP">
+<meta property="article:published_time" content="2026-08-26T00:00:00+09:00">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..600&family=Noto+Sans+JP:wght@300..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/articles.css">
+</head>
+
+<body>
+
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand" style="text-decoration:none;">おかぽる<span class="brand-dot">LAB</span></a>
+    <div class="header-meta">
+      <span>OKAPO LAB</span>
+      <span class="meta-divider">/</span>
+      <span>ARTICLES</span>
+    </div>
+  </div>
+</header>
+
+<main class="articles-page">
+  <div class="articles-inner">
+
+    <nav class="articles-breadcrumb">
+      <a href="../index.html">おかぽるLAB</a>
+      <span aria-hidden="true">/</span>
+      <a href="index.html">記事一覧</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">AIエージェントとは？</span>
+    </nav>
+
+    <article>
+      <header class="articles-detail-header">
+        <p class="section-label reveal">GUIDE</p>
+        <h1 class="articles-detail-title reveal">AIエージェントとは？初心者にもわかりやすく仕組み・できること・活用例を解説｜おかぽるLAB</h1>
+        <p class="articles-detail-meta reveal"><time datetime="2026-08-26">2026.08.26 公開</time></p>
+      </header>
+
+      <div class="articles-detail-body">
+
+        <h2>はじめに</h2>
+        <p><strong>「AIエージェントって、結局なに？ChatGPTと何が違うの？」</strong></p>
+        <p>
+          最近、ニュースやSNSで「AIエージェント」という言葉を見かける機会が増えました。ただ、生成AIやChatGPTとの違いがよくわからない、という方も多いのではないでしょうか。
+        </p>
+        <p>
+          この記事では、プログラミングやAIに詳しくない方向けに、AIエージェントの意味・仕組み・できること・注意点までをできるだけやさしい言葉で解説します。
+        </p>
+        <p>
+          実は、このおかぽるLABというWebサイト自体も、「Claude Code」というAIエージェントを使って制作しています。後半では、その実体験も交えて紹介します。
+        </p>
+
+        <h2>AIエージェントとは？</h2>
+        <p>
+          AIエージェントとは、簡単に言うと「目標を伝えると、自分で考えながら作業を進めてくれるAI」のことです。
+        </p>
+        <p>
+          イメージとしては、優秀なアシスタントに仕事を任せる感覚に近いかもしれません。
+        </p>
+        <p>
+          例えば「明日の東京の天気を調べて、傘が必要か教えて」とお願いした場合、AIエージェントは、
+        </p>
+        <ul>
+          <li>天気予報のサイトやツールを使って情報を調べる</li>
+          <li>降水確率などから「傘が必要かどうか」を判断する</li>
+          <li>その結果をわかりやすくまとめて答える</li>
+        </ul>
+        <p>
+          というように、指示された「作業そのもの」まで自分で行ってくれます。
+        </p>
+
+        <h2>ChatGPTなどの生成AIとの違い</h2>
+        <p>
+          ChatGPTのような「普通の生成AI」との一番の違いは、<strong>質問に答えるだけか、実際に作業までするか</strong>という点です。
+        </p>
+
+        <div class="articles-compare reveal">
+          <div class="articles-compare-card">
+            <h3>普通の生成AI</h3>
+            <div class="articles-compare-steps">
+              <span class="articles-flow-step">質問する</span>
+              <span class="articles-flow-arrow" aria-hidden="true">↓</span>
+              <span class="articles-flow-step">回答する</span>
+            </div>
+          </div>
+
+          <div class="articles-compare-card articles-compare-card--agent">
+            <h3>AIエージェント</h3>
+            <div class="articles-compare-steps">
+              <span class="articles-flow-step">目標を受け取る</span>
+              <span class="articles-flow-arrow" aria-hidden="true">↓</span>
+              <span class="articles-flow-step">計画する</span>
+              <span class="articles-flow-arrow" aria-hidden="true">↓</span>
+              <span class="articles-flow-step">ツールを使う</span>
+              <span class="articles-flow-arrow" aria-hidden="true">↓</span>
+              <span class="articles-flow-step">作業する</span>
+              <span class="articles-flow-arrow" aria-hidden="true">↓</span>
+              <span class="articles-flow-step">結果を確認する</span>
+            </div>
+          </div>
+        </div>
+
+        <p>
+          普通の生成AIは「質問 → 回答」で1回のやり取りが完結します。一方でAIエージェントは、目標を受け取ったあと、自分で計画を立て、必要な道具（ツール）を使いながら作業を進め、最後に結果を確認するところまで行います。
+        </p>
+        <p>
+          この「作業を任せられる」という部分が、AIエージェントならではの特徴です。
+        </p>
+
+        <h2>AIエージェントでできること</h2>
+        <p>
+          AIエージェントは、使う場面によってさまざまな作業を任せられます。例えば、
+        </p>
+        <ul>
+          <li>複数のWebサイトから情報を調べて、要点をまとめる</li>
+          <li>コードを書いて、実際に実行し、エラーがあれば直す</li>
+          <li>ファイルを整理したり、内容を確認したりする</li>
+          <li>スケジュールに合わせて、決まった作業を自動で行う</li>
+          <li>複数のツールを組み合わせて、一連の作業を最後まで進める</li>
+        </ul>
+        <p>
+          ポイントは、「1つの指示」から「複数のステップからなる作業」までまとめて任せられることです。
+        </p>
+
+        <h2>AIエージェントの仕組み</h2>
+        <p>
+          専門的な仕組みは複雑ですが、大まかな流れはとてもシンプルです。
+        </p>
+        <ul>
+          <li><strong>目標を理解する</strong>：何を達成したいのかを読み取る</li>
+          <li><strong>計画を立てる</strong>：目標を達成するための手順を考える</li>
+          <li><strong>ツールを使う</strong>：検索・ファイル操作・コード実行など、必要な「道具」を選んで使う</li>
+          <li><strong>作業する</strong>：計画に沿って、実際の作業を進める</li>
+          <li><strong>結果を確認する</strong>：うまくいったかを確認し、必要ならやり直す</li>
+        </ul>
+        <p>
+          ここでいう「ツール」とは、AIエージェントが使える機能や道具のことです。人間で言えば、検索エンジンやパソコンの操作、電卓などにあたるものだとイメージすると分かりやすいと思います。
+        </p>
+
+        <h2>Claude CodeもAIエージェント？</h2>
+        <p>
+          はい、このおかぽるLABの制作で使っている「Claude Code」も、AIエージェントの一種です。
+        </p>
+        <p>
+          Claude Codeは、「こういうWebサイトを作りたい」と言葉で伝えると、
+        </p>
+        <ul>
+          <li>既存のファイルを確認する</li>
+          <li>コードを新しく作成・修正する</li>
+          <li>ブラウザでの見た目を一緒に確認する</li>
+          <li>GitやGitHubの操作を手伝う</li>
+        </ul>
+        <p>
+          といった一連の作業を、自分で考えながら進めてくれます。実際に今回のおかぽるLAB制作でも、ファイルの中身を確認してもらったり、コードを修正してもらったり、Gitの操作を手伝ってもらったりと、まさに「目標を伝えて、作業を任せる」という使い方をしています。
+        </p>
+        <p>
+          この制作過程については、以下の記事で詳しく紹介しています。
+        </p>
+        <p>
+          <a href="claude-code-web-site.html">Claude Codeで初心者がWebサイトを作ってみた｜おかぽるLAB制作記 →</a>
+        </p>
+
+        <h2>AIエージェントのメリット</h2>
+        <p>
+          AIエージェントを使うメリットは、主に次のようなものです。
+        </p>
+        <ul>
+          <li>質問して終わりではなく、実際の作業まで進めてもらえる</li>
+          <li>繰り返しの作業や、手間のかかる確認作業を任せられる</li>
+          <li>専門知識がなくても、言葉で伝えるだけで挑戦しやすい</li>
+        </ul>
+        <p>
+          特に「分からないから諦めていたこと」に挑戦しやすくなる点は、大きなメリットだと感じています。
+        </p>
+        <p>
+          こうしたAIエージェントをより上手に使うためには、そもそもの生成AIの基礎知識を学んでおくことも役立ちます。仕事で生成AIを活用したい方向けに、以下のようなサービスもあります。
+        </p>
+
+        <p class="promo-disclosure">広告・PRを含みます</p>
+        <div class="promo-card">
+          <span class="promo-badge">PR</span>
+          <p class="promo-card-desc">
+            <strong style="color:var(--white);">ChatGPTなどの生成AIを学び仕事に活かす！DMM 生成AI CAMP</strong><br>
+            生成AIを仕事で活用したい人向け。ChatGPTをはじめ、生成AIの基礎から実践的な活用方法まで学べます。
+          </p>
+          <div class="promo-card-link-wrap">
+            <a href="https://px.a8.net/svt/ejp?a8mat=4BA6D7+GB1F8Y+5VEK+5YRHE" rel="nofollow">【DMM 生成AI CAMP】</a>
+          </div>
+        </div>
+
+        <h2>AIエージェントを使うときの注意点</h2>
+        <p>
+          便利なAIエージェントですが、使ううえで気をつけたい点もあります。
+        </p>
+        <ul>
+          <li>出力された結果をそのまま信じず、自分の目で確認すること</li>
+          <li>個人情報や機密情報の扱いには注意すること</li>
+          <li>ツールが行える操作の範囲を、あらかじめ理解しておくこと</li>
+          <li>重要な作業ほど、最終的な判断は自分で行うこと</li>
+        </ul>
+        <p>
+          「AIに作ってもらう → 自分で確認する → 必要なら修正する」という流れを意識すると、安心して活用できます。
+        </p>
+
+        <h2>初心者がAIエージェントを始める方法</h2>
+        <p>
+          AIエージェントが初めての方は、次のようなステップで少しずつ触れてみるのがおすすめです。
+        </p>
+        <ul>
+          <li>まずはChatGPTやClaudeなど、身近な生成AIに質問してみる</li>
+          <li>次に、簡単な作業をAIエージェント系のサービスに任せてみる</li>
+          <li>プログラミングの知識が不要なサービスから試してみる</li>
+        </ul>
+        <p>
+          特に、ブラウザだけで使えるサービスは、環境構築などの手間がなく始めやすいのでおすすめです。例えば、以下のようなサービスがあります。
+        </p>
+
+        <p class="promo-disclosure">広告・PRを含みます</p>
+        <div class="promo-card">
+          <span class="promo-badge">PR</span>
+          <p class="promo-card-desc">
+            <strong style="color:var(--white);">プログラミング不要！ブラウザだけで動かせるロリポップ！AIエージェントクラウド</strong><br>
+            ブラウザだけでAIエージェントを構築・利用できるクラウドサービス。AIを使った業務自動化を始めたい人におすすめです。
+          </p>
+          <div class="promo-card-link-wrap">
+            <a href="https://px.a8.net/svt/ejp?a8mat=4BA9HG+DOZOY+348+4MPL3M" rel="nofollow" class="promo-cta--wrap">【ロリポップ！AIエージェントクラウド】</a>
+          </div>
+        </div>
+
+        <h2>まとめ</h2>
+        <p>
+          AIエージェントとは、「質問に答えるだけ」の生成AIとは違い、目標を伝えると自分で計画し、ツールを使いながら作業まで進めてくれるAIのことです。
+        </p>
+        <p>
+          情報収集や作業の自動化など、できることは幅広く、Claude Codeのように「Webサイト制作」という作業を任せられるAIエージェントも存在します。
+        </p>
+        <p>
+          一方で、出力をそのまま信じず自分で確認することや、情報の取り扱いに気をつけることも大切です。
+        </p>
+        <p>
+          まずは身近な生成AIに触れてみることから、AIエージェントの世界を少しずつのぞいてみてはいかがでしょうか。
+        </p>
+        <p>
+          おかぽるLABでも、実際にAIエージェントを使ったものづくりを、これからも記録していきます。
+        </p>
+
+      </div>
+    </article>
+
+    <!-- ===== 関連コンテンツ ===== -->
+    <div class="articles-related reveal">
+      <h2>こちらもおすすめ</h2>
+      <div class="articles-related-grid">
+        <a href="claude-code-web-site.html" class="articles-related-card">
+          Claude Codeで初心者がWebサイトを作ってみた
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href="../okapo-planet/index.html" class="articles-related-card">
+          おかぽるPLANTSを見る
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href="../index.html#promo" class="articles-related-card">
+          おすすめサービスを見る
+          <span aria-hidden="true">→</span>
+        </a>
+        <a href="index.html" class="articles-related-card">
+          記事一覧に戻る
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">LAB<span class="brand-dot">.</span></div>
+      <p class="footer-tagline">おかぽるLABの制作記録 — ARTICLES</p>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 OKAPO. All rights reserved.</span>
+      <a href="index.html" style="color:var(--grey);text-decoration:none;">記事一覧へ戻る →</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/script.js"></script>
+</body>
+</html>

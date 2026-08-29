@@ -31,6 +31,12 @@
 <!-- ===== HEADER ===== -->
 <header class="site-header">
   <div class="header-inner">
+    <nav class="site-nav" aria-label="サイト内ナビゲーション">
+      <a href="articles/index.html">記事</a>
+      <a href="okapo-planet/index.html">植物</a>
+      <a href="games/index.html">ゲーム</a>
+      <a href="okapo-hiroba/index.html">掲示板</a>
+    </nav>
     <div class="header-meta">
       <span>AI PRODUCT STUDIO</span>
       <span class="meta-divider">/</span>
@@ -53,6 +59,23 @@
       <span class="line">おかぽる</span>
       <span class="line hero-gradient-text">LAB</span>
     </h1>
+
+    <!-- ===== 訪問者カウンター =====
+         昔ながらの「あなたは○○人目のお客様です」を、おかぽるLABのトーンで
+         再解釈したもの。ファーストビュー内・タイトルとキャッチコピーの間に置く。
+         数値は js/visitor-counter.js が Firestore（site_meta/visitorCounter）
+         の通し番号を差し込む。そのブラウザでの初回訪問時だけ +1 し、番号は
+         localStorage（okapoVisitorNo）に保存。再読み込み・再訪問では保存済みの
+         番号をそのまま表示する（Firestore へはアクセスしない）。数字は6桁ゼロ
+         埋めで、JS が1桁ずつ .visitor-counter-digit の「桁箱」に置き換える。
+         下の "000000" はその前の静的プレースホルダ。取得に失敗した場合は
+         この要素ごと hidden になる。 -->
+    <div class="visitor-counter" id="visitor-counter">
+      <span class="visitor-counter-label">あなたは</span>
+      <span class="visitor-counter-number">000000</span>
+      <span class="visitor-counter-label">人目のお客様です</span>
+    </div>
+
     <p class="hero-copy">AIが、アイデアを次世代のプロダクトへ。<br class="br-pc">構想からかたちへ、その先へ。</p>
   </div>
 
@@ -62,215 +85,15 @@
   </div>
 </section>
 
-<!-- ===== WORKS / PROJECTS ===== -->
-<!-- 作品を追加する場合は、下の <article class="work-card"> ブロックを
-     コピーして .work-grid の中に増やすだけでOKです。 -->
-<section class="works" id="works">
-  <div class="section-inner">
-    <p class="section-label reveal">PROJECTS</p>
-    <h2 class="section-title reveal">アイデアは、遊べるかたちに。<br>実際に触れるプロダクトたち。</h2>
-
-    <div class="work-grid">
-<!-- ---- WORK 01: オカリス ---- -->
-<article class="work-card reveal">
-  <div class="work-card-media">
-    <div class="work-card-glow" aria-hidden="true"></div>
-    <span class="work-card-tag">PLAYABLE</span>
-    <span class="work-card-index" aria-hidden="true">01</span>
-  </div>
-
-  <div class="work-card-body">
-    <h3 class="work-card-title">
-      オカリス
-      <span class="work-card-title-en">OKARIS</span>
-    </h3>
-
-    <p class="work-card-desc">
-      OKAPOの世界観をまとった、落ち物パズルゲーム。指先ひとつで完結する、静かな没入体験。
-    </p>
-
-    <a class="work-card-cta" href="games/okaris/index.html">
-      オカリスをプレイする
-      <span class="work-card-cta-arrow" aria-hidden="true">→</span>
-    </a>
-  </div>
-</article>
-
-
-<!-- ---- WORK 02: KICK MEAL ---- -->
-<article class="work-card reveal">
-  <div class="work-card-media">
-    <div class="work-card-glow" aria-hidden="true"></div>
-    <span class="work-card-tag">AI APP</span>
-    <span class="work-card-index" aria-hidden="true">02</span>
-  </div>
-
-  <div class="work-card-body">
-    <h3 class="work-card-title">
-      KICK MEAL
-      <span class="work-card-title-en">AI MEAL PLANNER</span>
-    </h3>
-
-    <p class="work-card-desc">
-      食の好みや条件から、AIがあなたに合った献立を提案するAI献立アプリ。
-      「今日、何食べよう？」をもっと簡単に。
-    </p>
-
-    <a
-      class="work-card-cta"
-      href="https://kick-meal.vercel.app"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      KICK MEALを試す
-      <span class="work-card-cta-arrow" aria-hidden="true">→</span>
-    </a>
-  </div>
-</article>
-
-<!-- ---- WORK 03: OKAPO FORTUNE ---- -->
-<article class="work-card reveal">
-  <div class="work-card-media">
-    <div class="work-card-glow" aria-hidden="true"></div>
-    <span class="work-card-tag">FORTUNE</span>
-    <span class="work-card-index" aria-hidden="true">03</span>
-  </div>
-
-  <div class="work-card-body">
-    <h3 class="work-card-title">
-      OKAPO FORTUNE
-      <span class="work-card-title-en">FORTUNE APP</span>
-    </h3>
-
-    <p class="work-card-desc">
-      今日のあなたを、少しだけ先読み。
-      シンプルに楽しめる、OKAPO LABの占いWebアプリ。
-    </p>
-
-    <a
-      class="work-card-cta"
-      href="https://okapo-fortune.vercel.app/"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      OKAPO FORTUNEを見る
-      <span class="work-card-cta-arrow" aria-hidden="true">→</span>
-    </a>
-  </div>
-</article>
-
-
-<!-- ---- WORK 04: おかぽ掲示板 ----
-     ※ オカリス／KICK MEALなどの「ゲーム・アプリ」系カードとは狙いを変え、
-       レトロなBBS（電子掲示板）風のタイトルロゴを乗せたバナー型の見た目にして
-       「コミュニティ」であることが一目で伝わるようにしている。
-       他3カードと同じ .work-card 構造は維持し、専用クラス（--hiroba）で上書きのみ行う。 -->
-<article class="work-card work-card--hiroba reveal">
-  <div class="work-card-media work-card-media--hiroba">
-    <div class="work-card-glow" aria-hidden="true"></div>
-    <span class="work-card-index" aria-hidden="true">04</span>
-
-    <!-- 装飾用のレトロタイトルロゴ。実際の見出しはこの下の<h3>が担うため装飾扱い（aria-hidden）。 -->
-    <div class="hiroba-banner" aria-hidden="true">
-      <span class="hiroba-banner-title">
-        <span>お</span><span>か</span><span>ぽ</span><span>掲</span><span>示</span><span>板</span>
-      </span>
-      <span class="hiroba-banner-sub">OKAPO BBS</span>
-    </div>
-  </div>
-
-  <div class="work-card-body">
-    <h3 class="work-card-title">
-      おかぽ掲示板
-      <span class="work-card-title-en">OKAPO BBS</span>
-    </h3>
-
-    <p class="work-card-desc">
-      みんなで話そう・投稿しよう。おかぽるLABのコミュニティ掲示板。
-    </p>
-
-    <a class="work-card-cta work-card-cta--retro" href="okapo-hiroba/index.html">
-      おかぽ掲示板を見る
-      <span class="work-card-cta-arrow" aria-hidden="true">→</span>
-    </a>
-  </div>
-</article>
-
-
-<!-- ---- WORK 05: おかぽるLAB制作記（記事） ---- -->
-<article class="work-card reveal">
-  <div class="work-card-media">
-    <div class="work-card-glow" aria-hidden="true"></div>
-    <span class="work-card-tag">ARTICLE</span>
-    <span class="work-card-index" aria-hidden="true">05</span>
-  </div>
-
-  <div class="work-card-body">
-    <h3 class="work-card-title">
-      おかぽるLAB制作記
-      <span class="work-card-title-en">ARTICLES</span>
-    </h3>
-
-    <p class="work-card-desc">
-      Claude Codeで初心者がWebサイトを作ってみた。おかぽるLABをAIと一緒に制作し、GitHub・Netlifyで公開するまでの記録。
-    </p>
-
-    <a class="work-card-cta" href="articles/claude-code-web-site.html">
-      記事を読む
-      <span class="work-card-cta-arrow" aria-hidden="true">→</span>
-    </a>
-  </div>
-</article>
-
-
-<!-- ---- 今後の作品はこの下に同じ構造で追加 ---- -->
-
-    </div>
-  </div>
-</section>
-
-<!-- ===== OKAPO PLANTS / おかぽるPLANTS（新ブランド予告） =====
-     ※ おかぽるLABが展開するEC・暮らし系ブランド「おかぽるPLANTS」への入口。
-       ブランド表記は「おかぽるPLANTS」だが、ディレクトリ名・クラス名・JS変数名は
-       既存の okapo-planet / .planet-* / PLANET_* のまま維持している
-       （URL・登録済みリンクを変えないため。表示文言のみ変更）。
-       .diary-card と同じ「単体の大きなバナーカード」構成を流用しつつ、
-       グリーン基調のトーンで新ブランドであることを演出している。
-       詳細ページは okapo-planet/ 以下、商品データは js/planet-data.js を参照。
-       カテゴリーが増えたら .planet-teaser-cats 内の <span class="cat-dot"> を
-       増減させるだけでよい。 -->
-<section class="planet-teaser" id="planet-teaser">
-  <div class="section-inner">
-    <div class="planet-teaser-card reveal">
-      <span class="planet-teaser-glow" aria-hidden="true"></span>
-      <span class="planet-teaser-badge">NEW BRAND</span>
-
-      <h2 class="planet-teaser-title">
-        おかぽるPLANTS
-        <span class="planet-teaser-title-en">LIFESTYLE SHOP</span>
-      </h2>
-
-      <p class="planet-teaser-copy">
-        暮らしを、もっと面白く。<br class="br-pc">
-        自然と暮らしのあいだに、少しの未来感を。おかぽるLABが贈る新ブランド。
-        まずは観葉植物の<strong>GREEN</strong>から。
-      </p>
-
-      <div class="planet-teaser-cats" aria-hidden="true">
-        <span class="cat-dot cat-dot--open">GREEN</span>
-        <span class="cat-dot">FLOWER</span>
-        <span class="cat-dot">INTERIOR</span>
-        <span class="cat-dot">GOODS</span>
-        <span class="cat-dot">PET</span>
-      </div>
-
-      <a class="planet-teaser-cta" href="okapo-planet/index.html">
-        おかぽるPLANTSを見る
-        <span class="planet-teaser-cta-arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-  </div>
-</section>
+<!-- ===== WORKS / PROJECTS / OKAPO PLANTS ティザー =====
+     トップページの構成整理（2026-08-26）により、以下は撤去してカテゴリー
+     入口ページ側へ移設済み。ヘッダーナビゲーション「記事｜植物｜ゲーム｜掲示板」
+     から各ページへ直接アクセスする構造に変更したため。
+     ・オカリス／KICK MEAL／OKAPO FORTUNE → games/index.html（新規ゲーム一覧）
+     ・おかぽ掲示板カード                 → 削除（ナビ「掲示板」が okapo-hiroba/index.html に直リンク）
+     ・おかぽるLAB制作記／AIエージェントとは？カード → 削除（既に articles/index.html に掲載済み）
+     ・おかぽるPLANTSティザーカード       → 削除（ナビ「植物」が okapo-planet/index.html に直リンク）
+     いずれも元のページ・機能は削除していない。 -->
 
 <!-- ===== FUTURE OKAPO / 未来のおかぽ（動く広告風バナー） ===== -->
 <!-- カードを追加・削除する場合は、下の <a class="future-card"> ブロックを
@@ -328,39 +151,9 @@
   </div>
 </section>
 
-<!-- ===== DIARY / おかぽ日記（note誘導） =====
-     ※ SNSフッターのnoteアイコンと同じリンク先（note.com/glad_okapi5040）への
-       別の導線。noteのURL自体は変更しないこと。
-     ・オカリス＝ゲーム／KICK MEAL＝チャレンジ／おかぽ掲示板＝コミュニティ、
-       に続く4つ目のカテゴリ「日記・ブログ」として、ノート風の質感
-       （罫線・マスキングテープ風の付箋）で他カードと違う雰囲気にしている。 -->
-<section class="diary" id="diary">
-  <div class="section-inner">
-    <div class="diary-card reveal">
-      <span class="diary-card-tape" aria-hidden="true"></span>
-      <span class="diary-card-visual" aria-hidden="true">📔</span>
-
-      <span class="diary-card-badge">DIARY</span>
-      <h2 class="diary-card-title">
-        おかぽ日記
-        <span class="diary-card-title-en">OKAPO DIARY</span>
-      </h2>
-      <p class="diary-card-copy">
-        日々の冒険を記録。おかぽるLABの活動を、noteでゆるく綴っています。
-      </p>
-
-      <a
-        class="diary-card-cta"
-        href="https://note.com/glad_okapi5040"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        おかぽ日記を見る
-        <span class="diary-card-cta-arrow" aria-hidden="true">→</span>
-      </a>
-    </div>
-  </div>
-</section>
+<!-- ===== DIARY / おかぽ日記 =====
+     トップページの構成整理（2026-08-26）により撤去。note誘導リンク自体は
+     削除しておらず、articles/index.html の記事一覧カードから参照できる。 -->
 
 <!-- ===== PROMO / おすすめサービス（広告） ===== -->
 <!-- 広告を増やす場合は .promo-card を .promo-grid の中にコピーして増やすだけでOK -->
@@ -368,7 +161,8 @@
      属性・内容を変更しないこと。 -->
 <section class="promo" id="promo">
   <div class="section-inner">
-    <h2 class="section-title reveal">おすすめサービス</h2>
+    <h2 class="section-title reveal">おかぽが選んだ、気になるサービス。</h2>
+    <p class="promo-lead reveal">おかぽるLABが実際に調べて、気になったサービスを紹介しています。</p>
     <p class="promo-disclosure reveal">広告・PRを含みます</p>
 
     <div class="promo-grid">
@@ -496,5 +290,6 @@
 
 <script src="js/script.js"></script>
 <script src="js/future-marquee.js" defer></script>
+<script type="module" src="js/visitor-counter.js"></script>
 </body>
 </html>

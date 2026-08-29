@@ -160,6 +160,9 @@ export function getProductById(id) {
   return PLANET_PRODUCTS.find((p) => p.id === id);
 }
 
+// 表示価格は税込。legal.html「特定商取引法に基づく表記」の
+// 販売価格欄（各商品ページに表示された価格（税込））と表記を一致させるため、
+// ここで一括して「（税込）」を付与する。金額そのものは変更しない。
 export function formatPrice(yen) {
-  return `¥${yen.toLocaleString("ja-JP")}`;
+  return `¥${yen.toLocaleString("ja-JP")}（税込）`;
 }

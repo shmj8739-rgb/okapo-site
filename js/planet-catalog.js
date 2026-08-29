@@ -36,7 +36,10 @@ export function renderCategoryGrid(container) {
 }
 
 // ---------- 商品一覧（各カテゴリーの一覧ページで使用） ----------
-export function renderProductGrid(container, categorySlug) {
+// options.onBuy を渡すと、カード内の「購入する」ボタンから
+// その商品オブジェクトを引数にコールバックが呼ばれる（注文フォームを開く用途）。
+export function renderProductGrid(container, categorySlug, options = {}) {
+  const { onBuy } = options;
   const products = getProductsByCategory(categorySlug);
 
   if (products.length === 0) {
@@ -47,25 +50,32 @@ export function renderProductGrid(container, categorySlug) {
   const frag = document.createDocumentFragment();
 
   products.forEach((product) => {
-    const card = document.createElement("a");
+    const card = document.createElement("div");
     card.className = "planet-product-card reveal";
-    card.href = `product.html?id=${encodeURIComponent(product.id)}`;
 
     const tagsHtml = product.tags
       .map((t) => `<span class="planet-product-tag"></span>`)
       .join("");
 
     card.innerHTML = `
-      <div class="planet-product-media">
-        <div class="planet-product-glow" aria-hidden="true"></div>
-        <span class="planet-product-icon" aria-hidden="true">${product.icon}</span>
-        <div class="planet-product-tags">${tagsHtml}</div>
-      </div>
-      <div class="planet-product-body">
-        <h3 class="planet-product-name"></h3>
-        <p class="planet-product-en"></p>
-        <p class="planet-product-desc"></p>
-        <p class="planet-product-price"></p>
+      <a class="planet-product-link" href="product.html?id=${encodeURIComponent(product.id)}">
+        <div class="planet-product-media">
+          <div class="planet-product-glow" aria-hidden="true"></div>
+          <span class="planet-product-icon" aria-hidden="true">${product.icon}</span>
+          <div class="planet-product-tags">${tagsHtml}</div>
+        </div>
+        <div class="planet-product-body">
+          <h3 class="planet-product-name"></h3>
+          <p class="planet-product-en"></p>
+          <p class="planet-product-desc"></p>
+          <p class="planet-product-price"></p>
+        </div>
+      </a>
+      <div class="planet-product-actions">
+        <button type="button" class="planet-buy-btn">
+          購入する
+          <span aria-hidden="true">→</span>
+        </button>
       </div>
     `;
 
@@ -76,6 +86,14 @@ export function renderProductGrid(container, categorySlug) {
     card.querySelector(".planet-product-en").textContent = product.nameEn;
     card.querySelector(".planet-product-desc").textContent = product.shortDesc;
     card.querySelector(".planet-product-price").textContent = formatPrice(product.price);
+
+    const buyBtn = card.querySelector(".planet-buy-btn");
+    if (onBuy) {
+      buyBtn.addEventListener("click", () => onBuy(product));
+    } else {
+      // onBuy未指定時は購入フォームへの導線がないため、ボタンを無効化しておく
+      buyBtn.disabled = true;
+    }
 
     frag.appendChild(card);
   });

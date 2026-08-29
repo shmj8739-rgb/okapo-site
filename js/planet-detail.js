@@ -49,7 +49,34 @@ if (!product) {
     careWrap.querySelector(".care-water").textContent = product.care.water;
     careWrap.querySelector(".care-level").textContent = product.care.level;
   } else {
+    // care を持たない商品（例: 人工観葉植物）は「育て方ガイド」を出さない
     careWrap.style.display = "none";
+  }
+
+  // ---- 人工観葉植物（造花）の明示 ----
+  // type:"artificial" の商品のみ。生植物と誤認させないための注記を
+  // 商品説明の直後に差し込む。フィールドが無い既存商品では何もしない。
+  if (product.type === "artificial") {
+    const note = document.createElement("p");
+    note.className = "planet-detail-artificial";
+    note.textContent =
+      "※本商品は光触媒加工をほどこした人工観葉植物（造花）です。生きた植物ではなく、水やり等のお手入れは不要です。";
+    detailEl.querySelector(".planet-detail-desc").insertAdjacentElement("afterend", note);
+  }
+
+  // ---- 商品ごとの配送条件 ----
+  // shipping フィールドを持つ商品のみ、スペック欄の直後に配送ボックスを表示。
+  // 既存商品は shipping を持たないため表示されず、共通の販売条件表記に従う。
+  if (product.shipping) {
+    const box = document.createElement("div");
+    box.className = "planet-detail-shipping";
+    const title = document.createElement("p");
+    title.className = "planet-detail-shipping-title";
+    title.textContent = "配送について";
+    const body = document.createElement("p");
+    body.textContent = product.shipping;
+    box.append(title, body);
+    detailEl.querySelector(".planet-detail-specs").insertAdjacentElement("afterend", box);
   }
 
   if (breadcrumbCurrentEl) breadcrumbCurrentEl.textContent = product.name;

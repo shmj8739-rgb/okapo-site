@@ -664,6 +664,35 @@
   color: var(--white);
 }
 
+/* 人工観葉植物の注記（planet-detail.js が type:"artificial" の商品で挿入） */
+.planet-detail-artificial {
+  margin: -6px 0 18px;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: var(--planet-green-light);
+}
+
+/* 商品ごとの配送条件（planet-detail.js が shipping フィールドを持つ商品で挿入） */
+.planet-detail-shipping {
+  padding: 18px 22px;
+  margin-bottom: 30px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: var(--grey);
+}
+
+.planet-detail-shipping-title {
+  font-family: var(--ff-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: var(--white);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
 .planet-cart-btn {
   display: inline-flex;
   align-items: center;

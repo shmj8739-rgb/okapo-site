@@ -16,6 +16,7 @@ const notFoundEl = document.getElementById("planet-not-found");
 const relatedEl = document.getElementById("planet-related-list");
 const breadcrumbCurrentEl = document.getElementById("planet-breadcrumb-current");
 const cartBtn = document.getElementById("planet-cart-btn");
+const stripeBtn = document.getElementById("planet-stripe-btn");
 
 initOrderModal();
 
@@ -108,11 +109,42 @@ if (!product) {
     });
   }
 
-  // ---- 「購入する」導線 ----
-  // オンライン決済は未導入のため、注文受付フォーム（モーダル）を開く。
+  // ---- 「購入する」導線（銀行振込の注文受付フォーム） ----
   if (cartBtn) {
     cartBtn.addEventListener("click", () => {
       openOrderModal(product);
+    });
+  }
+
+  // ---- 「クレジットカードで購入する（テスト決済）」導線 ----
+  // Netlify Functions 経由でStripeのCheckout Sessionを作成し、
+  // Stripeのテスト決済画面へ遷移する。
+  if (stripeBtn) {
+    const stripeBtnDefaultHTML = stripeBtn.innerHTML;
+
+    stripeBtn.addEventListener("click", async () => {
+      stripeBtn.disabled = true;
+      stripeBtn.textContent = "決済ページに移動しています…";
+
+      try {
+        const res = await fetch("/.netlify/functions/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ productId: product.id }),
+        });
+        const data = await res.json();
+
+        if (!res.ok || !data.url) {
+          throw new Error(data.error || "決済ページの作成に失敗しました。");
+        }
+
+        location.href = data.url;
+      } catch (err) {
+        console.error(err);
+        alert("決済ページへの移動に失敗しました。時間をおいて再度お試しください。");
+        stripeBtn.disabled = false;
+        stripeBtn.innerHTML = stripeBtnDefaultHTML;
+      }
     });
   }
 }

@@ -57,11 +57,18 @@ export function renderProductGrid(container, categorySlug, options = {}) {
       .map((t) => `<span class="planet-product-tag"></span>`)
       .join("");
 
+    // product.image がある商品のみ実写真を表示する。無い商品（既存GREEN等）は
+    // 従来どおり絵文字アイコン表示のまま変わらない。alt文言はHTML文字列に
+    // 埋め込まず、後段で img.alt に安全に代入する。
+    const mediaHtml = product.image
+      ? `<img class="planet-product-photo" loading="lazy">`
+      : `<div class="planet-product-glow" aria-hidden="true"></div>
+         <span class="planet-product-icon" aria-hidden="true">${product.icon}</span>`;
+
     card.innerHTML = `
       <a class="planet-product-link" href="product.html?id=${encodeURIComponent(product.id)}">
         <div class="planet-product-media">
-          <div class="planet-product-glow" aria-hidden="true"></div>
-          <span class="planet-product-icon" aria-hidden="true">${product.icon}</span>
+          ${mediaHtml}
           <div class="planet-product-tags">${tagsHtml}</div>
         </div>
         <div class="planet-product-body">
@@ -86,6 +93,12 @@ export function renderProductGrid(container, categorySlug, options = {}) {
     card.querySelector(".planet-product-en").textContent = product.nameEn;
     card.querySelector(".planet-product-desc").textContent = product.shortDesc;
     card.querySelector(".planet-product-price").textContent = formatPrice(product.price);
+
+    const mediaImg = card.querySelector(".planet-product-photo");
+    if (mediaImg) {
+      mediaImg.src = product.image;
+      mediaImg.alt = product.name;
+    }
 
     const buyBtn = card.querySelector(".planet-buy-btn");
     if (onBuy) {

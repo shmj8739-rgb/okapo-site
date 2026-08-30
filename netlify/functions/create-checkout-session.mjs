@@ -79,11 +79,15 @@ export const handler = async (event) => {
     return { statusCode: 400, body: JSON.stringify({ error: "リクエスト元を確認できませんでした。" }) };
   }
 
+  // success_url / cancel_url は商品の category（= okapo-planet/ 配下のディレクトリ名）に
+  // 合わせて動的に組み立てる。以前は "green" に決め打ちしていたため、GREEN以外の
+  // カテゴリーの商品を追加すると誤ったパスに遷移してしまう問題があった。
+  // 既存のGREEN商品は category:"green" のため、挙動は従来どおり変わらない。
   const params = toStripeParams({
     mode: "payment",
     payment_method_types: ["card"],
-    success_url: `${origin}/okapo-planet/green/purchase-complete.html?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${origin}/okapo-planet/green/product.html?id=${encodeURIComponent(product.id)}`,
+    success_url: `${origin}/okapo-planet/${product.category}/purchase-complete.html?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${origin}/okapo-planet/${product.category}/product.html?id=${encodeURIComponent(product.id)}`,
     line_items: [
       {
         quantity: 1,

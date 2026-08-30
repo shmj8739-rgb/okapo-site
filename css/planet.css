@@ -426,10 +426,14 @@
 /* 実写真を使う商品（product.image あり）のカード用。
    絵文字アイコンの商品には影響しない追加ルール。 */
 .planet-product-photo {
+  /* 商品写真は「見栄え優先のトリミング」ではなく「商品全体が見えること」を
+     優先するため object-fit: contain を使用する（縦横比は保持）。
+     余白は親 .planet-product-media の背景（グラデーション）がそのまま
+     見える形になる。 */
   position: relative;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 
@@ -590,10 +594,14 @@
 }
 
 .planet-detail-photo {
+  /* 商品写真は「見栄え優先のトリミング」ではなく「商品全体が見えること」を
+     優先するため object-fit: contain を使用する（縦横比は保持）。
+     余白は親 .planet-detail-media の背景（グラデーション）がそのまま
+     見える形になる。 */
   position: relative;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 

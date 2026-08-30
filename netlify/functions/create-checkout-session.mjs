@@ -79,6 +79,32 @@ export const handler = async (event) => {
     return { statusCode: 400, body: JSON.stringify({ error: "リクエスト元を確認できませんでした。" }) };
   }
 
+  // line_items: 商品本体は常に1件目。product.shippingFee（数値・円）を
+  // 持つ商品のみ、2件目に「送料」という名前の明細行を追加する。
+  // shippingFee を持たない商品（既存GREEN商品・送料込み商品など）は
+  // 従来どおり商品1件のみの配列になり、決済額は一切変わらない。
+  const lineItems = [
+    {
+      quantity: 1,
+      price_data: {
+        currency: "jpy",
+        unit_amount: product.price,
+        product_data: { name: product.name },
+      },
+    },
+  ];
+
+  if (typeof product.shippingFee === "number" && product.shippingFee > 0) {
+    lineItems.push({
+      quantity: 1,
+      price_data: {
+        currency: "jpy",
+        unit_amount: product.shippingFee,
+        product_data: { name: "送料" },
+      },
+    });
+  }
+
   // success_url / cancel_url は商品の category（= okapo-planet/ 配下のディレクトリ名）に
   // 合わせて動的に組み立てる。以前は "green" に決め打ちしていたため、GREEN以外の
   // カテゴリーの商品を追加すると誤ったパスに遷移してしまう問題があった。
@@ -88,16 +114,7 @@ export const handler = async (event) => {
     payment_method_types: ["card"],
     success_url: `${origin}/okapo-planet/${product.category}/purchase-complete.html?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/okapo-planet/${product.category}/product.html?id=${encodeURIComponent(product.id)}`,
-    line_items: [
-      {
-        quantity: 1,
-        price_data: {
-          currency: "jpy",
-          unit_amount: product.price,
-          product_data: { name: product.name },
-        },
-      },
-    ],
+    line_items: lineItems,
     metadata: { productId: product.id },
   });
 

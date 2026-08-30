@@ -720,6 +720,121 @@
   color: var(--grey-dim);
 }
 
+/* Stripeテスト決済ボタン（既存の .planet-cart-btn とは並べて表示する
+   セカンダリボタン。塗りつぶしではなく枠線のみで視覚的な優先順位を分ける） */
+.planet-stripe-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--ff-display);
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  color: var(--white);
+  border: 1px solid var(--border-strong);
+  cursor: pointer;
+  padding: 15px 28px;
+  border-radius: 999px;
+  background: transparent;
+  margin-top: 14px;
+  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+.planet-stripe-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: var(--planet-green-light);
+  color: var(--planet-green-light);
+}
+
+.planet-stripe-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* ===================================================
+   PURCHASE COMPLETE（Stripeテスト決済 購入完了ページ）
+=================================================== */
+.planet-purchase-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0 120px;
+}
+
+.planet-purchase-card {
+  width: 100%;
+  max-width: 480px;
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  padding: 44px 32px;
+  text-align: center;
+  background: radial-gradient(ellipse at 30% 0%, var(--planet-green-glow), transparent 65%), var(--graphite);
+}
+
+.planet-purchase-icon {
+  font-size: 3rem;
+  margin-bottom: 8px;
+}
+
+.planet-purchase-heading {
+  font-family: var(--ff-display);
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.planet-purchase-lead {
+  font-size: 0.9rem;
+  color: var(--grey);
+  margin-bottom: 24px;
+}
+
+.planet-purchase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.planet-purchase-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 0.85rem;
+}
+
+.planet-purchase-row span {
+  color: var(--grey);
+}
+
+.planet-purchase-row strong {
+  color: var(--white);
+  text-align: right;
+}
+
+.planet-purchase-back-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--ff-display);
+  font-size: 0.9rem;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--black);
+  background: var(--planet-gradient);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+.planet-purchase-back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -10px var(--planet-green-glow);
+}
+
 /* ---------- トースト通知 ---------- */
 .planet-toast {
   position: fixed;

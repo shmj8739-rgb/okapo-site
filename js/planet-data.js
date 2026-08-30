@@ -37,7 +37,7 @@ export const PLANET_CATEGORIES = [
     en: "INTERIOR",
     ja: "インテリア",
     icon: "🕯️",
-    status: "soon",
+    status: "open",
     tagline: "暮らしの余白を、デザインする。",
   },
   {
@@ -164,6 +164,37 @@ export const PLANET_PRODUCTS = [
     size: "高さ約120cm／4号鉢",
     shipping:
       "送料込み（北海道・沖縄・離島は配送不可）。1〜4営業日以内の発送予定です。",
+  },
+
+  // ---------- INTERIOR ----------
+  {
+    // image / thumbnails は image・product.image が存在する商品でのみ描画側
+    // （planet-catalog.js／planet-detail.js）が画像表示に切り替える設計。
+    // フィールドを持たない既存GREEN商品は従来どおり icon（絵文字）表示のまま。
+    id: "interior-001",
+    category: "interior",
+    name: "タッチ充電式LEDデスクライト 目に優しいベッドライト",
+    nameEn: "Touch LED Desk Light",
+    icon: "",
+    image: "../../assets/products/interior-001-9.jpg",
+    thumbnails: [
+      "../../assets/products/interior-001-0.jpg",
+      "../../assets/products/interior-001-1.jpg",
+      "../../assets/products/interior-001-2.jpg",
+      "../../assets/products/interior-001-3.jpg",
+      "../../assets/products/interior-001-4.jpg",
+      "../../assets/products/interior-001-5.jpg",
+      "../../assets/products/interior-001-6.jpg",
+      "../../assets/products/interior-001-7.jpg",
+      "../../assets/products/interior-001-8.jpg",
+    ],
+    price: 5980,
+    tags: [],
+    shortDesc: "タッチ操作で点灯できる充電式LEDデスクライト。目に優しい光で寝室やリビングにも。",
+    description:
+      "タッチ操作でオン・オフや明るさ調整ができる、充電式のLEDデスクライトです。目に優しい光で、デスクワークはもちろん、寝室のベッドライトやリビング、バーカウンターなど、さまざまなシーンでご使用いただけます。コード不要の充電式なので、置き場所を選ばずお使いいただけます。",
+    shipping:
+      "送料990円（全国一律）。沖縄県など一部地域は送料が異なる場合があります。詳しくはご注文前にお問い合わせください。",
   },
 ];
 

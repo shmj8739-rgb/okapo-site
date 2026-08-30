@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZKJT7MEQVL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ZKJT7MEQVL');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>購入完了 | おかぽるPLANTS INTERIOR</title>
+<meta name="description" content="おかぽるPLANTS INTERIORのご購入手続きが完了しました。">
+<meta name="robots" content="noindex,nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..600&family=Noto+Sans+JP:wght@300..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="../../css/planet.css">
+</head>
+
+<body>
+
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../../index.html" class="brand" style="text-decoration:none;">おかぽる<span class="brand-dot">LAB</span></a>
+    <div class="header-meta">
+      <span>OKAPO PLANTS</span>
+      <span class="meta-divider">/</span>
+      <span>INTERIOR</span>
+    </div>
+  </div>
+</header>
+
+<main class="planet-page">
+
+  <nav class="planet-breadcrumb planet-inner">
+    <a href="../../index.html">おかぽるLAB</a>
+    <span aria-hidden="true">/</span>
+    <a href="../index.html">おかぽるPLANTS</a>
+    <span aria-hidden="true">/</span>
+    <a href="index.html">INTERIOR</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">購入完了</span>
+  </nav>
+
+  <div class="planet-inner planet-purchase-wrap">
+
+    <!-- Stripeへの照会結果が返るまでの表示 -->
+    <div class="planet-purchase-card" id="purchase-loading">
+      <p class="planet-purchase-icon" aria-hidden="true">⏳</p>
+      <h1 class="planet-purchase-heading">決済結果を確認しています…</h1>
+      <p class="planet-purchase-lead">しばらくそのままでお待ちください。</p>
+    </div>
+
+    <!-- 決済（テストモード）が確認できた場合 -->
+    <div class="planet-purchase-card" id="purchase-success" hidden>
+      <p class="planet-purchase-icon" aria-hidden="true">🕯️</p>
+      <h1 class="planet-purchase-heading">ご購入ありがとうございます。</h1>
+      <p class="planet-purchase-lead">Stripeのテスト決済が完了しました。<br>※これはテストモードの決済のため、実際の請求は発生していません。</p>
+
+      <div class="planet-purchase-list">
+        <div class="planet-purchase-row" id="purchase-product-row">
+          <span>商品名</span>
+          <strong id="purchase-product-name">—</strong>
+        </div>
+        <div class="planet-purchase-row" id="purchase-amount-row">
+          <span>お支払い金額</span>
+          <strong id="purchase-amount">—</strong>
+        </div>
+      </div>
+
+      <a href="index.html" class="planet-purchase-back-btn">INTERIOR一覧に戻る →</a>
+    </div>
+
+    <!-- 決済が確認できなかった場合（未決済でのアクセス・エラー等） -->
+    <div class="planet-purchase-card" id="purchase-error" hidden>
+      <p class="planet-purchase-icon" aria-hidden="true">⚠️</p>
+      <h1 class="planet-purchase-heading">決済状況を確認できませんでした。</h1>
+      <p class="planet-purchase-lead">決済が完了していないか、URLが正しくない可能性があります。お手数ですが、商品ページからもう一度お試しください。</p>
+      <a href="index.html" class="planet-purchase-back-btn">INTERIOR一覧に戻る →</a>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">PLANTS<span class="brand-dot">.</span></div>
+      <p class="footer-tagline">INTERIOR｜インテリア — by おかぽるPLANTS</p>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 OKAPO. All rights reserved.</span>
+      <a href="../index.html" style="color:var(--grey);text-decoration:none;">おかぽるPLANTSトップへ</a>
+      <a href="../green/legal.html" style="color:var(--grey);text-decoration:none;">特定商取引法に基づく表記</a>
+      <a href="index.html" style="color:var(--grey);text-decoration:none;">INTERIOR一覧へ戻る →</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../../js/script.js"></script>
+<script type="module" src="../../js/planet-purchase-complete.js"></script>
+</body>
+</html>

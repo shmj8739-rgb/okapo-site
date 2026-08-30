@@ -27,7 +27,50 @@ if (!product) {
   detailEl.style.display = "grid";
   document.title = `${product.name} | おかぽるPLANTS`;
 
-  detailEl.querySelector(".planet-detail-icon").textContent = product.icon;
+  // ---- メイン画像 ----
+  // product.image を持つ商品のみ絵文字アイコンを実写真に置き換える。
+  // 持たない商品（既存GREEN等）は従来どおり .planet-detail-icon に
+  // 絵文字を描画するだけで、挙動は一切変わらない。
+  const detailIconEl = detailEl.querySelector(".planet-detail-icon");
+  if (product.image) {
+    const mainPhoto = document.createElement("img");
+    mainPhoto.className = "planet-detail-photo";
+    mainPhoto.id = "planet-detail-main-photo";
+    mainPhoto.src = product.image;
+    mainPhoto.alt = product.name;
+    detailIconEl.replaceWith(mainPhoto);
+  } else {
+    detailIconEl.textContent = product.icon;
+  }
+
+  // ---- サムネイル ----
+  // product.thumbnails を持ち、かつページ側に #planet-detail-thumbs が
+  // 用意されている場合のみ描画する（現状はINTERIORのテンプレートのみに存在）。
+  // GREENのテンプレートにはこのコンテナが無いため、既存ページには一切影響しない。
+  const thumbsWrap = document.getElementById("planet-detail-thumbs");
+  if (thumbsWrap && Array.isArray(product.thumbnails) && product.thumbnails.length > 0) {
+    product.thumbnails.forEach((src, i) => {
+      const thumbBtn = document.createElement("button");
+      thumbBtn.type = "button";
+      thumbBtn.className = "planet-detail-thumb";
+      thumbBtn.setAttribute("aria-label", `${product.name} の画像 ${i + 1}`);
+
+      const thumbImg = document.createElement("img");
+      thumbImg.src = src;
+      thumbImg.alt = "";
+      thumbBtn.appendChild(thumbImg);
+
+      thumbBtn.addEventListener("click", () => {
+        const mainPhoto = document.getElementById("planet-detail-main-photo");
+        if (mainPhoto) mainPhoto.src = src;
+        thumbsWrap.querySelectorAll(".planet-detail-thumb").forEach((b) => b.classList.remove("is-active"));
+        thumbBtn.classList.add("is-active");
+      });
+
+      thumbsWrap.appendChild(thumbBtn);
+    });
+  }
+
   detailEl.querySelector(".planet-detail-name").textContent = product.name;
   detailEl.querySelector(".planet-detail-en").textContent = product.nameEn;
   detailEl.querySelector(".planet-detail-price").textContent = formatPrice(product.price);

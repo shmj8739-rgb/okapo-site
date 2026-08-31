@@ -21,7 +21,7 @@ export const PLANET_CATEGORIES = [
     en: "GREEN",
     ja: "観葉植物",
     icon: "🌿",
-    status: "open",
+    status: "soon",
     tagline: "緑のある暮らしを、あなたの部屋に。",
   },
   {
@@ -37,10 +37,10 @@ export const PLANET_CATEGORIES = [
     en: "INTERIOR",
     ja: "インテリア",
     icon: "🕯️",
-    status: "open",
+    status: "soon",
     tagline: "暮らしの余白を、デザインする。",
   },
-  {
+    {
     slug: "goods",
     en: "GOODS",
     ja: "雑貨",
@@ -165,7 +165,24 @@ export const PLANET_PRODUCTS = [
     shipping:
       "送料込み（北海道・沖縄・離島は配送不可）。1〜4営業日以内の発送予定です。",
   },
-
+  // ---------- GOODS ----------
+  {
+    id: "goods-001",
+    category: "goods",
+    name: "ブックマーク用定規 A7 ブラック 10点セット",
+    nameEn: "Bookmark Ruler A7 Black 10pcs",
+    icon: "📏",
+    price: 980,
+    tags: ["文房具", "10点セット"],
+    shortDesc:
+      "ブックマークとしても使える、コンパクトなA7サイズの定規10点セット。",
+    description:
+      "ブックマークとしても使える、コンパクトなA7サイズの定規10点セットです。読書や学習、日常のちょっとした計測にも使いやすい文房具です。",
+    size: "A7／10点セット",
+    shipping:
+      "送料1,000円。ご注文後、仕入れ先から発送手続きを行います。",
+    shippingFee: 1000,
+  },
   // ---------- INTERIOR ----------
   {
     // image / thumbnails は image・product.image が存在する商品でのみ描画側

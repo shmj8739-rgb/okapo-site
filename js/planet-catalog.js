@@ -101,12 +101,21 @@ export function renderProductGrid(container, categorySlug, options = {}) {
     }
 
     const buyBtn = card.querySelector(".planet-buy-btn");
-    if (onBuy) {
-      buyBtn.addEventListener("click", () => onBuy(product));
-    } else {
-      // onBuy未指定時は購入フォームへの導線がないため、ボタンを無効化しておく
-      buyBtn.disabled = true;
-    }
+
+// カテゴリーが "soon" の場合は購入ボタンを表示しない。
+// "open" のカテゴリーだけ購入できる。
+const categoryOpen =
+  PLANET_CATEGORIES.find((cat) => cat.slug === categorySlug)?.status === "open";
+
+if (!categoryOpen) {
+  // 購入ボタンそのものを削除
+  buyBtn.remove();
+} else if (onBuy) {
+  buyBtn.addEventListener("click", () => onBuy(product));
+} else {
+  // onBuy未指定時は購入フォームへの導線がないため、ボタンを無効化
+  buyBtn.disabled = true;
+}
 
     frag.appendChild(card);
   });

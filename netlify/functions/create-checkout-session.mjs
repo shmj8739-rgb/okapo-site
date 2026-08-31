@@ -11,7 +11,7 @@
 // ・依存パッケージ（stripeパッケージ等）は使わず、Stripeの
 //   REST APIをfetchで直接呼び出す（追加のnpm依存を増やさないため）。
 // ===================================================
-import { getProductById } from "../../js/planet-data.js";
+import { getProductById, getCategoryBySlug } from "../../js/planet-data.js";
 
 const STRIPE_API_BASE = "https://api.stripe.com/v1";
 
@@ -61,6 +61,17 @@ export const handler = async (event) => {
   const product = typeof payload.productId === "string" ? getProductById(payload.productId) : null;
   if (!product) {
     return { statusCode: 400, body: JSON.stringify({ error: "指定された商品が見つかりませんでした。" }) };
+  }
+    // 販売状態をサーバー側でも確認する。
+  // "soon" の商品は、画面を経由せず直接Functionを呼ばれても
+  // Stripe Checkoutを作成しない。
+  const category = getCategoryBySlug(product.category);
+
+  if (!category || category.status !== "open") {
+    return {
+      statusCode: 403,
+      body: JSON.stringify({ error: "現在この商品は販売停止中です。" }),
+    };
   }
 
   // success_url / cancel_url の組み立てに使うサイトの基点URL。

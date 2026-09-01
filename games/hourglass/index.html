@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZKJT7MEQVL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ZKJT7MEQVL');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#050506">
+<meta name="description" content="LIFE HOURGLASS（あと何時間？）— あなたの人生を砂時計にすると、いま砂はどれくらい落ちているのか。残された時間を、どう使うか考えるためのアプリ。">
+<meta name="robots" content="noindex">
+<title>LIFE HOURGLASS｜あと何時間？</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<!-- web フォント・外部リソースは読み込まない（ブラウザ内で完結）。
+     おかぽサイトへ組み込む際に Space Grotesk / Noto Sans JP を追加する。 -->
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="lh-header">
+  <span class="lh-brand">LIFE HOURGLASS</span>
+  <span class="lh-brand-jp">あと何時間？</span>
+</header>
+
+<main>
+
+  <!-- ============ 砂時計ステージ（ファーストビュー） ============ -->
+  <section class="lh-stage">
+    <div class="lh-hg-stage">
+      <span class="lh-hg-label lh-hg-label-top" id="lh-hg-label-top">残された時間</span>
+      <div class="lh-hourglass" id="lh-hourglass"><!-- SVG は hourglass.js が挿入 --></div>
+      <span class="lh-hg-label lh-hg-label-bottom" id="lh-hg-label-bottom">これまで生きた時間</span>
+    </div>
+
+    <div class="lh-readout">
+      <div class="lh-metric lh-metric--lead">
+        <span class="lh-metric-label">これまでに過ぎた時間</span>
+        <span class="lh-metric-value" id="out-elapsed-percent">—</span>
+      </div>
+      <div class="lh-metric">
+        <span class="lh-metric-label">残された年数</span>
+        <span class="lh-metric-value" id="out-remaining-years">—</span>
+      </div>
+      <div class="lh-metric">
+        <span class="lh-metric-label">残された時間</span>
+        <span class="lh-metric-value" id="out-remaining-hours">—</span>
+      </div>
+    </div>
+
+    <p class="lh-whisper" id="lh-whisper">その時間を、何に使いますか。</p>
+    <span class="lh-scroll-cue" aria-hidden="true">SCROLL</span>
+  </section>
+
+  <!-- ============ 1. あなたの人生 ============ -->
+  <section class="lh-card">
+    <h2>1. あなたの人生</h2>
+
+    <div class="lh-field">
+      <label for="in-age">現在の年齢</label>
+      <div class="lh-input-row">
+        <input type="number" id="in-age" inputmode="numeric" min="0" max="120" step="1">
+        <span class="lh-unit">歳</span>
+      </div>
+    </div>
+
+    <div class="lh-field">
+      <label for="in-life">想定寿命</label>
+      <div class="lh-input-row">
+        <input type="number" id="in-life" inputmode="numeric" min="1" max="130" step="1">
+        <span class="lh-unit">歳</span>
+      </div>
+    </div>
+
+    <p class="lh-note" id="note-life"></p>
+  </section>
+
+  <!-- ============ 2. 1日の時間の使い方 ============ -->
+  <section class="lh-card">
+    <h2>2. 1日の時間の使い方</h2>
+    <p class="lh-card-lead">残りの人生で、それぞれに何年を使うことになるでしょう。</p>
+    <div id="lh-categories"><!-- カテゴリー行は ui.js が生成 --></div>
+    <p class="lh-note" id="note-daily"></p>
+  </section>
+
+  <!-- ============ 3. お金と時間 ============ -->
+  <section class="lh-card">
+    <h2>3. お金と時間</h2>
+
+    <div class="lh-field">
+      <label for="in-income">年収</label>
+      <div class="lh-input-row">
+        <input type="number" id="in-income" inputmode="numeric" min="0" step="100000">
+        <span class="lh-unit">円</span>
+      </div>
+    </div>
+
+    <div class="lh-field">
+      <label for="in-work-hours">1日の労働時間</label>
+      <div class="lh-input-row">
+        <input type="number" id="in-work-hours" inputmode="decimal" min="0.5" max="24" step="0.5">
+        <span class="lh-unit">時間</span>
+      </div>
+    </div>
+
+    <div class="lh-field">
+      <label for="in-work-days">年間の勤務日数</label>
+      <div class="lh-input-row">
+        <input type="number" id="in-work-days" inputmode="numeric" min="1" max="366" step="1">
+        <span class="lh-unit">日</span>
+      </div>
+    </div>
+
+    <div class="lh-result">
+      <span class="lh-result-label">あなたの労働 1時間 が生む価値</span>
+      <span class="lh-result-value" id="out-hourly">—</span>
+    </div>
+  </section>
+
+  <footer class="lh-footer">
+    <p class="lh-privacy">この砂時計は、あなたのブラウザの中だけで動いています。</p>
+    <p>入力した内容がどこかへ送られたり、保存されたりすることはありません。</p>
+  </footer>
+
+</main>
+
+<!-- 依存順に読み込む（バンドラなし・okaris と同じ方式） -->
+<script src="js/constants.js"></script>
+<script src="js/calc.js"></script>
+<script src="js/hourglass.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

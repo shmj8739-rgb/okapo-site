@@ -1,0 +1,384 @@
+/* =====================================================================
+   LIFE HOURGLASS / あと何時間？
+   デザイン：静か・美しい・少し怖い・でも前向き
+   黒基調 × 細いグリッド × ミニマル × 少し未来的 × 余白重視
+   iPhone を最優先。web フォント・外部リソースは読み込まない（完全ローカル）。
+===================================================================== */
+
+:root {
+  --bg: #050506;
+  --panel: rgba(255, 255, 255, 0.025);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.17);
+
+  /* テキスト階層（黒＋グリッド背景でも十分読める明るさに調整）
+     --text       本文・入力値・見出し   … 明るいグレー〜白（真っ白にはしない）
+     --text-dim   ラベル・単位・補足の主  … しっかり読める中間グレー
+     --text-faint 装飾寄りの補足・ヒント  … 少し暗いが黒背景でも読める */
+  --text: #eef0f6;
+  --text-dim: #b7b9c6;
+  --text-faint: #90929e;
+
+  --accent: #9a86ff;
+  --accent-soft: rgba(154, 134, 255, 0.12);
+  --sand: #c9bcff;          /* 砂と同系の淡い紫。数値アクセントに使う */
+  --warn: #e0a862;
+
+  --ff-display: "Space Grotesk", "Futura", "Century Gothic",
+    "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  --ff-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --maxw: 560px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--ff-body);
+  line-height: 1.65;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---- 背景：細いグリッド + ゆっくり呼吸するヴィネット（少し怖い） ---- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 78% 60% at 50% 28%, #000, transparent 82%);
+          mask-image: radial-gradient(ellipse 78% 60% at 50% 28%, #000, transparent 82%);
+  opacity: 0.45;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* テキストに被らないよう、暗くなり方は控えめに */
+  background: radial-gradient(ellipse 82% 60% at 50% 40%, transparent 52%, rgba(0, 0, 0, 0.45) 100%);
+  animation: lh-breathe 12s ease-in-out infinite;
+}
+@keyframes lh-breathe { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
+
+/* ---- ヘッダー ---- */
+.lh-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 1.6rem 1rem 0;
+  text-align: center;
+}
+.lh-brand {
+  font-family: var(--ff-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  color: var(--text-dim);
+}
+.lh-brand-jp {
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  color: var(--text-faint);
+}
+
+/* ---- 砂時計ステージ（ファーストビュー：まず砂時計 → 残り時間） ---- */
+.lh-stage {
+  min-height: 88svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.6rem;
+  padding: 3.5rem 1.25rem 4rem;
+  text-align: center;
+}
+
+.lh-hg-stage { display: flex; flex-direction: column; align-items: center; }
+
+.lh-hg-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: var(--text-dim);
+}
+.lh-hg-label-top { margin-bottom: 0.75rem; }
+.lh-hg-label-bottom { margin-top: 0.75rem; }
+
+/* PC＝存在感のあるサイズ / iPhone＝画面幅に追従（横スクロールを出さない） */
+.lh-hourglass { width: min(74vw, 300px); }
+.lh-hourglass .lh-hg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 0 48px rgba(150, 124, 255, 0.16));
+}
+
+/* 砂時計 内部パーツ ------------------------------------------------ */
+.lh-halo {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0.55;
+  animation: lh-halo 9s ease-in-out infinite;
+}
+@keyframes lh-halo {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%      { opacity: 0.7; transform: scale(1.05); }
+}
+
+.lh-glass-fill { pointer-events: none; }
+.lh-glass-outline { stroke-linejoin: round; }
+.lh-glass-sheen { pointer-events: none; }
+.lh-rim { stroke: rgba(203, 196, 255, 0.42); stroke-width: 2; stroke-linecap: round; }
+
+.lh-sand-top, .lh-sand-bottom, .lh-mound { transition: opacity 0.4s var(--ease); }
+.lh-mound { opacity: 0; }
+
+.lh-flow { opacity: 0; transition: opacity 0.5s var(--ease); }
+.is-flowing .lh-flow { opacity: 1; }
+
+.lh-stream { opacity: 0.5; animation: lh-stream 1.9s ease-in-out infinite; }
+@keyframes lh-stream { 0%, 100% { opacity: 0.34; } 50% { opacity: 0.62; } }
+
+.lh-grains circle { fill: #cabdff; opacity: 0; }
+.is-flowing .lh-grains circle { animation: lh-grain 1.5s linear infinite; }
+.lh-grains circle:nth-child(2) { animation-delay: 0.4s; animation-duration: 1.7s; }
+.lh-grains circle:nth-child(3) { animation-delay: 0.8s; animation-duration: 1.35s; }
+.lh-grains circle:nth-child(4) { animation-delay: 1.15s; animation-duration: 1.6s; }
+@keyframes lh-grain {
+  0%   { transform: translateY(0); opacity: 0; }
+  16%  { opacity: 1; }
+  84%  { opacity: 1; }
+  100% { transform: translateY(182px); opacity: 0; }
+}
+
+/* ---- 数値の読み取り ---- */
+.lh-readout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.4rem 2.4rem;
+}
+.lh-metric { display: flex; flex-direction: column; gap: 0.35rem; }
+.lh-metric-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+.lh-metric-value {
+  font-family: var(--ff-display);
+  font-size: 1.4rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+.lh-metric--lead .lh-metric-value {
+  font-size: 2.4rem;
+  color: var(--accent);
+  line-height: 1.1;
+}
+
+.lh-whisper {
+  min-height: 1.5em;
+  max-width: 30em;
+  font-size: 0.9rem;
+  font-style: italic;
+  letter-spacing: 0.03em;
+  color: var(--text-faint);
+  text-wrap: balance;
+  transition: opacity 0.6s var(--ease);
+}
+
+.lh-scroll-cue {
+  font-size: 0.64rem;
+  letter-spacing: 0.28em;
+  color: var(--text-faint);
+  animation: lh-cue 2.6s ease-in-out infinite;
+}
+@keyframes lh-cue { 0%, 100% { opacity: 0.35; transform: translateY(0); } 50% { opacity: 0.8; transform: translateY(4px); } }
+
+/* ---- カード ---- */
+.lh-card {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto 1.25rem;
+  padding: 2rem 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  animation: lh-rise 0.9s var(--ease) both;
+}
+@keyframes lh-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+.lh-card h2 {
+  font-family: var(--ff-display);
+  font-size: 0.86rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  margin-bottom: 1.4rem;
+}
+.lh-card-lead {
+  margin: -0.8rem 0 1.4rem;
+  font-size: 0.84rem;
+  color: var(--text-dim);
+}
+
+/* ---- 入力フィールド ---- */
+.lh-field { margin-bottom: 1.25rem; }
+.lh-field:last-child { margin-bottom: 0; }
+.lh-field > label {
+  display: block;
+  font-size: 0.84rem;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+.lh-input-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 0.35rem;
+  transition: border-color 0.3s var(--ease);
+}
+.lh-input-row:focus-within { border-color: var(--accent); }
+.lh-input-row input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: var(--text);
+  font-family: var(--ff-display);
+  font-size: 1.1rem;               /* 16px 以上：iOS の自動ズーム防止 */
+  font-variant-numeric: tabular-nums;
+  padding: 0.2rem 0;
+}
+.lh-input-row input::-webkit-outer-spin-button,
+.lh-input-row input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.lh-input-row input[type=number] { -moz-appearance: textfield; appearance: textfield; }
+.lh-unit { color: var(--text-dim); font-size: 0.82rem; white-space: nowrap; }
+
+.lh-note { margin-top: 0.85rem; font-size: 0.78rem; color: var(--text-faint); min-height: 1em; }
+.lh-note.is-warn { color: var(--warn); }
+.lh-note:empty { display: none; }
+
+/* ---- カテゴリー行 ---- */
+.lh-cat { padding: 1.05rem 0; border-top: 1px solid var(--line); }
+.lh-cat:first-child { border-top: 0; padding-top: 0; }
+.lh-cat-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+.lh-cat-head label {
+  font-size: 0.96rem;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 0.14rem;
+}
+.lh-cat-hint { font-size: 0.74rem; color: var(--text-faint); }
+.lh-cat-input { display: flex; align-items: baseline; gap: 0.35rem; }
+.lh-cat-input input {
+  width: 3.4rem;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong);
+  outline: none;
+  color: var(--text);
+  font-family: var(--ff-display);
+  font-size: 1.05rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.lh-cat-input input:focus { border-color: var(--accent); }
+.lh-cat-input input::-webkit-outer-spin-button,
+.lh-cat-input input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.lh-cat-bar {
+  height: 3px;
+  background: var(--line);
+  border-radius: 2px;
+  margin: 0.85rem 0 0.55rem;
+  overflow: hidden;
+}
+.lh-cat-bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent), var(--sand));
+  transition: width 0.6s var(--ease);
+}
+.lh-cat-foot { font-size: 0.82rem; color: var(--text-dim); }
+.lh-cat-foot strong { color: var(--sand); font-family: var(--ff-display); font-weight: 500; }
+.lh-cat-sub { color: var(--text-faint); margin-left: 0.3rem; }
+
+/* ---- 結果ブロック（労働1時間の価値） ---- */
+.lh-result {
+  margin-top: 1.5rem;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.lh-result-label { font-size: 0.8rem; color: var(--text-dim); letter-spacing: 0.03em; }
+.lh-result-value {
+  font-family: var(--ff-display);
+  font-size: 1.4rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- フッター ---- */
+.lh-footer {
+  max-width: var(--maxw);
+  margin: 2.2rem auto 4rem;
+  text-align: center;
+  font-size: 0.78rem;
+  line-height: 1.9;
+  color: var(--text-faint);
+}
+.lh-footer .lh-privacy { color: var(--text-dim); }
+
+/* ---- デスクトップ ---- */
+@media (min-width: 720px) {
+  :root { --maxw: 600px; }
+  .lh-hourglass { width: 322px; }
+  .lh-metric-value { font-size: 1.6rem; }
+  .lh-metric--lead .lh-metric-value { font-size: 2.9rem; }
+  .lh-card { padding: 2.4rem 2.2rem; }
+  .lh-stage { gap: 3rem; }
+}
+
+/* ---- モーション削減（既存のアクセシビリティ対応を維持） ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

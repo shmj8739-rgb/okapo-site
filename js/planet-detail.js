@@ -82,6 +82,32 @@ if (!product) {
   detailEl.querySelector(".planet-detail-desc").textContent = product.description;
   detailEl.querySelector(".planet-detail-size").textContent = product.size || "—";
 
+  // ---- キャッチコピー ----
+  // catchCopy フィールドを持つ商品（GOODS等）のみ、商品名の直後に表示。
+  // 持たない既存商品には何も追加されない。
+  if (product.catchCopy) {
+    const catchEl = document.createElement("p");
+    catchEl.className = "planet-detail-catch";
+    catchEl.textContent = product.catchCopy;
+    detailEl.querySelector(".planet-detail-name").insertAdjacentElement("afterend", catchEl);
+  }
+
+  // ---- 在庫表示 ----
+  // stockLabel フィールドを持つ商品のみ、スペック欄に「在庫」の行を追加する。
+  if (product.stockLabel) {
+    const specs = detailEl.querySelector(".planet-detail-specs");
+    if (specs) {
+      const row = document.createElement("div");
+      row.className = "spec-row";
+      const label = document.createElement("span");
+      label.textContent = "在庫";
+      const value = document.createElement("strong");
+      value.textContent = product.stockLabel;
+      row.append(label, value);
+      specs.appendChild(row);
+    }
+  }
+
   const tagsWrap = detailEl.querySelector(".planet-detail-tags");
   if (product.tags.length === 0) {
     tagsWrap.style.display = "none";
@@ -128,6 +154,24 @@ if (!product) {
     detailEl.querySelector(".planet-detail-specs").insertAdjacentElement("afterend", box);
   }
 
+  // ---- 注意事項 ----
+  // caution フィールドを持つ商品のみ、配送ボックス（無ければスペック欄）の
+  // 直後に「ご注意」ボックスを表示する。見た目は配送ボックスと共通。
+  if (product.caution) {
+    const box = document.createElement("div");
+    box.className = "planet-detail-shipping";
+    const title = document.createElement("p");
+    title.className = "planet-detail-shipping-title";
+    title.textContent = "ご注意";
+    const body = document.createElement("p");
+    body.textContent = product.caution;
+    box.append(title, body);
+    const anchor =
+      detailEl.querySelector(".planet-detail-shipping") ||
+      detailEl.querySelector(".planet-detail-specs");
+    if (anchor) anchor.insertAdjacentElement("afterend", box);
+  }
+
   if (breadcrumbCurrentEl) breadcrumbCurrentEl.textContent = product.name;
 
   // ---- 関連商品（同カテゴリー・自分自身を除く） ----
@@ -158,13 +202,65 @@ if (!product) {
   }
 
   // ---- 販売状態による購入導線の制御 ----
-  // カテゴリーが "open" の商品のみ購入可能。
-  // "soon" の商品は、商品ページを直接URLで開いた場合でも
-  // 購入ボタン・Stripeテスト決済ボタンを表示しない。
+  //   "available" … GOODS等。外部の購入先URL（purchaseUrl）へ遷移する方式。
+  //                  このサイト内では決済しない。Stripeボタンは出さない。
+  //   "open"      … サイト内の注文フォーム＋Stripeテスト決済（従来フロー）。
+  //   "soon" 他   … 購入導線をすべて非表示（直接URLで開かれた場合の保険）。
   const category = getCategoryBySlug(product.category);
-  const isPurchaseEnabled = category && category.status === "open";
+  const status = category ? category.status : "soon";
 
-  if (!isPurchaseEnabled) {
+  const hideNoteAfter = (btn) => {
+    const note = btn && btn.nextElementSibling;
+    if (note && note.classList.contains("planet-cart-note")) {
+      note.style.display = "none";
+    }
+  };
+
+  if (status === "available") {
+    // Stripeボタンは使わない（テンプレートに残っていても隠す）
+    if (stripeBtn) {
+      stripeBtn.style.display = "none";
+      hideNoteAfter(stripeBtn);
+    }
+
+    if (cartBtn) {
+      const purchaseUrl =
+        typeof product.purchaseUrl === "string" ? product.purchaseUrl.trim() : "";
+      const cartNote =
+        cartBtn.nextElementSibling &&
+        cartBtn.nextElementSibling.classList.contains("planet-cart-note")
+          ? cartBtn.nextElementSibling
+          : null;
+
+      if (purchaseUrl) {
+        // 購入先URLが設定済み → そのページ（外部の販売ページ）を別タブで開く
+        cartBtn.addEventListener("click", () => {
+          window.open(purchaseUrl, "_blank", "noopener");
+        });
+        if (cartNote) {
+          cartNote.textContent =
+            "※ 購入手続きは、提携先の販売ページ（別タブ）で行います。";
+        }
+      } else {
+        // 購入先URL未設定 → 押下時に準備中の案内を表示（エラーにはしない）
+        if (cartNote) {
+          cartNote.textContent = "※ ただいま販売の準備を進めています。";
+        }
+        cartBtn.addEventListener("click", () => {
+          let msg = document.getElementById("planet-prep-msg");
+          if (!msg) {
+            msg = document.createElement("p");
+            msg.id = "planet-prep-msg";
+            msg.className = "planet-cart-note planet-prep-msg";
+            msg.setAttribute("role", "status");
+            msg.innerHTML =
+              '販売準備中です。お手数ですが、<a href="mailto:okapoplants@gmail.com">お問い合わせ</a>からご連絡ください。';
+            (cartNote || cartBtn).insertAdjacentElement("afterend", msg);
+          }
+        });
+      }
+    }
+  } else if (status !== "open") {
     // 購入ボタンを非表示
     if (cartBtn) {
       cartBtn.style.display = "none";

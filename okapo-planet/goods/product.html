@@ -13,8 +13,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>商品詳細 | おかぽるPLANTS INTERIOR</title>
-<meta name="description" content="おかぽるPLANTS INTERIORの商品詳細ページです。">
+<title>商品詳細 | おかぽるPLANTS GOODS</title>
+<meta name="description" content="おかぽるPLANTS GOODSの商品詳細ページです。">
 <meta name="robots" content="noindex,follow">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,7 +35,7 @@
     <div class="header-meta">
       <span>OKAPO PLANTS</span>
       <span class="meta-divider">/</span>
-      <span>INTERIOR</span>
+      <span>GOODS</span>
     </div>
   </div>
 </header>
@@ -47,7 +47,7 @@
     <span aria-hidden="true">/</span>
     <a href="../index.html">おかぽるPLANTS</a>
     <span aria-hidden="true">/</span>
-    <a href="index.html">INTERIOR</a>
+    <a href="index.html">GOODS</a>
     <span aria-hidden="true">/</span>
     <span aria-current="page" id="planet-breadcrumb-current">商品詳細</span>
   </nav>
@@ -55,7 +55,7 @@
   <div class="planet-inner planet-detail-wrap">
 
     <p class="planet-not-found" id="planet-not-found">
-      指定された商品が見つかりませんでした。<a href="index.html" style="color:var(--planet-green-light);">INTERIOR一覧に戻る →</a>
+      指定された商品が見つかりませんでした。<a href="index.html" style="color:var(--planet-green-light);">GOODS一覧に戻る →</a>
     </p>
 
     <div class="planet-detail" id="planet-detail">
@@ -64,7 +64,8 @@
           <span class="planet-detail-icon" aria-hidden="true"></span>
         </div>
         <!-- サムネイル一覧。js/planet-detail.js が product.thumbnails を
-             元に描画する（クリックでメイン画像が切り替わる）。 -->
+             元に描画する（クリックでメイン画像が切り替わる）。
+             画像未設定の間は空のまま（CSSで非表示）。 -->
         <div class="planet-detail-thumbs" id="planet-detail-thumbs"></div>
       </div>
 
@@ -75,10 +76,16 @@
         <p class="planet-detail-price"></p>
         <p class="planet-detail-desc"></p>
 
+        <!-- スペック欄。GOODSはサイズを使わないため .planet-detail-size は
+             非表示のプレースホルダー。在庫（stockLabel）は
+             js/planet-detail.js がこの中に行を追加する。 -->
         <div class="planet-detail-specs">
-          <div class="spec-row"><span>サイズ</span><strong class="planet-detail-size"></strong></div>
+          <span class="planet-detail-size" hidden></span>
         </div>
 
+        <!-- care（育て方ガイド）はGOODSでは使わない。
+             js/planet-detail.js が product.care 不在を検知して自動で非表示にする
+             （要素自体は削除しないこと。スクリプトが参照するため）。 -->
         <div class="planet-detail-care">
           <p class="planet-detail-care-title">🌱 育て方ガイド</p>
           <div class="care-row"><span>置き場所</span><strong class="care-light"></strong></div>
@@ -86,17 +93,14 @@
           <div class="care-row"><span>難易度</span><strong class="care-level"></strong></div>
         </div>
 
+        <!-- 配送について（product.shipping）・ご注意（product.caution）は
+             js/planet-detail.js がこの位置の後ろに自動挿入する。 -->
+
         <button type="button" class="planet-cart-btn" id="planet-cart-btn">
           購入する
           <span aria-hidden="true">→</span>
         </button>
-        <p class="planet-cart-note">※ 現在オンライン決済システムは未導入のため、注文受付フォームでのご注文となります。</p>
-
-        <button type="button" class="planet-stripe-btn" id="planet-stripe-btn">
-          クレジットカードで購入する（テスト決済）
-          <span aria-hidden="true">→</span>
-        </button>
-        <p class="planet-cart-note">※ こちらはStripeのテストモードによる決済です。実際の請求は発生しません。</p>
+        <p class="planet-cart-note">※ 購入手続きは、提携先の販売ページで行います。</p>
       </div>
     </div>
 
@@ -114,121 +118,16 @@
   <div class="footer-inner">
     <div class="footer-top">
       <div class="footer-brand">PLANTS<span class="brand-dot">.</span></div>
-      <p class="footer-tagline">INTERIOR｜インテリア — by おかぽるPLANTS</p>
+      <p class="footer-tagline">GOODS｜雑貨 — by おかぽるPLANTS</p>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 OKAPO. All rights reserved.</span>
       <a href="../index.html" style="color:var(--grey);text-decoration:none;">おかぽるPLANTSトップへ</a>
       <a href="../green/legal.html" style="color:var(--grey);text-decoration:none;">特定商取引法に基づく表記</a>
-      <a href="index.html" style="color:var(--grey);text-decoration:none;">INTERIOR一覧へ戻る →</a>
+      <a href="index.html" style="color:var(--grey);text-decoration:none;">GOODS一覧へ戻る →</a>
     </div>
   </div>
 </footer>
-
-<!-- ===== ORDER MODAL（注文受付フォーム） =====
-     ※ オンライン決済は未導入のため、送信しても実際の決済・データ保存は
-     行わない「注文受付フォーム」。詳細は js/planet-order.js を参照。 -->
-<div class="planet-order-modal" id="planet-order-modal" aria-hidden="true">
-  <div class="planet-order-backdrop" data-order-close></div>
-
-  <div class="planet-order-dialog" role="dialog" aria-modal="true" aria-labelledby="planet-order-heading">
-    <button type="button" class="planet-order-close" data-order-close aria-label="閉じる">&times;</button>
-
-    <div class="planet-order-view planet-order-view--form">
-      <p class="planet-order-eyebrow">ORDER FORM</p>
-      <h2 id="planet-order-heading" class="planet-order-heading">ご注文内容の入力</h2>
-      <p class="planet-order-lead">
-        ※現在オンライン決済システムは未導入のため、こちらは「注文受付フォーム」です。送信いただいた内容を確認のうえ、担当者よりご連絡いたします。
-      </p>
-
-      <form id="planet-order-form" novalidate>
-        <div class="planet-order-row">
-          <div class="planet-order-field">
-            <label for="order-product-name">商品名</label>
-            <input type="text" id="order-product-name" readonly>
-          </div>
-          <div class="planet-order-field">
-            <label for="order-product-price">単価</label>
-            <input type="text" id="order-product-price" readonly>
-          </div>
-        </div>
-
-        <div class="planet-order-field">
-          <label for="order-qty">数量<span class="req">必須</span></label>
-          <input type="number" id="order-qty" min="1" step="1" value="1" required>
-        </div>
-
-        <div class="planet-order-field">
-          <label for="order-name">氏名<span class="req">必須</span></label>
-          <input type="text" id="order-name" autocomplete="name" required>
-        </div>
-
-        <div class="planet-order-row">
-          <div class="planet-order-field">
-            <label for="order-email">メールアドレス<span class="req">必須</span></label>
-            <input type="email" id="order-email" autocomplete="email" required>
-          </div>
-          <div class="planet-order-field">
-            <label for="order-tel">電話番号<span class="req">必須</span></label>
-            <input type="tel" id="order-tel" autocomplete="tel" required>
-          </div>
-        </div>
-
-        <div class="planet-order-field">
-          <label for="order-zip">郵便番号<span class="req">必須</span></label>
-          <input type="text" id="order-zip" autocomplete="postal-code" placeholder="例）123-4567" required>
-        </div>
-
-        <div class="planet-order-field">
-          <label for="order-address">住所<span class="req">必須</span></label>
-          <textarea id="order-address" rows="2" autocomplete="street-address" required></textarea>
-        </div>
-
-        <div class="planet-order-field">
-          <label for="order-note">備考</label>
-          <textarea id="order-note" rows="3" placeholder="ご要望などございましたらご記入ください"></textarea>
-        </div>
-
-        <!-- ハニーポット：人間には見せないスパム対策用の入力欄 -->
-        <div class="planet-order-honeypot" aria-hidden="true">
-          <label for="order-field-website">Website</label>
-          <input type="text" id="order-field-website" name="website" tabindex="-1" autocomplete="off">
-        </div>
-
-        <p class="planet-order-lead">
-          ※送料は商品ごとに異なります。送料込みの商品については商品ページに記載しています。別途送料が必要な場合は、ご注文後に送料を含めたお支払い総額をメールでご案内します。
-        </p>
-
-        <button type="submit" class="planet-order-submit-btn">
-          注文内容を確認する
-          <span aria-hidden="true">→</span>
-        </button>
-      </form>
-    </div>
-
-    <div class="planet-order-view planet-order-view--confirm" hidden>
-      <p class="planet-order-eyebrow">CONFIRM</p>
-      <h2 class="planet-order-heading">注文内容のご確認</h2>
-      <p class="planet-order-lead">以下の内容でご注文を受け付けます。内容に誤りがないかご確認ください。</p>
-
-      <div class="planet-order-confirm-list"></div>
-
-      <p class="planet-order-message" role="status" aria-live="polite"></p>
-
-      <div class="planet-order-btn-row">
-        <button type="button" class="planet-order-back-btn" data-order-back>内容を修正する</button>
-        <button type="button" class="planet-order-submit-btn" data-order-send>この内容で注文する</button>
-      </div>
-    </div>
-
-    <div class="planet-order-view planet-order-view--done" hidden>
-      <p class="planet-order-done-icon" aria-hidden="true">🕯️</p>
-      <h2 class="planet-order-heading">ご注文ありがとうございます。</h2>
-      <p class="planet-order-lead">ご注文内容を確認のうえ、送料を含めたお支払い総額と振込先をメールでご案内いたします。</p>
-      <button type="button" class="planet-order-submit-btn" data-order-close>閉じる</button>
-    </div>
-  </div>
-</div>
 
 <script src="../../js/script.js"></script>
 <script type="module" src="../../js/planet-detail.js"></script>

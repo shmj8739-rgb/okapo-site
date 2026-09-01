@@ -9,20 +9,26 @@ export function renderCategoryGrid(container) {
   const frag = document.createDocumentFragment();
 
   PLANET_CATEGORIES.forEach((cat, i) => {
-    const isOpen = cat.status === "open";
+    // "available"（GOODS）と "open" はどちらもカテゴリーページへ遷移できる。
+    // ラベルだけ status ごとに出し分ける。
+    const isLive = cat.status === "available" || cat.status === "open";
+    const statusLabel =
+      cat.status === "available" ? "NOW AVAILABLE"
+      : cat.status === "open" ? "NOW OPEN"
+      : "COMING SOON";
 
-    const card = document.createElement(isOpen ? "a" : "div");
-    card.className = `planet-cat-card reveal${isOpen ? "" : " planet-cat-card--soon"}`;
-    if (isOpen) card.href = `${cat.slug}/index.html`;
+    const card = document.createElement(isLive ? "a" : "div");
+    card.className = `planet-cat-card reveal${isLive ? "" : " planet-cat-card--soon"}`;
+    if (isLive) card.href = `${cat.slug}/index.html`;
 
     card.innerHTML = `
       <span class="planet-cat-index" aria-hidden="true">${String(i + 1).padStart(2, "0")}</span>
-      <span class="planet-cat-status">${isOpen ? "NOW OPEN" : "COMING SOON"}</span>
+      <span class="planet-cat-status">${statusLabel}</span>
       <span class="planet-cat-icon" aria-hidden="true">${cat.icon}</span>
       <span class="planet-cat-en"></span>
       <span class="planet-cat-ja"></span>
       <span class="planet-cat-tagline"></span>
-      ${isOpen ? '<span class="planet-cat-arrow" aria-hidden="true">→</span>' : ""}
+      ${isLive ? '<span class="planet-cat-arrow" aria-hidden="true">→</span>' : ""}
     `;
 
     card.querySelector(".planet-cat-en").textContent = cat.en;
@@ -102,20 +108,33 @@ export function renderProductGrid(container, categorySlug, options = {}) {
 
     const buyBtn = card.querySelector(".planet-buy-btn");
 
-// カテゴリーが "soon" の場合は購入ボタンを表示しない。
-// "open" のカテゴリーだけ購入できる。
-const categoryOpen =
-  PLANET_CATEGORIES.find((cat) => cat.slug === categorySlug)?.status === "open";
+    const categoryStatus = PLANET_CATEGORIES.find(
+      (cat) => cat.slug === categorySlug
+    )?.status;
 
-if (!categoryOpen) {
-  // 購入ボタンそのものを削除
-  buyBtn.remove();
-} else if (onBuy) {
-  buyBtn.addEventListener("click", () => onBuy(product));
-} else {
-  // onBuy未指定時は購入フォームへの導線がないため、ボタンを無効化
-  buyBtn.disabled = true;
-}
+    if (categoryStatus === "available") {
+      // GOODS等：一覧では購入導線を詳細ページに集約する。
+      // ボタンは「商品を見る」＝商品詳細ページへのリンクとして機能させる。
+      buyBtn.innerHTML = '商品を見る <span aria-hidden="true">→</span>';
+      buyBtn.setAttribute(
+        "aria-label",
+        `${product.name}の詳細を見る`
+      );
+      buyBtn.addEventListener("click", () => {
+        location.href = `product.html?id=${encodeURIComponent(product.id)}`;
+      });
+    } else if (categoryStatus === "open") {
+      // 従来フロー：サイト内の注文フォームを開く。
+      if (onBuy) {
+        buyBtn.addEventListener("click", () => onBuy(product));
+      } else {
+        // onBuy未指定時は購入フォームへの導線がないため、ボタンを無効化
+        buyBtn.disabled = true;
+      }
+    } else {
+      // "soon"：購入ボタンそのものを削除
+      buyBtn.remove();
+    }
 
     frag.appendChild(card);
   });

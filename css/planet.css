@@ -1398,3 +1398,37 @@
     gap: 6px;
   }
 }
+
+/* ===================================================
+   GOODS カテゴリー用の追加スタイル
+   （既存カテゴリーでは未使用のクラスのみ。他カテゴリーに影響しない）
+=================================================== */
+
+/* 一覧ページ：タイトル直下のサブコピー */
+.planet-category-lead {
+  margin: -6px 0 14px;
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(1rem, 2.4vw, 1.2rem);
+  line-height: 1.7;
+  color: var(--planet-green-light);
+}
+
+/* 商品詳細ページ：商品名の下に出すキャッチコピー */
+.planet-detail-catch {
+  margin: -8px 0 20px;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--planet-green-light);
+}
+
+/* 商品詳細ページ：購入先URL未設定時に表示される案内メッセージ */
+.planet-prep-msg {
+  margin-top: 10px;
+  color: var(--planet-green-light);
+}
+
+.planet-prep-msg a {
+  color: var(--planet-green-light);
+  text-decoration: underline;
+}

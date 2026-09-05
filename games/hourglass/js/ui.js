@@ -88,6 +88,29 @@ LH.UI = (function () {
     el.classList.toggle('is-warn', !!warn);
   }
 
+  /* 経過率の「見た目」だけを整える（計算は一切しない）。
+     ・表示する数値は LH.calc.fmt.percent(elapsedPercent) のまま
+       → "35.7%" を <数値>35.7</数値><単位>%</単位> に分割してベースラインを揃える。
+       （"—" や "0.01% 未満" など数字始まりでない表記はそのまま表示）
+     ・下の細いバーの幅を経過率（0..1、砂時計と同じ値）に合わせる。 */
+  function paintElapsed(elapsedPercent, elapsedRatio) {
+    var el = $('out-elapsed-percent');
+    var text = LH.calc.fmt.percent(elapsedPercent);
+    var m = /^([\d,]+(?:\.[\d]+)?)(.*)$/.exec(text);
+    if (m) {
+      el.innerHTML =
+        '<span class="lh-pct-num">' + m[1] + '</span>' +
+        '<span class="lh-pct-unit">' + m[2].replace(/^\s+/, '') + '</span>';
+    } else {
+      el.textContent = text;
+    }
+    var fill = $('lh-elapsed-fill');
+    if (fill) {
+      var pct = LH.calc.clamp(elapsedRatio, 0, 1) * 100;
+      fill.style.width = pct.toFixed(2) + '%';
+    }
+  }
+
   /* 派生値 → DOM / 砂時計（出力先はここだけ） */
   function render() {
     state = buildState();
@@ -97,7 +120,7 @@ LH.UI = (function () {
 
     LH.Hourglass.update(r.progress.elapsedRatio);
 
-    $('out-elapsed-percent').textContent = f.percent(r.elapsedPercent);
+    paintElapsed(r.elapsedPercent, r.progress.elapsedRatio);
     $('out-remaining-years').textContent = f.years(r.progress.remainingYears);
     $('out-remaining-hours').textContent = f.hours(r.progress.remainingHours);
 

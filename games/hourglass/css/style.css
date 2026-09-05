@@ -126,53 +126,61 @@ body::after {
 .lh-hg-label-top { margin-bottom: 0.75rem; }
 .lh-hg-label-bottom { margin-top: 0.75rem; }
 
-/* PC＝存在感のあるサイズ / iPhone＝画面幅に追従（横スクロールを出さない） */
-.lh-hourglass { width: min(74vw, 300px); }
-.lh-hourglass .lh-hg {
+/* PC＝存在感のあるサイズ / iPhone＝画面幅に追従（横スクロールを出さない）。
+   参考画像は縦長（280x404）。幅は container に追従、高さは縦横比のまま。 */
+.lh-hourglass {
+  width: min(72vw, 300px);
+  position: relative;
+  isolation: isolate;
+}
+
+/* 参考画像そのものをメインビジュアルに使う（assets/hourglass-main.png）。
+   縦横比は保持し、object-fit:contain で常に全体が見えるようにする。
+   画像の黒背景をページの黒（#050506）へ自然につなぐため、外周をごく浅く
+   フェード（mask）し、紫の発光をまわりに添える。 */
+.lh-hg-img {
   display: block;
   width: 100%;
   height: auto;
-  overflow: visible;
-  filter: drop-shadow(0 0 48px rgba(150, 124, 255, 0.16));
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter:
+    drop-shadow(0 0 52px rgba(150, 124, 255, 0.22))
+    drop-shadow(0 0 18px rgba(150, 124, 255, 0.14));
+  -webkit-mask-image: radial-gradient(115% 108% at 50% 50%, #000 86%, transparent 100%);
+          mask-image: radial-gradient(115% 108% at 50% 50%, #000 86%, transparent 100%);
 }
 
-/* 砂時計 内部パーツ ------------------------------------------------ */
-.lh-halo {
-  transform-box: fill-box;
-  transform-origin: center;
-  opacity: 0.55;
-  animation: lh-halo 9s ease-in-out infinite;
+/* 画像の上に重ねる透明レイヤー。ここで「上→くびれ→下」へ落ちる紫の砂粒だけを
+   hourglass.js（Canvas）が描く。画像本体には触れない。 */
+.lh-hg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
 }
-@keyframes lh-halo {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50%      { opacity: 0.7; transform: scale(1.05); }
+
+/* 画像の背後にごく淡い紫のグロー（ページの黒地となじませる補助光）。
+   画像自体は動かさず、この光だけが非常にゆっくり呼吸する。 */
+.lh-hourglass::before {
+  content: "";
+  position: absolute;
+  inset: -12% -6%;
+  z-index: -1;
+  background: radial-gradient(ellipse 60% 62% at 50% 46%,
+    rgba(150, 124, 255, 0.20), rgba(150, 124, 255, 0.06) 45%, transparent 72%);
+  animation: lh-aura 12s ease-in-out infinite;
+  pointer-events: none;
 }
+@keyframes lh-aura { 0%, 100% { opacity: 0.75; } 50% { opacity: 1; } }
 
-.lh-glass-fill { pointer-events: none; }
-.lh-glass-outline { stroke-linejoin: round; }
-.lh-glass-sheen { pointer-events: none; }
-.lh-rim { stroke: rgba(203, 196, 255, 0.42); stroke-width: 2; stroke-linecap: round; }
-
-.lh-sand-top, .lh-sand-bottom, .lh-mound { transition: opacity 0.4s var(--ease); }
-.lh-mound { opacity: 0; }
-
-.lh-flow { opacity: 0; transition: opacity 0.5s var(--ease); }
-.is-flowing .lh-flow { opacity: 1; }
-
-.lh-stream { opacity: 0.5; animation: lh-stream 1.9s ease-in-out infinite; }
-@keyframes lh-stream { 0%, 100% { opacity: 0.34; } 50% { opacity: 0.62; } }
-
-.lh-grains circle { fill: #cabdff; opacity: 0; }
-.is-flowing .lh-grains circle { animation: lh-grain 1.5s linear infinite; }
-.lh-grains circle:nth-child(2) { animation-delay: 0.4s; animation-duration: 1.7s; }
-.lh-grains circle:nth-child(3) { animation-delay: 0.8s; animation-duration: 1.35s; }
-.lh-grains circle:nth-child(4) { animation-delay: 1.15s; animation-duration: 1.6s; }
-@keyframes lh-grain {
-  0%   { transform: translateY(0); opacity: 0; }
-  16%  { opacity: 1; }
-  84%  { opacity: 1; }
-  100% { transform: translateY(182px); opacity: 0; }
-}
+/* 砂時計ビジュアルは assets/hourglass-main.png（参考画像）に置き換えたため、
+   旧 SVG 用のスタイル（.lh-halo / .lh-glass-* / .lh-frame / .lh-sand-* /
+   .lh-flow / .lh-stream / .lh-grains / 各 keyframes 等）は削除した。
+   画像の見た目は上の .lh-hg-img と .lh-hourglass::before が担当する。 */
 
 /* ---- 数値の読み取り ---- */
 .lh-readout {
@@ -195,10 +203,54 @@ body::after {
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.01em;
 }
+.lh-metric--lead { align-items: center; gap: 0.5rem; }
 .lh-metric--lead .lh-metric-value {
-  font-size: 2.4rem;
+  font-size: clamp(2.6rem, 12vw, 3.3rem);
   color: var(--accent);
-  line-height: 1.1;
+  line-height: 1;
+}
+
+/* 経過率（%）— 数値と単位を分けて組み、ベースラインを揃える。
+   数値そのものは calc の結果のまま（ui.js は表示だけを整える）。 */
+.lh-pct {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.14em;
+  font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums;
+}
+.lh-pct-num {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.lh-pct-unit {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: 0.5em;
+  letter-spacing: 0.03em;
+  color: rgba(154, 134, 255, 0.82);
+  transform: translateY(-0.14em);
+}
+
+/* 経過率の細いプログレスバー（35.7% ━━━━──── の視覚化） */
+.lh-progress {
+  width: min(240px, 62vw);
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+.lh-progress-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--sand));
+  box-shadow: 0 0 10px rgba(154, 134, 255, 0.5);
+  transition: width 0.7s var(--ease);
 }
 
 .lh-whisper {
@@ -369,7 +421,8 @@ body::after {
   :root { --maxw: 600px; }
   .lh-hourglass { width: 322px; }
   .lh-metric-value { font-size: 1.6rem; }
-  .lh-metric--lead .lh-metric-value { font-size: 2.9rem; }
+  .lh-metric--lead .lh-metric-value { font-size: 3.3rem; }
+  .lh-progress { width: 260px; }
   .lh-card { padding: 2.4rem 2.2rem; }
   .lh-stage { gap: 3rem; }
 }

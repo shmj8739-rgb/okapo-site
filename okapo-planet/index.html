@@ -13,105 +13,111 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>おかぽるPLANTS | 暮らしを、もっと面白く。</title>
-<meta name="description" content="おかぽるPLANTSは、おかぽるLABが贈る暮らし系ブランド。観葉植物のGREENを皮切りに、自然と暮らしのあいだにある心地よいプロダクトを届けます。">
+<title>OKAPO SELECT｜暮らしを、ちょっと面白く。</title>
+<meta name="description" content="おかぽるLABが選ぶ、デスク・ガジェット・インテリア・生活雑貨のセレクトショップ。毎日の暮らしに「これ、いいな」を。">
 <meta name="robots" content="index,follow">
+
+<meta property="og:title" content="OKAPO SELECT｜暮らしを、ちょっと面白く。">
+<meta property="og:description" content="おかぽるLABが選ぶ、デスク・ガジェット・インテリア・生活雑貨のセレクトショップ。毎日の暮らしに「これ、いいな」を。">
+<meta property="og:type" content="website">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..600&family=Noto+Sans+JP:wght@300..600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/planet.css">
+<link rel="stylesheet" href="../css/okapo-select.css">
 </head>
 
-<body>
+<body class="okapo-select">
 
 <div class="noise-overlay" aria-hidden="true"></div>
 
-<!-- ===== HEADER ===== -->
+<!-- ===== HEADER =====
+     本体サイトの .site-header / .brand / .header-meta 構造を流用し、
+     css/okapo-select.css で白ベースに上書きしている。
+     .sel-subnav がショップページ内スクロール用のナビゲーション。 -->
 <header class="site-header">
   <div class="header-inner">
-    <a href="../index.html" class="brand" style="text-decoration:none;">おかぽる<span class="brand-dot">LAB</span></a>
+    <a href="../index.html" class="brand">おかぽる<span class="brand-dot">LAB</span></a>
+    <nav class="sel-subnav" aria-label="ページ内ナビゲーション">
+      <a href="#select">SELECT</a>
+      <a href="#category">CATEGORY</a>
+      <a href="#pickup">PICK UP</a>
+    </nav>
     <div class="header-meta">
-      <span>OKAPO PLANTS</span>
+      <span>OKAPO SELECT</span>
       <span class="meta-divider">/</span>
-      <span>LIFESTYLE SHOP</span>
+      <span>LIFESTYLE</span>
     </div>
   </div>
 </header>
 
-<main class="planet-page">
+<main>
 
-  <nav class="planet-breadcrumb planet-inner">
-    <a href="../index.html">おかぽるLAB</a>
-    <span aria-hidden="true">/</span>
-    <span aria-current="page">おかぽるPLANTS</span>
-  </nav>
-
-  <!-- ===== HERO ===== -->
-  <section class="planet-hero" id="planet-hero">
-    <div class="planet-hero-bg" aria-hidden="true">
-      <div class="planet-orb planet-orb-1"></div>
-      <div class="planet-orb planet-orb-2"></div>
-      <div class="grid-overlay"></div>
+  <!-- ===== 1. HERO ===== -->
+  <section class="sel-hero" id="select">
+    <div class="sel-hero-bg" aria-hidden="true">
+      <div class="sel-hero-orb sel-hero-orb--1"></div>
+      <div class="sel-hero-orb sel-hero-orb--2"></div>
+      <div class="sel-hero-grid"></div>
     </div>
 
-    <div class="planet-hero-content reveal">
-      <p class="planet-hero-eyebrow"><span class="dot" aria-hidden="true"></span>OKAPO PLANTS</p>
-      <h1 class="planet-hero-title">
-        <span class="line">おかぽる</span>
-        <span class="line accent">PLANTS</span>
-      </h1>
-      <p class="planet-hero-copy">
-        暮らしを、もっと面白く。<br class="br-pc">
-        自然と暮らしのあいだに、少しの未来感を。<br class="br-pc">
-        おかぽるLABが贈る、生活雑貨のセレクトショップです。
-      </p>
-      <p class="planet-hero-from">FROM OKAPO LAB — AI PRODUCT STUDIO</p>
-    </div>
-  </section>
-
-  <!-- ===== CONCEPT ===== -->
-  <section class="planet-concept" id="planet-concept">
-    <div class="planet-inner">
-      <p class="section-label reveal">CONCEPT</p>
-      <h2 class="section-title reveal">自然 × 暮らし × 少し未来感。<br>それが、おかぽるPLANTSです。</h2>
-
-      <div class="planet-pillars">
-        <div class="planet-pillar reveal">
-          <span class="planet-pillar-icon" aria-hidden="true">🌿</span>
-          <h3 class="planet-pillar-title">NATURE｜自然</h3>
-          <p class="planet-pillar-desc">
-            緑や素材の心地よさを、暮らしの中に。植物やプロダクトの力で、部屋の空気ごと変えていく。
-          </p>
-        </div>
-        <div class="planet-pillar reveal">
-          <span class="planet-pillar-icon" aria-hidden="true">🏠</span>
-          <h3 class="planet-pillar-title">LIFE｜暮らし</h3>
-          <p class="planet-pillar-desc">
-            「使う」を楽しくする道具たちを。毎日の暮らしにちょっとした発見と余白をつくる。
-          </p>
-        </div>
-        <div class="planet-pillar reveal">
-          <span class="planet-pillar-icon" aria-hidden="true">✦</span>
-          <h3 class="planet-pillar-title">FUTURE｜少し未来感</h3>
-          <p class="planet-pillar-desc">
-            AIプロダクトスタジオ・おかぽるLABが手がける、ここにしかないセレクト。自然とテクノロジーの交差点。
-          </p>
+    <div class="sel-inner">
+      <div class="sel-hero-content reveal">
+        <p class="sel-hero-eyebrow">FROM OKAPO LAB — AI PRODUCT STUDIO</p>
+        <h1 class="sel-hero-title">
+          OKAPO <span class="accent">SELECT</span>
+        </h1>
+        <p class="sel-hero-lead">暮らしを、ちょっと面白く。</p>
+        <p class="sel-hero-copy">
+          毎日の生活に「これ、いいな」を。<br>
+          おかぽるLABが選ぶ、デスク・ガジェット・インテリア・生活雑貨。
+        </p>
+        <div class="sel-hero-actions">
+          <a href="#pickup" class="sel-btn sel-btn--primary">SHOP NOW <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== CATEGORY ===== -->
-  <!-- カテゴリーを増やす場合は js/planet-data.js の PLANET_CATEGORIES に
-       1件追加するだけでOK。ここのHTML／JSは変更不要。 -->
-  <section class="planet-categories" id="planet-categories">
-    <div class="planet-inner">
-      <p class="section-label reveal">CATEGORY</p>
-      <h2 class="section-title reveal">これから広がる、<br class="br-pc">暮らしのカテゴリー。</h2>
+  <!-- ===== 2. CATEGORY =====
+       カード内容は js/okapo-select.js の SELECT_CATEGORIES を編集するだけ。
+       このHTMLは変更不要。 -->
+  <section class="sel-category" id="category">
+    <div class="sel-inner">
+      <div class="sel-section-head reveal">
+        <p class="sel-label">CATEGORY</p>
+        <h2 class="sel-heading">暮らしを彩る、カテゴリー</h2>
+      </div>
+      <div class="sel-cat-grid" id="sel-cat-grid"></div>
+    </div>
+  </section>
 
-      <div class="planet-cat-grid" id="planet-cat-grid"></div>
+  <!-- ===== 3. PICK UP =====
+       PICK UP に出す商品は js/okapo-select.js の SELECT_PRODUCTS で
+       pickup: true を付けた商品。BASEのURLは同ファイルの
+       BASE_SHOP_URL / 各商品の url で管理する。 -->
+  <section class="sel-pickup" id="pickup">
+    <div class="sel-inner">
+      <div class="sel-section-head reveal">
+        <p class="sel-label">PICK UP</p>
+        <h2 class="sel-heading">いま、BASEで買えるもの</h2>
+      </div>
+      <div id="sel-pickup"></div>
+    </div>
+  </section>
+
+  <!-- ===== 4. OKAPO PICKS =====
+       商品を増やす場合は js/okapo-select.js の SELECT_PRODUCTS に
+       オブジェクトを1件追加するだけ。10件でも100件でも
+       グリッドは自動で折り返す。 -->
+  <section class="sel-picks" id="okapo-picks">
+    <div class="sel-inner">
+      <div class="sel-section-head reveal">
+        <p class="sel-label">OKAPO PICKS</p>
+        <h2 class="sel-heading">おかぽるLABが面白いと思ったアイテム</h2>
+      </div>
+      <div class="sel-picks-grid" id="sel-picks-grid"></div>
     </div>
   </section>
 
@@ -121,20 +127,20 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-top">
-      <div class="footer-brand">PLANTS<span class="brand-dot">.</span></div>
-      <p class="footer-tagline">暮らしを、もっと面白く。 — by おかぽるLAB</p>
+      <div class="footer-brand">OKAPO SELECT</div>
+      <p class="footer-tagline">暮らしを、ちょっと面白く。 — by おかぽるLAB</p>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 OKAPO. All rights reserved.</span>
-      <a href="../index.html" style="color:var(--grey);text-decoration:none;">おかぽるLABへ戻る →</a>
+      <a href="../index.html">おかぽるLABへ戻る →</a>
     </div>
   </div>
 </footer>
 
 <script src="../js/script.js"></script>
 <script type="module">
-  import { renderCategoryGrid } from "../js/planet-catalog.js";
-  renderCategoryGrid(document.getElementById("planet-cat-grid"));
+  import { initOkapoSelect } from "../js/okapo-select.js";
+  initOkapoSelect();
 </script>
 </body>
 </html>

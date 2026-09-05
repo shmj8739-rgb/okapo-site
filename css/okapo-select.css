@@ -1,0 +1,692 @@
+/* ===================================================
+   OKAPO SELECT — ライフスタイル・セレクトショップ
+   （okapo-planet/index.html 専用。body.okapo-select にスコープを限定し、
+     css/style.css で定義済みの .site-header / .site-footer / .reveal などを
+     このページ内でだけ「白ベース」に上書きする。他ページには影響しない）
+
+   世界観は本体サイト（おかぽるLAB）を踏襲:
+   ・タイポグラフィ … Space Grotesk × Inter / Noto Sans JP
+   ・アクセント     … --accent-blue / --accent-violet（本体と同じ）
+   見やすさ優先で、地色だけを黒→白へ反転している。
+=================================================== */
+
+body.okapo-select {
+  /* --- このページ専用トークン（ライト） --- */
+  --sel-bg: #ffffff;
+  --sel-bg-soft: #f5f6f8;
+  --sel-ink: #14141a;
+  --sel-body: #56565f;
+  --sel-muted: #8a8a93;
+  --sel-line: rgba(20, 20, 26, 0.10);
+  --sel-line-strong: rgba(20, 20, 26, 0.18);
+  --sel-card: #ffffff;
+  --sel-shadow: 0 1px 2px rgba(20, 20, 26, 0.04);
+  --sel-shadow-lift: 0 22px 48px -24px rgba(20, 20, 26, 0.28);
+  --sel-accent: var(--accent-blue);
+  --sel-accent-2: var(--accent-violet);
+  --sel-gradient: linear-gradient(120deg, var(--accent-blue) 0%, var(--accent-violet) 100%);
+
+  background: var(--sel-bg);
+  color: var(--sel-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+body.okapo-select ::selection {
+  background: var(--sel-accent);
+  color: #fff;
+}
+
+/* noise-overlay は白地だと逆に暗く乗るので、このページでは無効化 */
+body.okapo-select .noise-overlay {
+  display: none;
+}
+
+.okapo-select .sel-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 6vw;
+}
+
+.okapo-select section[id] {
+  scroll-margin-top: 92px;
+}
+
+/* ===================================================
+   HEADER（style.css の .site-header をライトへ上書き）
+=================================================== */
+.okapo-select .site-header {
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--sel-line);
+  padding: 20px 6vw;
+}
+
+.okapo-select .header-inner {
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.okapo-select .brand {
+  color: var(--sel-ink);
+  font-size: 1.05rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.okapo-select .brand .brand-dot {
+  color: var(--sel-accent);
+}
+
+.okapo-select .sel-subnav {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 3vw, 30px);
+  margin-left: auto;
+  font-family: var(--ff-display);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.okapo-select .sel-subnav a {
+  position: relative;
+  color: var(--sel-body);
+  text-decoration: none;
+  padding: 4px 1px;
+  transition: color 0.3s var(--ease);
+}
+
+.okapo-select .sel-subnav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 1px;
+  background: var(--sel-gradient);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+
+.okapo-select .sel-subnav a:hover,
+.okapo-select .sel-subnav a:focus-visible {
+  color: var(--sel-ink);
+}
+
+.okapo-select .sel-subnav a:hover::after,
+.okapo-select .sel-subnav a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.okapo-select .header-meta {
+  color: var(--sel-muted);
+}
+
+.okapo-select .header-meta .meta-divider {
+  color: var(--sel-line-strong);
+}
+
+/* ===================================================
+   共通パーツ
+=================================================== */
+.okapo-select .sel-label {
+  display: inline-block;
+  font-family: var(--ff-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--sel-accent);
+  margin-bottom: 18px;
+}
+
+.okapo-select .sel-heading {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: clamp(1.6rem, 3.6vw, 2.5rem);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--sel-ink);
+}
+
+.okapo-select .sel-chip {
+  align-self: flex-start;
+  font-family: var(--ff-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sel-accent);
+  border: 1px solid var(--sel-line-strong);
+  border-radius: 999px;
+  padding: 4px 11px;
+}
+
+.okapo-select .sel-chip--sm {
+  font-size: 0.58rem;
+  padding: 3px 9px;
+}
+
+.okapo-select .sel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--ff-display);
+  font-size: 0.86rem;
+  letter-spacing: 0.02em;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 13px 26px;
+  border-radius: 999px;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+.okapo-select .sel-btn--primary {
+  color: #fff;
+  background: var(--sel-gradient);
+  box-shadow: 0 14px 30px -12px rgba(106, 141, 255, 0.55);
+}
+
+.okapo-select .sel-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -14px rgba(106, 141, 255, 0.6);
+}
+
+.okapo-select .sel-btn--sm {
+  padding: 10px 18px;
+  font-size: 0.78rem;
+  color: var(--sel-ink);
+  background: transparent;
+  border: 1px solid var(--sel-line-strong);
+}
+
+.okapo-select .sel-btn--sm:hover {
+  transform: translateY(-2px);
+  border-color: var(--sel-accent);
+  color: var(--sel-accent);
+}
+
+.okapo-select .sel-buy-note {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--sel-muted);
+}
+
+.okapo-select .sel-empty {
+  padding: 40px 0;
+  color: var(--sel-muted);
+  font-size: 0.9rem;
+}
+
+/* ===================================================
+   HERO
+=================================================== */
+.okapo-select .sel-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(140px, 20vw, 220px) 0 clamp(70px, 12vw, 130px);
+  background: var(--sel-bg);
+}
+
+.okapo-select .sel-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.okapo-select .sel-hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.5;
+}
+
+.okapo-select .sel-hero-orb--1 {
+  width: 44vw;
+  max-width: 560px;
+  aspect-ratio: 1;
+  top: -16%;
+  left: -8%;
+  background: radial-gradient(circle at 40% 40%, rgba(106, 141, 255, 0.55), transparent 70%);
+}
+
+.okapo-select .sel-hero-orb--2 {
+  width: 38vw;
+  max-width: 480px;
+  aspect-ratio: 1;
+  bottom: -22%;
+  right: -10%;
+  background: radial-gradient(circle at 60% 60%, rgba(165, 106, 255, 0.45), transparent 70%);
+}
+
+.okapo-select .sel-hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(20, 20, 26, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 20, 26, 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 35%, black 5%, transparent 72%);
+          mask-image: radial-gradient(ellipse 70% 60% at 50% 35%, black 5%, transparent 72%);
+}
+
+.okapo-select .sel-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+}
+
+.okapo-select .sel-hero-eyebrow {
+  font-family: var(--ff-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--sel-muted);
+  margin-bottom: 26px;
+}
+
+.okapo-select .sel-hero-title {
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 8vw, 5rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--sel-ink);
+}
+
+.okapo-select .sel-hero-title .accent {
+  background: var(--sel-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.okapo-select .sel-hero-lead {
+  margin-top: 22px;
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: clamp(1.05rem, 2.4vw, 1.4rem);
+  color: var(--sel-ink);
+}
+
+.okapo-select .sel-hero-copy {
+  margin-top: 16px;
+  max-width: 40ch;
+  font-size: clamp(0.92rem, 1.6vw, 1.02rem);
+  line-height: 1.9;
+  color: var(--sel-body);
+}
+
+.okapo-select .sel-hero-actions {
+  margin-top: 36px;
+}
+
+/* ===================================================
+   CATEGORY
+=================================================== */
+.okapo-select .sel-category {
+  padding: clamp(60px, 10vw, 110px) 0;
+  background: var(--sel-bg-soft);
+  border-top: 1px solid var(--sel-line);
+}
+
+.okapo-select .sel-section-head {
+  margin-bottom: clamp(36px, 6vw, 56px);
+}
+
+.okapo-select .sel-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.okapo-select .sel-cat-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 30px 26px 28px;
+  border-radius: 18px;
+  border: 1px solid var(--sel-line);
+  background: var(--sel-card);
+  box-shadow: var(--sel-shadow);
+  overflow: hidden;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+
+.okapo-select .sel-cat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sel-shadow-lift);
+  border-color: var(--sel-line-strong);
+}
+
+.okapo-select .sel-cat-index {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  font-family: var(--ff-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: rgba(20, 20, 26, 0.08);
+}
+
+.okapo-select .sel-cat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 12px;
+  border-radius: 13px;
+  font-size: 1.35rem;
+  background: linear-gradient(140deg, rgba(106, 141, 255, 0.14), rgba(165, 106, 255, 0.12));
+}
+
+.okapo-select .sel-cat-en {
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: 1.06rem;
+  letter-spacing: 0.01em;
+  color: var(--sel-ink);
+}
+
+.okapo-select .sel-cat-ja {
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  color: var(--sel-muted);
+}
+
+.okapo-select .sel-cat-desc {
+  margin-top: 4px;
+  font-size: 0.86rem;
+  line-height: 1.75;
+  color: var(--sel-body);
+}
+
+/* ===================================================
+   PICK UP
+=================================================== */
+.okapo-select .sel-pickup {
+  padding: clamp(64px, 10vw, 120px) 0;
+  background: var(--sel-bg);
+  border-top: 1px solid var(--sel-line);
+}
+
+.okapo-select .sel-pickup-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 60px);
+  align-items: center;
+  padding: clamp(22px, 3vw, 34px);
+  border-radius: 26px;
+  border: 1px solid var(--sel-line);
+  background: var(--sel-card);
+  box-shadow: var(--sel-shadow-lift);
+}
+
+.okapo-select .sel-pickup-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(106, 141, 255, 0.16), transparent 62%),
+    var(--sel-bg-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.okapo-select .sel-pickup-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.okapo-select .sel-pickup-placeholder {
+  font-size: clamp(3.5rem, 10vw, 6rem);
+  filter: drop-shadow(0 12px 22px rgba(20, 20, 26, 0.16));
+}
+
+.okapo-select .sel-pickup-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.okapo-select .sel-pickup-name {
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: clamp(1.25rem, 2.6vw, 1.7rem);
+  line-height: 1.5;
+  color: var(--sel-ink);
+}
+
+.okapo-select .sel-pickup-desc {
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: var(--sel-body);
+}
+
+.okapo-select .sel-pickup-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.okapo-select .sel-pickup-price {
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: var(--sel-ink);
+}
+
+.okapo-select .sel-pickup-shipping {
+  font-size: 0.82rem;
+  color: var(--sel-muted);
+}
+
+.okapo-select .sel-pickup-body .sel-btn,
+.okapo-select .sel-pickup-body .sel-buy-pending {
+  margin-top: 10px;
+  align-self: flex-start;
+}
+
+/* ===================================================
+   OKAPO PICKS（グリッド）
+=================================================== */
+.okapo-select .sel-picks {
+  padding: clamp(60px, 10vw, 110px) 0 clamp(80px, 12vw, 140px);
+  background: var(--sel-bg-soft);
+  border-top: 1px solid var(--sel-line);
+}
+
+.okapo-select .sel-picks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 22px;
+}
+
+.okapo-select .sel-pick-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  border: 1px solid var(--sel-line);
+  background: var(--sel-card);
+  box-shadow: var(--sel-shadow);
+  overflow: hidden;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+
+.okapo-select .sel-pick-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sel-shadow-lift);
+  border-color: var(--sel-line-strong);
+}
+
+.okapo-select .sel-pick-media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(106, 141, 255, 0.14), transparent 62%),
+    var(--sel-bg-soft);
+  overflow: hidden;
+}
+
+.okapo-select .sel-pick-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.okapo-select .sel-pick-placeholder {
+  font-size: 3.4rem;
+  filter: drop-shadow(0 10px 18px rgba(20, 20, 26, 0.16));
+}
+
+.okapo-select .sel-pick-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-family: var(--ff-display);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  color: #fff;
+  background: var(--sel-gradient);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.okapo-select .sel-pick-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 20px 22px;
+  flex: 1;
+}
+
+.okapo-select .sel-pick-name {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--sel-ink);
+}
+
+.okapo-select .sel-pick-desc {
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--sel-body);
+}
+
+.okapo-select .sel-pick-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.okapo-select .sel-pick-price {
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--sel-ink);
+}
+
+.okapo-select .sel-pick-shipping {
+  font-size: 0.74rem;
+  color: var(--sel-muted);
+}
+
+.okapo-select .sel-pick-body .sel-btn,
+.okapo-select .sel-pick-body .sel-buy-pending {
+  margin-top: 12px;
+  align-self: flex-start;
+}
+
+/* ===================================================
+   FOOTER（style.css の .site-footer をライトへ上書き）
+=================================================== */
+.okapo-select .site-footer {
+  background: var(--sel-bg);
+  border-top: 1px solid var(--sel-line);
+}
+
+.okapo-select .footer-brand {
+  color: var(--sel-ink);
+}
+
+.okapo-select .footer-brand .brand-dot {
+  color: var(--sel-accent);
+}
+
+.okapo-select .footer-tagline {
+  color: var(--sel-body);
+}
+
+.okapo-select .footer-bottom {
+  color: var(--sel-muted);
+  border-top: 1px solid var(--sel-line);
+  margin-top: 40px;
+  padding-top: 24px;
+}
+
+.okapo-select .footer-bottom a {
+  color: var(--sel-muted) !important;
+}
+
+.okapo-select .footer-bottom a:hover {
+  color: var(--sel-ink) !important;
+}
+
+/* ===================================================
+   RESPONSIVE
+=================================================== */
+@media (max-width: 860px) {
+  .okapo-select .sel-pickup-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .okapo-select .site-header {
+    padding: 14px 6vw;
+  }
+
+  .okapo-select .header-inner {
+    flex-wrap: wrap;
+    gap: 8px 14px;
+  }
+
+  .okapo-select .header-meta {
+    display: none;
+  }
+
+  .okapo-select .sel-subnav {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+  }
+
+  .okapo-select .sel-cat-grid,
+  .okapo-select .sel-picks-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .okapo-select .sel-pickup-card {
+    padding: 18px;
+  }
+}

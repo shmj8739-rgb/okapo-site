@@ -95,58 +95,110 @@
      ・おかぽるPLANTSティザーカード       → 削除（ナビ「植物」が okapo-planet/index.html に直リンク）
      いずれも元のページ・機能は削除していない。 -->
 
-<!-- ===== FUTURE OKAPO / 未来のおかぽ（動く広告風バナー） ===== -->
-<!-- カードを追加・削除する場合は、下の <a class="future-card"> ブロックを
-     コピーして .future-track の中に増やす/減らすだけでOKです。
-     ・カードは future-marquee.js が自動で複製し、シームレスにループ表示します。
-     ・配色を変えたい場合は future-card--xxxx というクラス名を新しく作り、
-       style.css 側で --card-grad-a / --card-grad-b を指定してください。
-     ・リンク先が決まったら href="#" を実際のURLに差し替えるだけでOK
-       （href="#" のままだとクリックしてもページ内ジャンプしないようJS側で無効化しています）。 -->
+<!-- ===== FUTURE OKAPO / 未来のおかぽ（挑戦の管理ボード） =====
+     おかぽ自身が「これからやること（NEXT）」を追加し、やり遂げたら
+     「COMPLETED」へ積み上げていくボード。データは Firestore の
+     future_challenges コレクション（js/future-okapo.js が担当）。
+
+     ・訪問者は NEXT / COMPLETED の閲覧のみ。
+     ・「＋ 新しい挑戦」「✓ 完了する」は Firebase Authentication で
+       管理者アカウントとしてログインしたときだけ表示される。
+     ・以前の自動横スクロール版（future-marquee.js / .future-viewport /
+       .future-track / .future-card）は削除していない。JS の読み込みを
+       future-okapo.js に差し替えているだけなので、必要になれば戻せる。 -->
 <section class="future" id="future" aria-labelledby="future-title">
-  <div class="section-inner future-header">
-    <p class="section-label reveal">FUTURE OKAPO</p>
-    <h2 class="section-title reveal" id="future-title">未来のおかぽ、予告中。<br>これから挑戦すること。</h2>
+  <div class="section-inner">
+    <div class="future-header">
+      <p class="section-label reveal">FUTURE OKAPO</p>
+      <h2 class="section-title reveal" id="future-title">未来のおかぽ、予告中。<br>これから挑戦すること。</h2>
+    </div>
+
+    <div class="future-board" id="future-board" data-admin="false">
+
+      <div class="future-toolbar">
+        <button type="button" class="future-add-btn" id="future-add-btn">
+          <span aria-hidden="true">＋</span> 新しい挑戦
+        </button>
+        <div class="future-admin-bar" id="future-admin-bar" hidden>
+          <span class="future-admin-flag">管理モード</span>
+          <button type="button" class="future-linkbtn" id="future-logout-btn">ログアウト</button>
+        </div>
+        <button type="button" class="future-admin-entry" id="future-admin-entry" aria-label="管理者ログイン">◈</button>
+      </div>
+
+      <!-- ここに 🔥 NEXT / ✓ COMPLETED を future-okapo.js が描画する -->
+      <div class="future-group future-group--next">
+        <h3 class="future-group-head">
+          <span class="future-group-icon" aria-hidden="true">🔥</span>
+          <span class="future-group-name">NEXT</span>
+          <span class="future-group-count" id="future-next-count" aria-hidden="true"></span>
+        </h3>
+        <p class="future-group-sub">これから挑戦すること。</p>
+        <div class="future-list" id="future-next-list" role="list"></div>
+        <p class="future-empty" id="future-next-empty" hidden>いま予定している挑戦はありません。</p>
+      </div>
+
+      <div class="future-group future-group--done">
+        <h3 class="future-group-head">
+          <span class="future-group-icon" aria-hidden="true">✓</span>
+          <span class="future-group-name">COMPLETED</span>
+          <span class="future-group-count" id="future-done-count" aria-hidden="true"></span>
+        </h3>
+        <p class="future-group-sub">やり遂げてきた挑戦。</p>
+        <div class="future-list future-list--done" id="future-done-list" role="list"></div>
+        <p class="future-empty" id="future-done-empty" hidden>まだ完了した挑戦はありません。</p>
+      </div>
+
+      <p class="future-state" id="future-state" role="status" hidden></p>
+    </div>
   </div>
 
-  <div class="future-viewport" role="region" aria-label="おかぽの今後の挑戦（自動スクロール表示。マウスをホバーすると一時停止できます）">
-    <div class="future-track">
+  <!-- ログインモーダル（未ログインで「＋ 新しい挑戦」を押した時などに表示） -->
+  <div class="future-modal-overlay" id="future-login-overlay" hidden>
+    <div class="future-modal" role="dialog" aria-modal="true" aria-labelledby="future-login-title">
+      <h3 class="future-modal-title" id="future-login-title">合言葉を入力</h3>
+      <p class="future-modal-lead">おかぽ本人のときだけ、挑戦を追加・完了できます。</p>
+      <form id="future-login-form">
+        <label class="future-field">
+          <span class="future-field-label">合言葉</span>
+          <input type="password" id="future-login-pass" autocomplete="current-password" required>
+        </label>
+        <p class="future-form-msg" id="future-login-msg" hidden></p>
+        <div class="future-modal-actions">
+          <button type="button" class="future-btn future-btn--ghost" id="future-login-cancel">やめる</button>
+          <button type="submit" class="future-btn future-btn--primary" id="future-login-submit">ログイン</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-      <!-- ---- FUTURE 01: キックボクシング大会 ---- -->
-      <a href="#" class="future-card future-card--kick">
-        <span class="future-card-badge">CHALLENGE 01</span>
-        <span class="future-card-visual" aria-hidden="true">🥊</span>
-        <span class="future-card-body">
-          <span class="future-card-title">キックボクシング大会</span>
-          <span class="future-card-copy">殴られてでも、前に出る。</span>
-          <span class="future-card-date">COMING SOON</span>
-        </span>
-      </a>
-
-      <!-- ---- FUTURE 02: ハーフマラソン ---- -->
-      <a href="#" class="future-card future-card--marathon">
-        <span class="future-card-badge">CHALLENGE 02</span>
-        <span class="future-card-visual" aria-hidden="true">🏃</span>
-        <span class="future-card-body">
-          <span class="future-card-title">ハーフマラソン完走</span>
-          <span class="future-card-copy">21.0975km、次はここまで走る。</span>
-          <span class="future-card-date">COMING SOON</span>
-        </span>
-      </a>
-
-      <!-- ---- FUTURE 03: 琵琶湖一周（ビワイチ） ---- -->
-      <a href="#" class="future-card future-card--biwako">
-        <span class="future-card-badge">CHALLENGE 03</span>
-        <span class="future-card-visual" aria-hidden="true">🚴</span>
-        <span class="future-card-body">
-          <span class="future-card-title">琵琶湖一周（ビワイチ）</span>
-          <span class="future-card-copy">約200km、自分の足で一周する。</span>
-          <span class="future-card-date">COMING SOON</span>
-        </span>
-      </a>
-
-      <!-- ---- 今後の挑戦はこの下に同じ構造で追加 ---- -->
-
+  <!-- 新しい挑戦の追加モーダル -->
+  <div class="future-modal-overlay" id="future-add-overlay" hidden>
+    <div class="future-modal" role="dialog" aria-modal="true" aria-labelledby="future-add-title">
+      <h3 class="future-modal-title" id="future-add-title">新しい挑戦</h3>
+      <form id="future-add-form">
+        <div class="future-field">
+          <span class="future-field-label">アイコン</span>
+          <div class="future-emoji-picker" id="future-emoji-picker" role="radiogroup" aria-label="アイコン"></div>
+        </div>
+        <label class="future-field">
+          <span class="future-field-label">タイトル<span class="future-req">必須</span></span>
+          <input type="text" id="future-add-title-input" maxlength="60" required placeholder="例）フルマラソン完走">
+        </label>
+        <label class="future-field">
+          <span class="future-field-label">一言説明</span>
+          <input type="text" id="future-add-note-input" maxlength="120" placeholder="例）42.195km、歩かずに走りきる。">
+        </label>
+        <label class="future-field">
+          <span class="future-field-label">予定日</span>
+          <input type="text" id="future-add-date-input" maxlength="20" placeholder="例）2026.12.01 ／ 未定">
+        </label>
+        <p class="future-form-msg" id="future-add-msg" hidden></p>
+        <div class="future-modal-actions">
+          <button type="button" class="future-btn future-btn--ghost" id="future-add-cancel">やめる</button>
+          <button type="submit" class="future-btn future-btn--primary" id="future-add-submit">追加する</button>
+        </div>
+      </form>
     </div>
   </div>
 </section>
@@ -325,7 +377,9 @@
 </footer>
 
 <script src="js/script.js"></script>
-<script src="js/future-marquee.js" defer></script>
+<!-- FUTURE OKAPO 挑戦ボード。以前の future-marquee.js は削除せず残しているが、
+     このページでは読み込まない（必要になれば下行を差し替えて戻せる）。 -->
+<script type="module" src="js/future-okapo.js"></script>
 <script type="module" src="js/visitor-counter.js"></script>
 </body>
 </html>

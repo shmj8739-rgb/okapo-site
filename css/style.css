@@ -1568,6 +1568,604 @@ body {
 }
 
 /* ===================================================
+   FUTURE OKAPO — 挑戦の管理ボード（NEXT / COMPLETED）
+   2026-09 追加。上の .future-viewport / .future-track /
+   .future-card（自動横スクロール版）は残してあるが、
+   index.html では使っていない。ここから下が現行の見た目。
+   データ・ロジックは js/future-okapo.js。
+=================================================== */
+.future-board {
+  position: relative;
+  max-width: 760px;
+}
+
+/* ---------- ツールバー（＋新しい挑戦 / 管理モード表示 / ◈） ---------- */
+.future-toolbar {
+  position: sticky;
+  top: 68px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 36px;
+  padding: 10px 0;
+  background: linear-gradient(var(--black) 62%, rgba(5, 5, 7, 0));
+}
+
+.future-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  font-family: var(--ff-display);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--black);
+  background: linear-gradient(120deg, #ff9f45 0%, #ff6b8b 45%, var(--accent-violet) 100%);
+  box-shadow: 0 12px 30px -12px rgba(255, 138, 101, 0.6);
+  cursor: pointer;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.future-add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px -12px rgba(255, 138, 101, 0.7);
+}
+
+.future-add-btn:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 3px;
+}
+
+/* 訪問者（未ログイン）には「＋ 新しい挑戦」を出さない。
+   代わりに ◈ からログインしてもらう。 */
+.future-board[data-admin="false"] .future-add-btn {
+  display: none;
+}
+
+/* display は unconditional に置かない。hidden 属性（UA の
+   [hidden]{display:none}）で確実に隠せるよう :not([hidden]) で付ける。 */
+.future-admin-bar:not([hidden]) {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.future-admin-flag {
+  font-family: var(--ff-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #7fe0b0;
+  padding: 4px 10px;
+  border: 1px solid rgba(127, 224, 176, 0.4);
+  border-radius: 999px;
+}
+
+.future-linkbtn {
+  border: 0;
+  background: none;
+  padding: 4px 2px;
+  color: var(--grey);
+  font-family: var(--ff-body);
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: color 0.2s var(--ease);
+}
+
+.future-linkbtn:hover {
+  color: var(--white);
+}
+
+.future-admin-entry {
+  margin-left: auto;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--grey-dim);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.future-admin-entry:hover {
+  color: var(--accent-blue);
+  border-color: var(--border-strong);
+}
+
+.future-board[data-admin="true"] .future-admin-entry {
+  display: none;
+}
+
+/* ---------- グループ（🔥 NEXT / ✓ COMPLETED） ---------- */
+.future-group {
+  margin-bottom: 52px;
+}
+
+.future-group:last-of-type {
+  margin-bottom: 0;
+}
+
+.future-group-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.16em;
+  color: var(--white);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.future-group-icon {
+  font-size: 1.1rem;
+}
+
+.future-group--next .future-group-name {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.future-group--done .future-group-name {
+  color: var(--grey);
+}
+
+.future-group-count {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: var(--grey-dim);
+}
+
+.future-group-sub {
+  margin: 12px 0 20px;
+  font-size: 0.82rem;
+  color: var(--grey);
+}
+
+.future-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.future-empty {
+  font-size: 0.85rem;
+  color: var(--grey-dim);
+  padding: 8px 0;
+}
+
+/* ---------- 挑戦カード ---------- */
+.future-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--graphite);
+  transition: transform 0.4s var(--ease), opacity 0.4s var(--ease),
+    border-color 0.3s var(--ease), box-shadow 0.4s var(--ease);
+  animation: future-item-in 0.5s var(--ease) both;
+}
+
+@keyframes future-item-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* NEXT：主役。左に光るアクセント＋わずかなグロー */
+.future-item--next {
+  background: linear-gradient(180deg, rgba(106, 141, 255, 0.08), rgba(165, 106, 255, 0.05)),
+    var(--graphite);
+  border-color: rgba(106, 141, 255, 0.28);
+}
+
+.future-item--next::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  bottom: 14px;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--accent-blue), var(--accent-violet));
+}
+
+.future-item--next:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -24px rgba(106, 141, 255, 0.5);
+}
+
+/* COMPLETED：実績として静かに積み上がる。コンパクト＆ややディム */
+.future-item--done {
+  padding: 14px 18px;
+  background: var(--charcoal);
+  border-color: var(--border);
+  opacity: 0.9;
+}
+
+.future-item--done .future-item-title {
+  color: var(--grey);
+}
+
+.future-item--done .future-item-emoji {
+  filter: grayscale(0.3);
+  opacity: 0.8;
+}
+
+.future-item-emoji {
+  flex: 0 0 auto;
+  font-size: 1.7rem;
+  line-height: 1.2;
+}
+
+.future-item--done .future-item-emoji {
+  font-size: 1.3rem;
+}
+
+.future-item-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.future-item-title {
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: 1.02rem;
+  line-height: 1.35;
+  color: var(--white);
+}
+
+.future-item--done .future-item-title::before {
+  content: "✓ ";
+  color: #7fe0b0;
+}
+
+.future-item-note {
+  margin-top: 4px;
+  font-size: 0.83rem;
+  color: var(--grey);
+}
+
+.future-item-date {
+  margin-top: 8px;
+  font-family: var(--ff-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--accent-blue);
+}
+
+.future-item--done .future-item-date {
+  color: var(--grey-dim);
+}
+
+.future-item-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.future-complete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid rgba(127, 224, 176, 0.5);
+  border-radius: 999px;
+  background: rgba(34, 197, 143, 0.12);
+  color: #9af0c6;
+  font-family: var(--ff-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.future-complete-btn:hover {
+  background: rgba(34, 197, 143, 0.22);
+}
+
+.future-complete-btn:active {
+  transform: scale(0.96);
+}
+
+.future-complete-btn:focus-visible,
+.future-undo-btn:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
+}
+
+/* 完了アニメ（派手すぎない：グリーンに光って静かに退場） */
+.future-item--next.is-completing {
+  border-color: rgba(127, 224, 176, 0.8);
+  box-shadow: 0 0 0 1px rgba(127, 224, 176, 0.6), 0 0 34px -6px rgba(34, 197, 143, 0.55);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.future-item--next.is-completing::after {
+  content: "✓ COMPLETED";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--ff-display);
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  color: #9af0c6;
+  animation: future-complete-badge 0.4s var(--ease) both;
+}
+
+.future-item--next.is-completing .future-item-actions {
+  visibility: hidden;
+}
+
+@keyframes future-complete-badge {
+  from { opacity: 0; transform: translateY(-50%) scale(0.8); }
+  to   { opacity: 1; transform: translateY(-50%) scale(1); }
+}
+
+/* ---------- 初期データ取り込みプロンプト ---------- */
+.future-seed-prompt {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.future-seed-prompt p {
+  font-size: 0.85rem;
+  color: var(--grey);
+}
+
+/* ---------- 状態表示 / トースト ---------- */
+.future-state {
+  margin-top: 24px;
+  font-size: 0.85rem;
+  color: var(--grey);
+}
+
+.future-state.is-flash {
+  color: #9af0c6;
+  animation: future-item-in 0.4s var(--ease) both;
+}
+
+/* ---------- モーダル ---------- */
+.future-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  padding: 24px;
+  background: rgba(5, 5, 7, 0.78);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+}
+
+/* display は hidden 属性で消せるよう :not([hidden]) 側に置く。
+   hidden を外す（表示）→ 次フレームで .is-open を付ける（フェードイン）。 */
+.future-modal-overlay:not([hidden]) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.future-modal-overlay.is-open {
+  opacity: 1;
+}
+
+.future-modal {
+  width: 100%;
+  max-width: 400px;
+  padding: 28px;
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  background: var(--graphite-light);
+  transform: translateY(12px);
+  transition: transform 0.3s var(--ease);
+}
+
+.future-modal-overlay.is-open .future-modal {
+  transform: translateY(0);
+}
+
+.future-modal-title {
+  font-family: var(--ff-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.future-modal-lead {
+  font-size: 0.82rem;
+  color: var(--grey);
+  margin-bottom: 20px;
+}
+
+.future-field {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.future-field-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--grey);
+  margin-bottom: 6px;
+}
+
+.future-req {
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: #ff9f45;
+  border: 1px solid rgba(255, 159, 69, 0.4);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+.future-field input {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--charcoal);
+  color: var(--white);
+  font-family: var(--ff-body);
+  font-size: 0.95rem;
+}
+
+.future-field input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+}
+
+.future-emoji-picker {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+}
+
+.future-emoji-opt {
+  aspect-ratio: 1;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--charcoal);
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease),
+    transform 0.15s var(--ease);
+}
+
+.future-emoji-opt:hover {
+  transform: translateY(-1px);
+}
+
+.future-emoji-opt.is-selected {
+  border-color: var(--accent-violet);
+  background: rgba(165, 106, 255, 0.18);
+}
+
+.future-form-msg {
+  font-size: 0.8rem;
+  color: #ff8a8a;
+  margin-bottom: 14px;
+}
+
+.future-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.future-btn {
+  flex: 1;
+  min-height: 44px;
+  border: 0;
+  border-radius: 999px;
+  font-family: var(--ff-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+
+.future-btn:active {
+  transform: scale(0.98);
+}
+
+.future-btn--primary {
+  color: var(--black);
+  background: linear-gradient(120deg, var(--accent-blue), var(--accent-violet));
+}
+
+.future-btn--primary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.future-btn--ghost {
+  color: var(--grey);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .future-item,
+  .future-state.is-flash,
+  .future-item--next.is-completing::after {
+    animation: none;
+  }
+  .future-item,
+  .future-modal,
+  .future-modal-overlay {
+    transition: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .future-toolbar {
+    top: 60px;
+    flex-wrap: wrap;
+  }
+
+  .future-add-btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .future-item {
+    flex-wrap: wrap;
+    padding: 16px;
+  }
+
+  .future-item-actions {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .future-complete-btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  .future-item--next.is-completing::after {
+    top: 16px;
+    transform: none;
+  }
+
+  @keyframes future-complete-badge {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .future-emoji-picker {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* ===================================================
    DIARY — おかぽ日記（noteへの導線）
    カルーセル（.future）の直下に置く単体カード。
    オカリス＝ゲーム／KICK MEAL＝チャレンジ／おかぽ掲示板＝コミュニティ、

@@ -184,5 +184,90 @@ service cloud.firestore {
 
       allow delete: if false;
     }
+
+    // ===================================================
+    // FUTURE OKAPO — おかぽの挑戦リスト（2026-09 追加）
+    // ---------------------------------------------------
+    // 上の hiroba_posts / orders / site_meta のルールには一切
+    // 手を加えていない。独立した match ブロックの追加のみ。
+    //
+    // - 訪問者は NEXT / COMPLETED を読み取れる（allow read: if true）。
+    // - 追加・完了・戻す・削除は、Firebase Authentication で
+    //   下記の管理者アカウント（UID）としてログインしている場合のみ。
+    //   合言葉のハッシュ照合方式は「保存済みハッシュを読めば誰でも
+    //   書き込みを偽装できる」ため採用しない。ルールが本人確認に
+    //   使えるのは request.auth だけ。
+    //
+    // ADMIN_UID は Firebaseコンソール > Authentication で作成した
+    // おかぽ管理者アカウントの「ユーザーUID」。下の isFutureAdmin() に
+    // 直書きしている（B97DtiPqoiRuB1IJ2NuxaEPoVzq2）。
+    // このUIDは秘密情報ではない（推測不能なランダム文字列で、知られても
+    // 本人としてログインできなければ書き込めない）。クライアントJS側に
+    // 露出しても問題ない種類の値。
+    // ===================================================
+    match /future_challenges/{challengeId} {
+
+      function isFutureAdmin() {
+        return request.auth != null &&
+          request.auth.uid == 'B97DtiPqoiRuB1IJ2NuxaEPoVzq2';
+      }
+
+      function validChallengeShape() {
+        return request.resource.data.keys().hasOnly([
+            'title', 'note', 'emoji', 'plannedDate',
+            'status', 'createdAt', 'completedAt'
+          ]) &&
+          request.resource.data.title is string &&
+          request.resource.data.title.size() > 0 &&
+          request.resource.data.title.size() <= 60 &&
+          request.resource.data.note is string &&
+          request.resource.data.note.size() <= 120 &&
+          request.resource.data.emoji is string &&
+          request.resource.data.emoji.size() <= 8 &&
+          request.resource.data.plannedDate is string &&
+          request.resource.data.plannedDate.size() <= 20;
+      }
+
+      allow read: if true;
+
+      // 新規追加：管理者のみ。作成直後は必ず next（completedAt は null）。
+      // 既存挑戦の移行用に completed でも作れるようにしている
+      // （その場合は completedAt にサーバー時刻が入る）。
+      allow create: if
+        isFutureAdmin() &&
+        validChallengeShape() &&
+        request.resource.data.createdAt == request.time &&
+        (
+          (
+            request.resource.data.status == 'next' &&
+            request.resource.data.completedAt == null
+          ) ||
+          (
+            request.resource.data.status == 'completed' &&
+            request.resource.data.completedAt == request.time
+          )
+        );
+
+      // 更新：管理者のみ。status と completedAt の組でのみ、
+      // next → completed（完了）／ completed → next（戻す）を許可する。
+      allow update: if
+        isFutureAdmin() &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'completedAt']) &&
+        (
+          (
+            resource.data.status == 'next' &&
+            request.resource.data.status == 'completed' &&
+            request.resource.data.completedAt == request.time
+          ) ||
+          (
+            resource.data.status == 'completed' &&
+            request.resource.data.status == 'next' &&
+            request.resource.data.completedAt == null
+          )
+        );
+
+      // 物理削除も管理者のみ（現状 UI からは呼ばないが将来用）。
+      allow delete: if isFutureAdmin();
+    }
   }
 }

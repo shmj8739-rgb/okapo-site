@@ -201,6 +201,25 @@
       </form>
     </div>
   </div>
+
+  <!-- 完了時の実施日入力モーダル（「✓ 完了する」／COMPLETED の「実績日を修正」共用） -->
+  <div class="future-modal-overlay" id="future-done-overlay" hidden>
+    <div class="future-modal" role="dialog" aria-modal="true" aria-labelledby="future-done-title">
+      <h3 class="future-modal-title" id="future-done-title">実施日を入力</h3>
+      <p class="future-modal-lead" id="future-done-lead">実際に挑戦をやり遂げた日を選んでください。</p>
+      <form id="future-done-form">
+        <label class="future-field">
+          <span class="future-field-label">実施日</span>
+          <input type="date" id="future-done-date" required>
+        </label>
+        <p class="future-form-msg" id="future-done-msg" hidden></p>
+        <div class="future-modal-actions">
+          <button type="button" class="future-btn future-btn--ghost" id="future-done-cancel">やめる</button>
+          <button type="submit" class="future-btn future-btn--primary" id="future-done-submit">完了する</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </section>
 
 <!-- ===== TRADE ROUTES / 世界貿易ルート ティザー =====

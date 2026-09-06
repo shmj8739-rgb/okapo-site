@@ -14,7 +14,8 @@
 //
 // あとから初期状態を変えたい場合はこの配列を編集するだけでよい。
 // status は "next" / "completed" のどちらでも指定できる。
-// "completed" の場合は completedAtText（表示用の完了日）も任意で持てる。
+// "completed" の場合は completedDate（"2026-08-20" 形式＝実際に実施した日）を
+// 任意で持てる。省略すると取り込み時の当日になる。
 // ===================================================
 
 export const INITIAL_CHALLENGES = [

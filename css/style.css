@@ -1856,6 +1856,9 @@ body {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .future-complete-btn {
@@ -2039,6 +2042,12 @@ body {
 .future-field input:focus {
   outline: none;
   border-color: var(--accent-blue);
+}
+
+/* 日付入力：ネイティブのカレンダーUI・アイコンをダークテーマに合わせる */
+.future-field input[type="date"] {
+  color-scheme: dark;
+  min-height: 44px;
 }
 
 .future-emoji-picker {

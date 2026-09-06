@@ -228,11 +228,21 @@ service cloud.firestore {
           request.resource.data.plannedDate.size() <= 20;
       }
 
+      // completedAt は「実際に挑戦を実施・達成した日」（ユーザーが入力する）。
+      // 完了ボタンを押した瞬間のサーバー時刻ではないため request.time 固定に
+      // せず、タイムスタンプであること・極端な過去/未来でないことだけ検証する。
+      // これにより「過去に実施した挑戦の完了登録」「実績日の後からの修正」を許可する。
+      // 未来日は +1日の余裕（端末時計・時差の吸収）まで許容し、それ以降は拒否。
+      function validCompletedAt() {
+        return request.resource.data.completedAt is timestamp &&
+          request.resource.data.completedAt > timestamp.date(2015, 1, 1) &&
+          request.resource.data.completedAt < request.time + duration.value(1, 'd');
+      }
+
       allow read: if true;
 
       // 新規追加：管理者のみ。作成直後は必ず next（completedAt は null）。
-      // 既存挑戦の移行用に completed でも作れるようにしている
-      // （その場合は completedAt にサーバー時刻が入る）。
+      // 既存挑戦の移行用に completed でも作れる（実施日を completedAt に入れる）。
       allow create: if
         isFutureAdmin() &&
         validChallengeShape() &&
@@ -244,12 +254,14 @@ service cloud.firestore {
           ) ||
           (
             request.resource.data.status == 'completed' &&
-            request.resource.data.completedAt == request.time
+            validCompletedAt()
           )
         );
 
-      // 更新：管理者のみ。status と completedAt の組でのみ、
-      // next → completed（完了）／ completed → next（戻す）を許可する。
+      // 更新：管理者のみ。status と completedAt の組でのみ変更できる。
+      //  (a) 完了     : next → completed。実施日を completedAt に保存
+      //  (b) 戻す     : completed → next。completedAt は null に戻す
+      //  (c) 実績日修正: completed のまま completedAt だけ入れ直す
       allow update: if
         isFutureAdmin() &&
         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'completedAt']) &&
@@ -257,12 +269,17 @@ service cloud.firestore {
           (
             resource.data.status == 'next' &&
             request.resource.data.status == 'completed' &&
-            request.resource.data.completedAt == request.time
+            validCompletedAt()
           ) ||
           (
             resource.data.status == 'completed' &&
             request.resource.data.status == 'next' &&
             request.resource.data.completedAt == null
+          ) ||
+          (
+            resource.data.status == 'completed' &&
+            request.resource.data.status == 'completed' &&
+            validCompletedAt()
           )
         );
 

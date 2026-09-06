@@ -25,8 +25,9 @@
 //    emoji:       string  0〜8字
 //    plannedDate: string  0〜20字（"2026.12.01" や "未定" など自由入力）
 //    status:      "next" | "completed"
-//    createdAt:   timestamp
-//    completedAt: timestamp | null
+//    createdAt:   timestamp（Firestore への登録日時。表示には使わない）
+//    completedAt: timestamp | null（ユーザーが入力した「実際に実施した日」。
+//                 完了ボタンを押した時刻ではない）
 //
 //  既存の hiroba_posts / orders / site_meta には一切アクセスしない。
 //  Firebase アプリも別名（"okapoFuture"）で初期化している。
@@ -41,6 +42,7 @@ import {
   updateDoc,
   onSnapshot,
   serverTimestamp,
+  Timestamp,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import {
   getAuth,
@@ -128,12 +130,23 @@ function init() {
     addCancel: document.getElementById("future-add-cancel"),
     addSubmit: document.getElementById("future-add-submit"),
     emojiPicker: document.getElementById("future-emoji-picker"),
+
+    doneOverlay: document.getElementById("future-done-overlay"),
+    doneForm: document.getElementById("future-done-form"),
+    doneDate: document.getElementById("future-done-date"),
+    doneMsg: document.getElementById("future-done-msg"),
+    doneCancel: document.getElementById("future-done-cancel"),
+    doneSubmit: document.getElementById("future-done-submit"),
+    doneTitle: document.getElementById("future-done-title"),
+    doneLead: document.getElementById("future-done-lead"),
   };
 
   let isAdmin = false;
   let challenges = []; // { id, title, note, emoji, plannedDate, status, createdAt, completedAt }
   let selectedEmoji = EMOJI_CHOICES[0];
   const completing = new Set(); // 完了アニメ中の id（再描画で消さないため）
+  // 実施日モーダルの対象。mode: "complete"（next→completed）/ "edit"（実績日修正）
+  let pendingDone = null;
 
   buildEmojiPicker(el, () => selectedEmoji, (v) => { selectedEmoji = v; });
   wireModals(el);
@@ -234,13 +247,14 @@ function init() {
     const meta = document.createElement("p");
     meta.className = "future-item-date";
     if (kind === "done") {
-      // COMPLETED は「予定 … ／ 完了 …」の形。予定日が無い/未定でも
-      // 完了日だけは必ず出す。
+      // COMPLETED は「予定 … ／ 実績 …」の形。
+      //   予定 = plannedDate（予定日）／ 実績 = completedAt（実際に実施した日）
+      // 予定日が無い/未定でも、実績日は必ず出す。
       const planned = formatDateText(c.plannedDate);
       const done = formatDoneDate(c.completedAt);
       const parts = [];
       if (planned) parts.push(`予定 ${planned}`);
-      if (done) parts.push(`完了 ${done}`);
+      if (done) parts.push(`実績 ${done}`);
       meta.textContent = parts.join(" ／ ");
     } else {
       meta.textContent = formatDateText(c.plannedDate);
@@ -260,15 +274,22 @@ function init() {
         btn.type = "button";
         btn.className = "future-complete-btn";
         btn.innerHTML = '<span aria-hidden="true">✓</span> 完了する';
-        btn.addEventListener("click", () => completeChallenge(c.id, card));
+        btn.addEventListener("click", () => openDoneModal(c.id, card, "complete"));
         actions.appendChild(btn);
       } else {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "future-linkbtn future-undo-btn";
-        btn.textContent = "↩ NEXTに戻す";
-        btn.addEventListener("click", () => undoChallenge(c.id));
-        actions.appendChild(btn);
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.className = "future-linkbtn future-editdate-btn";
+        editBtn.textContent = "実績日を修正";
+        editBtn.addEventListener("click", () => openDoneModal(c.id, null, "edit"));
+        actions.appendChild(editBtn);
+
+        const undoBtn = document.createElement("button");
+        undoBtn.type = "button";
+        undoBtn.className = "future-linkbtn future-undo-btn";
+        undoBtn.textContent = "↩ NEXTに戻す";
+        undoBtn.addEventListener("click", () => undoChallenge(c.id));
+        actions.appendChild(undoBtn);
       }
       card.appendChild(actions);
     }
@@ -314,7 +335,8 @@ function init() {
     });
   }
 
-  async function completeChallenge(id, cardEl) {
+  // completedTs … ユーザーが入力した実施日（Firestore Timestamp）
+  async function completeChallenge(id, cardEl, completedTs) {
     if (completing.has(id)) return;
     completing.add(id);
     if (cardEl) cardEl.classList.add("is-completing");
@@ -325,7 +347,7 @@ function init() {
     try {
       await updateDoc(doc(db, COLLECTION, id), {
         status: "completed",
-        completedAt: serverTimestamp(),
+        completedAt: completedTs,
       });
       flash(el, "また一つ、挑戦を終えた。");
     } catch (err) {
@@ -355,6 +377,11 @@ function init() {
     try {
       for (const item of INITIAL_CHALLENGES) {
         const isDone = item.status === "completed";
+        // completed 項目は completedDate（"2026-08-20"）を実施日として使う。
+        // 無ければ今日で代替する。
+        const completedAt = isDone
+          ? ymdToTimestamp(item.completedDate) || Timestamp.fromDate(new Date())
+          : null;
         await addDoc(collection(db, COLLECTION), {
           title: String(item.title || "").slice(0, 60),
           note: String(item.note || "").slice(0, 120),
@@ -362,7 +389,7 @@ function init() {
           plannedDate: String(item.plannedDate || "").slice(0, 20),
           status: isDone ? "completed" : "next",
           createdAt: serverTimestamp(),
-          completedAt: isDone ? serverTimestamp() : null,
+          completedAt,
         });
       }
       flash(el, "既存の挑戦を取り込みました。");
@@ -450,8 +477,52 @@ function init() {
       }
     });
 
+    // 実施日（完了 / 実績日修正）
+    el.doneCancel.addEventListener("click", () => closeOverlay(el.doneOverlay));
+    el.doneForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      hideMsg(el.doneMsg);
+      if (!pendingDone) {
+        closeOverlay(el.doneOverlay);
+        return;
+      }
+      const ts = ymdToTimestamp(el.doneDate.value);
+      if (!ts) {
+        showMsg(el.doneMsg, "実施日を選んでください。");
+        return;
+      }
+      if (ts.toMillis() > Date.now() + 86400000) {
+        showMsg(el.doneMsg, "未来の日付は指定できません。");
+        return;
+      }
+      const { id, cardEl, mode } = pendingDone;
+      const restore = el.doneSubmit.textContent;
+      el.doneSubmit.disabled = true;
+      el.doneSubmit.textContent = "保存中…";
+
+      if (mode === "edit") {
+        try {
+          await updateDoc(doc(db, COLLECTION, id), { completedAt: ts });
+          closeOverlay(el.doneOverlay);
+          flash(el, "実績日を更新しました。");
+        } catch (err) {
+          console.error("[future-okapo] edit date failed:", err);
+          showMsg(el.doneMsg, "更新できませんでした。ログイン状態をご確認ください。");
+        } finally {
+          el.doneSubmit.disabled = false;
+          el.doneSubmit.textContent = restore;
+        }
+      } else {
+        pendingDone = null;
+        el.doneSubmit.disabled = false;
+        el.doneSubmit.textContent = restore;
+        closeOverlay(el.doneOverlay);
+        completeChallenge(id, cardEl, ts); // アニメ＋保存は内部で処理（エラーも内部表示）
+      }
+    });
+
     // オーバーレイの背景クリック / Esc で閉じる
-    [el.loginOverlay, el.addOverlay].forEach((ov) => {
+    [el.loginOverlay, el.addOverlay, el.doneOverlay].forEach((ov) => {
       ov.addEventListener("click", (e) => {
         if (e.target === ov) closeOverlay(ov);
       });
@@ -460,8 +531,37 @@ function init() {
       if (e.key === "Escape") {
         closeOverlay(el.loginOverlay);
         closeOverlay(el.addOverlay);
+        closeOverlay(el.doneOverlay);
       }
     });
+  }
+
+  // 実施日モーダルを開く。
+  //   mode "complete" … NEXT カードの「✓ 完了する」。既定日 = 今日
+  //   mode "edit"     … COMPLETED カードの「実績日を修正」。既定日 = 現在の実績日
+  function openDoneModal(id, cardEl, mode) {
+    const today = localYmd(new Date());
+    pendingDone = { id, cardEl, mode };
+    hideMsg(el.doneMsg);
+    el.doneDate.max = today;
+
+    if (mode === "edit") {
+      const c = challenges.find((x) => x.id === id);
+      const cur =
+        c && c.completedAt && typeof c.completedAt.toDate === "function"
+          ? localYmd(c.completedAt.toDate())
+          : today;
+      el.doneDate.value = cur;
+      el.doneTitle.textContent = "実績日を修正";
+      el.doneLead.textContent = "実際に挑戦をやり遂げた日に修正できます。";
+      el.doneSubmit.textContent = "保存";
+    } else {
+      el.doneDate.value = today;
+      el.doneTitle.textContent = "実施日を入力";
+      el.doneLead.textContent = "実際に挑戦をやり遂げた日を選んでください。";
+      el.doneSubmit.textContent = "完了する";
+    }
+    openOverlay(el.doneOverlay);
   }
 
   function wireAdmin(el) {
@@ -552,7 +652,7 @@ function flash(el, text) {
   }, 2600);
 }
 
-// Firestore Timestamp（完了日）を "YYYY.MM.DD" にする。
+// Firestore Timestamp（実績日）を "YYYY.MM.DD" にする。
 function formatDoneDate(ts) {
   if (!ts || typeof ts.toDate !== "function") return "";
   const d = ts.toDate();
@@ -560,6 +660,27 @@ function formatDoneDate(ts) {
   const m = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
   return `${y}.${m}.${day}`;
+}
+
+// Date → "YYYY-MM-DD"（<input type="date"> の value 形式・ローカル日付）
+function localYmd(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+// "YYYY-MM-DD" → その日のローカル 0:00 を指す Firestore Timestamp。
+// 不正な文字列は null。formatDoneDate はローカル日付で読むため、
+// ここもローカル 0:00 で作れば表示日とズレない。
+function ymdToTimestamp(str) {
+  const m = String(str ?? "").trim().match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if (!m) return null;
+  const y = Number(m[1]);
+  const mo = Number(m[2]);
+  const d = Number(m[3]);
+  if (mo < 1 || mo > 12 || d < 1 || d > 31) return null;
+  return Timestamp.fromDate(new Date(y, mo - 1, d));
 }
 
 // 予定日（plannedDate）は自由入力の文字列。表示時だけ整形する

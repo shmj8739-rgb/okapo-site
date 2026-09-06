@@ -234,9 +234,16 @@ function init() {
     const meta = document.createElement("p");
     meta.className = "future-item-date";
     if (kind === "done") {
-      meta.textContent = formatDoneDate(c.completedAt);
-    } else if (c.plannedDate) {
-      meta.textContent = c.plannedDate;
+      // COMPLETED は「予定 … ／ 完了 …」の形。予定日が無い/未定でも
+      // 完了日だけは必ず出す。
+      const planned = formatDateText(c.plannedDate);
+      const done = formatDoneDate(c.completedAt);
+      const parts = [];
+      if (planned) parts.push(`予定 ${planned}`);
+      if (done) parts.push(`完了 ${done}`);
+      meta.textContent = parts.join(" ／ ");
+    } else {
+      meta.textContent = formatDateText(c.plannedDate);
     }
     if (meta.textContent) body.appendChild(meta);
 
@@ -545,6 +552,7 @@ function flash(el, text) {
   }, 2600);
 }
 
+// Firestore Timestamp（完了日）を "YYYY.MM.DD" にする。
 function formatDoneDate(ts) {
   if (!ts || typeof ts.toDate !== "function") return "";
   const d = ts.toDate();
@@ -552,4 +560,21 @@ function formatDoneDate(ts) {
   const m = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
   return `${y}.${m}.${day}`;
+}
+
+// 予定日（plannedDate）は自由入力の文字列。表示時だけ整形する
+// （Firestore のデータ自体は書き換えない）。
+//  ・"2026/9/5" "2026-09-05" "2026.9.5" "2026年9月5日" → "2026.09.05"
+//  ・"未定" など日付として解釈できない文字列 → そのまま返す
+//  ・空・null → ""（呼び出し側で非表示にする）
+function formatDateText(raw) {
+  const s = String(raw ?? "").trim();
+  if (!s) return "";
+  const m = s.match(/^(\d{4})\s*[./年-]\s*(\d{1,2})\s*[./月-]\s*(\d{1,2})\s*日?$/);
+  if (!m) return s;
+  const y = m[1];
+  const mo = String(Number(m[2])).padStart(2, "0");
+  const d = String(Number(m[3])).padStart(2, "0");
+  if (Number(mo) < 1 || Number(mo) > 12 || Number(d) < 1 || Number(d) > 31) return s;
+  return `${y}.${mo}.${d}`;
 }

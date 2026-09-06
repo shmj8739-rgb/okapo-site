@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZKJT7MEQVL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ZKJT7MEQVL');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>世界貿易ルート | おかぽるLAB</title>
+<meta name="description" content="日本を中心に、世界の海上貿易ルートを地図とインタラクティブUIで可視化。日本⇄アメリカ・中国・韓国、中東⇄日本、中国⇄ヨーロッパなど代表的な貿易ルートをクリックして、品目・主要港・重要性を確認できます。">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://okapo-site.netlify.app/trade-routes/index.html">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="おかぽるLAB">
+<meta property="og:title" content="世界貿易ルート | おかぽるLAB">
+<meta property="og:description" content="日本を中心に、世界の海上貿易ルートを地図とインタラクティブUIで可視化するコンテンツ。">
+<meta property="og:url" content="https://okapo-site.netlify.app/trade-routes/index.html">
+<meta property="og:locale" content="ja_JP">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..600&family=Noto+Sans+JP:wght@300..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand" style="text-decoration:none;">おかぽる<span class="brand-dot">LAB</span></a>
+    <div class="header-meta">
+      <span>OKAPO LAB</span>
+      <span class="meta-divider">/</span>
+      <span>TRADE ROUTES</span>
+    </div>
+  </div>
+</header>
+
+<main class="tr-page">
+  <div class="tr-inner">
+
+    <nav class="tr-breadcrumb">
+      <a href="../index.html">おかぽるLAB</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">世界貿易ルート</span>
+    </nav>
+
+    <div class="tr-page-header">
+      <p class="section-label reveal">WORLD TRADE ROUTES</p>
+      <h1 class="reveal">世界貿易ルート</h1>
+      <p class="reveal tr-lead">
+        日本を中心に、世界のモノの流れを可視化。<br class="br-pc">
+        ルートをクリックすると、主要港・品目・輸送手段を確認できます。
+      </p>
+      <p class="reveal tr-lead-note">※本ページのデータはMVP用のサンプルです。リアルタイムの貿易統計とは連携していません。</p>
+    </div>
+
+    <div class="tr-layout">
+
+      <!-- ===== 地図＋コントロール ===== -->
+      <div class="tr-map-column">
+        <div class="tr-map-card">
+          <div class="tr-map-stage">
+            <svg id="tr-map-svg" class="tr-map-svg" viewBox="0 0 960 540" role="img" aria-label="世界地図と貿易ルート">
+              <defs>
+                <linearGradient id="tr-route-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#6a8dff" />
+                  <stop offset="100%" stop-color="#a56aff" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+
+        <div class="tr-controls">
+          <div class="tr-control-block">
+            <p class="tr-control-block-title">国・地域で絞り込む</p>
+            <div class="tr-filter-row" id="tr-region-filter"></div>
+          </div>
+
+          <div class="tr-control-block">
+            <p class="tr-control-block-title">ルートの表示 ON / OFF</p>
+            <ul class="tr-route-list" id="tr-route-list"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 詳細パネル ===== -->
+      <aside class="tr-detail-panel" id="tr-detail-panel" aria-label="ルート詳細">
+        <button type="button" class="tr-detail-close" id="tr-detail-close" aria-label="閉じる">✕</button>
+
+        <div class="tr-detail-placeholder" id="tr-detail-placeholder">
+          <span class="tr-detail-placeholder-icon" aria-hidden="true">🌐</span>
+          地図上のルート（線）をクリックすると、<br>
+          ここに詳細が表示されます。
+        </div>
+
+        <div id="tr-detail-body" hidden></div>
+      </aside>
+
+    </div>
+
+  </div>
+</main>
+
+<div class="tr-panel-overlay" id="tr-panel-overlay"></div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">LAB<span class="brand-dot">.</span></div>
+      <p class="footer-tagline">おかぽるLABのコンテンツ — WORLD TRADE ROUTES</p>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 OKAPO. All rights reserved.</span>
+      <a href="../index.html" style="color:var(--grey);text-decoration:none;">おかぽるLABへ戻る →</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/map.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,493 @@
+/* ===================================================
+   WORLD TRADE ROUTES
+   既存デザインシステム（../../css/style.css の CSS変数）を継承。
+   ページ骨組みは games/index.html などと同じく、
+   ヘッダー・パンくず・ページタイトルの構成を踏襲している。
+=================================================== */
+
+.tr-page {
+  min-height: 100vh;
+  background: var(--black);
+  padding-top: 120px;
+  padding-bottom: 80px;
+}
+
+.tr-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 6vw;
+}
+
+.tr-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+  font-family: var(--ff-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: var(--grey-dim);
+}
+.tr-breadcrumb a { color: var(--grey); text-decoration: none; transition: color 0.3s var(--ease); }
+.tr-breadcrumb a:hover { color: var(--accent-blue); }
+.tr-breadcrumb span[aria-current] { color: var(--grey); }
+
+.tr-page-header { margin-bottom: 52px; }
+.tr-page-header .section-label { margin-bottom: 20px; }
+.tr-page-header h1 {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  line-height: 1.35;
+  color: var(--white);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+.tr-lead {
+  color: var(--grey);
+  font-size: 1.02rem;
+  line-height: 1.8;
+  max-width: 580px;
+}
+.tr-lead-note {
+  color: var(--grey-dim);
+  font-size: 0.78rem;
+  line-height: 1.7;
+  max-width: 580px;
+  margin-top: 10px;
+}
+
+/* ===================================================
+   レイアウト：PCは「地図＋コントロール」と「詳細パネル」の2カラム
+=================================================== */
+/* 地図7〜75% : 詳細パネル25〜30%程度の比率。
+   詳細パネルは可読性のため min 300px を確保しつつ、比率で伸縮させる。 */
+.tr-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2.9fr) minmax(300px, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .tr-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- 地図まわり ---------- */
+.tr-map-card {
+  position: relative;
+  background: var(--graphite);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.tr-map-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(106, 141, 255, 0.10), transparent 55%),
+    radial-gradient(ellipse at 80% 80%, rgba(165, 106, 255, 0.08), transparent 55%),
+    var(--charcoal);
+}
+
+@media (max-width: 640px) {
+  .tr-map-stage { aspect-ratio: 4 / 5; }
+}
+
+.tr-map-svg { width: 100%; height: 100%; display: block; }
+
+/* 国境ポリゴン */
+.tr-country {
+  fill: var(--graphite-light);
+  stroke: rgba(255, 255, 255, 0.10);
+  stroke-width: 0.6;
+}
+
+/* 港ポイント */
+.tr-port { cursor: default; }
+.tr-port-halo {
+  fill: none;
+  stroke: var(--accent-blue);
+  stroke-width: 1;
+  opacity: 0.35;
+}
+.tr-port-dot {
+  fill: var(--white);
+  stroke: var(--accent-blue);
+  stroke-width: 1.4;
+}
+.tr-port-label {
+  font-family: var(--ff-display);
+  font-size: 9px;
+  fill: var(--white);
+  letter-spacing: 0.02em;
+  paint-order: stroke;
+  stroke: var(--black);
+  stroke-width: 2.5px;
+  stroke-linejoin: round;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+/* 日本近郊など港が密集する場所でラベルが常時重なるのを避けるため、
+   ラベルは「ホバー中」または「選択中ルートの発着地」のときだけ表示する。
+   港の名前自体は詳細パネル側にも文言で出るため、地図上は常時表示しない。 */
+@media (hover: hover) and (pointer: fine) {
+  .tr-port:hover .tr-port-label,
+  .tr-port:focus-visible .tr-port-label {
+    opacity: 1;
+  }
+}
+.tr-port.is-endpoint .tr-port-label {
+  opacity: 1;
+}
+.tr-port.is-inactive { opacity: 0.25; }
+.tr-port.is-inactive .tr-port-label { opacity: 0; }
+
+/* 貿易ルート（弧）
+   ルートごとの色は map.js が地域色から生成したグラデーションを
+   --tr-route-color に差し込む（重なった時に発着地域で判別できるように）。
+   未設定時は既存の青紫グラデーションにフォールバックする。 */
+.tr-route { cursor: pointer; outline: none; }
+.tr-route-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 16;
+}
+.tr-route-glow {
+  fill: none;
+  stroke: var(--tr-route-color, url(#tr-route-gradient));
+  stroke-width: 5;
+  opacity: 0.2;
+  filter: blur(3px);
+  transition: opacity 0.3s var(--ease), stroke-width 0.3s var(--ease);
+}
+.tr-route-line {
+  fill: none;
+  stroke: var(--tr-route-color, url(#tr-route-gradient));
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-dasharray: 3 3;
+  transition: stroke-width 0.25s var(--ease), opacity 0.3s var(--ease), filter 0.3s var(--ease);
+  opacity: 0.8;
+}
+
+/* ルート上を流れる光点。「貿易が流れている」ことを控えめに示す演出。
+   offset-path は map.js がルートごとの弧の形にあわせて設定する。 */
+.tr-route-pulse {
+  fill: var(--white);
+  opacity: 0.85;
+  filter: drop-shadow(0 0 3px currentColor);
+  color: var(--tr-route-color-solid, var(--accent-blue));
+  offset-rotate: 0deg;
+  animation: tr-route-flow 5s linear infinite;
+  animation-delay: var(--tr-flow-delay, 0s);
+}
+@keyframes tr-route-flow {
+  from { offset-distance: 0%; }
+  to   { offset-distance: 100%; }
+}
+/* 動きに敏感なユーザーへの配慮。負荷軽減も兼ねてアニメーションを止める。 */
+@media (prefers-reduced-motion: reduce) {
+  .tr-route-pulse { animation: none; opacity: 0; }
+}
+
+.tr-route:hover .tr-route-line,
+.tr-route:focus-visible .tr-route-line {
+  stroke-width: 2.8;
+  opacity: 1;
+}
+.tr-route:hover .tr-route-glow,
+.tr-route:focus-visible .tr-route-glow {
+  opacity: 0.45;
+}
+
+/* 選択中：はっきり浮き上がらせる */
+.tr-route.is-selected .tr-route-line {
+  stroke-width: 3.4;
+  stroke-dasharray: none;
+  opacity: 1;
+  filter: drop-shadow(0 0 5px rgba(165, 106, 255, 0.5));
+}
+.tr-route.is-selected .tr-route-glow {
+  opacity: 0.65;
+  stroke-width: 8;
+}
+.tr-route.is-selected .tr-route-pulse {
+  opacity: 1;
+}
+
+/* 非選択・フィルタ対象外：消さずに「少し」控えめにする程度に留める */
+.tr-route.is-dimmed .tr-route-line {
+  opacity: 0.25;
+}
+.tr-route.is-dimmed .tr-route-glow {
+  opacity: 0.08;
+}
+.tr-route.is-dimmed .tr-route-pulse {
+  opacity: 0.25;
+}
+
+.tr-route.is-off { display: none; }
+
+/* ---------- コントロールパネル（地域フィルタ・ルート一覧） ---------- */
+.tr-controls {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.tr-control-block-title {
+  font-family: var(--ff-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+  margin-bottom: 14px;
+}
+
+/* 地域フィルタ：タグボタン */
+.tr-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tr-filter-btn {
+  --tr-region-color: var(--accent-blue);
+  font-family: var(--ff-body);
+  font-size: 0.82rem;
+  color: var(--grey);
+  background: var(--graphite);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 7px 16px;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+}
+.tr-filter-btn:hover { color: var(--white); border-color: var(--border-strong); }
+.tr-filter-btn.is-active {
+  color: var(--black);
+  background: var(--tr-region-color);
+  border-color: var(--tr-region-color);
+  font-weight: 600;
+}
+
+/* ルート一覧：ON/OFFトグル */
+.tr-route-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tr-route-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: background 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+.tr-route-item.is-selected {
+  background: rgba(106, 141, 255, 0.08);
+  border-color: var(--border-strong);
+}
+.tr-route-item.is-off { opacity: 0.45; }
+
+.tr-route-item-name {
+  flex: 1;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-family: var(--ff-body);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* スイッチ（トグル） */
+.tr-switch {
+  position: relative;
+  display: inline-flex;
+  width: 34px;
+  height: 20px;
+  flex: none;
+}
+.tr-switch input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.tr-switch-track {
+  position: absolute;
+  inset: 0;
+  background: var(--graphite-light);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  transition: background 0.25s var(--ease);
+}
+.tr-switch-track::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--grey);
+  transition: transform 0.25s var(--ease), background 0.25s var(--ease);
+}
+.tr-switch input:checked + .tr-switch-track {
+  background: rgba(106, 141, 255, 0.35);
+  border-color: var(--accent-blue);
+}
+.tr-switch input:checked + .tr-switch-track::after {
+  transform: translateX(14px);
+  background: var(--accent-blue);
+}
+
+/* ===================================================
+   詳細パネル（PC：右カラム固定 / SP：ボトムシート）
+=================================================== */
+.tr-detail-panel {
+  background: var(--graphite);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 34px 26px;
+  position: sticky;
+  top: 120px;
+  min-height: 320px;
+}
+
+.tr-detail-placeholder {
+  color: var(--grey-dim);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+.tr-detail-placeholder-icon {
+  display: block;
+  font-size: 1.6rem;
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+
+.tr-detail-close { display: none; }
+
+.tr-detail-eyebrow {
+  font-family: var(--ff-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--accent-violet);
+  margin-bottom: 10px;
+}
+.tr-detail-title {
+  font-family: var(--ff-display);
+  font-size: 1.4rem;
+  color: var(--white);
+  margin-bottom: 28px;
+  line-height: 1.4;
+}
+
+.tr-detail-list { display: flex; flex-direction: column; gap: 17px; margin-bottom: 26px; }
+.tr-detail-row dt {
+  font-family: var(--ff-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--grey-dim);
+  margin-bottom: 4px;
+}
+.tr-detail-row dd {
+  color: var(--white);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.tr-detail-why {
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+}
+.tr-detail-why-label {
+  font-family: var(--ff-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+  margin-bottom: 8px;
+}
+.tr-detail-why-text {
+  color: var(--grey);
+  font-size: 0.92rem;
+  line-height: 1.8;
+}
+
+.tr-panel-overlay { display: none; }
+
+/* ---------- スマホ：詳細パネルをボトムシート化 ---------- */
+@media (max-width: 900px) {
+  .tr-panel-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 199;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease);
+  }
+  .tr-panel-overlay.is-open {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .tr-detail-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    max-height: 78vh;
+    overflow-y: auto;
+    border-radius: 20px 20px 0 0;
+    z-index: 200;
+    transform: translateY(100%);
+    transition: transform 0.35s var(--ease);
+    box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.5);
+  }
+  .tr-detail-panel.is-open {
+    transform: translateY(0);
+  }
+
+  .tr-detail-placeholder { display: none; }
+
+  .tr-detail-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin: -6px -4px 12px auto;
+    background: var(--graphite-light);
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    color: var(--white);
+    font-size: 1rem;
+    cursor: pointer;
+  }
+}
+
+/* PC：閉じるボタンは不要（パネル常時表示のため隠す） */
+@media (min-width: 901px) {
+  .tr-detail-panel { transform: none !important; }
+}

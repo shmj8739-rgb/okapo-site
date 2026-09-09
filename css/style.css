@@ -1296,6 +1296,35 @@ body {
   border-radius: 20px;
 }
 
+/* HAKUの広告枠だけに適用。計測用1×1画像と既存の広告は変更しない。 */
+.promo-card--pc-rental {
+  min-width: 0;
+}
+
+.promo-card--pc-rental .promo-card-title {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--white);
+}
+
+.promo-pc-rental-banner {
+  width: 100%;
+  max-width: 300px;
+  margin: auto auto 0;
+}
+
+.promo-pc-rental-banner a {
+  display: block;
+  line-height: 0;
+}
+
+.promo-pc-rental-banner a img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 .ai-tool-link span {
   margin-left: auto;
   font-size: 1rem;
@@ -1326,11 +1355,22 @@ body {
   }
 
   .promo-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .promo-card {
     padding: 24px 20px;
+  }
+}
+
+/* 小型スマホでは既存広告の長いリンクもカード内に収める。 */
+@media (max-width: 360px) {
+  .promo-card-link-wrap a,
+  .ai-tool-link {
+    min-width: 0;
+    white-space: normal;
+    gap: 10px;
+    padding: 12px 16px;
   }
 }
 

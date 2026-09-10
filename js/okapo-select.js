@@ -1,5 +1,5 @@
 // ===================================================
-// OKAPO SELECT — セレクトショップ トップページの
+// OKAPO SHOP — 物販・デジタル商品のショップトップページの
 //                データ定義 ＋ 描画スクリプト
 // ===================================================
 // このファイル1つで「おかぽるLAB本体サイトのトーンを保った
@@ -13,6 +13,7 @@
 //   ・PICK UP に出す商品     → 出したい商品の pickup を true にする
 //                             （true が複数あるときは配列で先に来たものを表示）。
 //   ・カテゴリーの文言       → SELECT_CATEGORIES を編集する。
+//   ・デジタル商品を足す     → kind: "digital", url, ctaLabel を指定する。
 //
 // このファイルは okapo-planet/ 配下の他ページ（green / goods / interior）の
 // データソース（js/planet-data.js）とは完全に独立しています。
@@ -63,6 +64,12 @@ export const SELECT_CATEGORIES = [
     desc: "植物と、植物のある暮らし。",
   },
   {
+    en: "DIGITAL GOODS",
+    ja: "デジタル商品",
+    icon: "◇",
+    desc: "NFT・LINEスタンプなど、オリジナルのデジタル商品。",
+  },
+  {
     en: "OKAPO PICKS",
     ja: "おかぽるピックス",
     icon: "✦",
@@ -75,6 +82,7 @@ export const SELECT_CATEGORIES = [
 // ---------------------------------------------------
 // フィールドの意味:
 //   id        … 一意のID（内部管理用）
+//   kind      … "physical"（物販、省略時の既定値）/ "digital"（デジタル）
 //   name      … 商品名
 //   price     … 表示価格（文字列。"¥1,480" のようにそのまま表示）
 //   shipping  … 送料（文字列。"¥1,000" などをそのまま表示。無ければ省略可）
@@ -85,12 +93,14 @@ export const SELECT_CATEGORIES = [
 //   emoji     … image が無い/読めないときに出す絵文字
 //   badge     … カード左上の小ラベル（"NEW" など）。不要なら省略
 //   desc      … カードの短い説明
-//   url       … BASEの「その商品ページ」のURL。空なら BASE_SHOP_URL を使用
+//   url       … 販売ページのURL。物販のみ、空なら BASE_SHOP_URL を使用
+//   ctaLabel  … 販売先に合わせたボタン文言（物販の既定値: BASEで購入する）
 //   pickup    … true にすると PICK UP セクションに大きく表示されます
 // ---------------------------------------------------
 export const SELECT_PRODUCTS = [
   {
     id: "steel-phone-stand",
+    kind: "physical",
     name: "スチール スマホスタンド スマホグリップ シンプル 上品",
     price: "¥1,480",
     shipping: "¥1,000",
@@ -102,6 +112,26 @@ export const SELECT_PRODUCTS = [
     url: "https://okapolab.base.shop/items/156424169", // BASEの商品ページ
     pickup: true,
   },
+  {
+    id: "okapomaru-001",
+    kind: "digital",
+    name: "OKAPOMARU #001",
+    category: "DIGITAL ART / ETHEREUM",
+    image: "../assets/works/okapomaru-001.png",
+    desc: "OKAPOMARUのデジタルコレクション",
+    url: "https://opensea.io/ja/collection/okapomaru",
+    ctaLabel: "OpenSeaで見る",
+  },
+  {
+    id: "fluffy-muscle-routine",
+    kind: "digital",
+    name: "Fluffy Muscle Routine",
+    category: "LINE STICKERS",
+    image: "../assets/works/fluffy-muscle-routine.png",
+    desc: "筋肉キャラクターのオリジナルLINEスタンプ",
+    url: "https://line.me/S/sticker/35304260",
+    ctaLabel: "LINE STOREで見る",
+  },
 ];
 
 // ===================================================
@@ -109,6 +139,7 @@ export const SELECT_PRODUCTS = [
 // ===================================================
 
 function resolvePurchaseUrl(product) {
+  if (product?.kind === "digital") return product.url || "";
   return (product && product.url) || BASE_SHOP_URL || "";
 }
 
@@ -140,15 +171,23 @@ function buildPlaceholder(product, baseClass) {
 
 function buildBuyControl(product, { large = false } = {}) {
   const url = resolvePurchaseUrl(product);
+  const label = product.ctaLabel || (product.kind === "digital" ? "販売ページを見る" : "BASEで購入する");
   const cls = large ? "sel-btn sel-btn--primary" : "sel-btn sel-btn--sm";
+  const setLabel = (element) => {
+    element.textContent = label + " ";
+    const arrow = document.createElement("span");
+    arrow.setAttribute("aria-hidden", "true");
+    arrow.textContent = "→";
+    element.appendChild(arrow);
+  };
 
   if (url) {
     const a = document.createElement("a");
     a.className = cls;
     a.href = url;
     a.target = "_blank";
-    a.rel = "noopener";
-    a.innerHTML = `BASEで購入する <span aria-hidden="true">→</span>`;
+    a.rel = "noopener noreferrer";
+    setLabel(a);
     return a;
   }
 
@@ -158,7 +197,7 @@ function buildBuyControl(product, { large = false } = {}) {
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = cls;
-  btn.innerHTML = `BASEで購入する <span aria-hidden="true">→</span>`;
+  setLabel(btn);
   const note = document.createElement("p");
   note.className = "sel-buy-note";
   note.hidden = true;
@@ -198,8 +237,8 @@ export function renderCategoryGrid(container) {
 // ---------- PICK UP（1商品を大きく） ----------
 export function renderPickup(container) {
   if (!container) return;
-  const product =
-    SELECT_PRODUCTS.find((p) => p.pickup) || SELECT_PRODUCTS[0];
+  const physicalProducts = SELECT_PRODUCTS.filter((p) => p.kind !== "digital");
+  const product = physicalProducts.find((p) => p.pickup) || physicalProducts[0];
   if (!product) {
     container.innerHTML = `<p class="sel-empty">現在ご紹介できる商品はありません。</p>`;
     return;
@@ -237,19 +276,21 @@ export function renderPickup(container) {
 }
 
 // ---------- OKAPO PICKS（商品グリッド） ----------
-export function renderPicksGrid(container) {
+export function renderPicksGrid(container, { kind = "physical" } = {}) {
   if (!container) return;
 
-  if (SELECT_PRODUCTS.length === 0) {
+  const products = SELECT_PRODUCTS.filter((p) => (p.kind || "physical") === kind);
+  if (products.length === 0) {
     container.innerHTML = `<p class="sel-empty">商品を準備中です。もうしばらくお待ちください。</p>`;
     return;
   }
 
   const frag = document.createDocumentFragment();
 
-  SELECT_PRODUCTS.forEach((product) => {
+  products.forEach((product) => {
     const card = document.createElement("article");
     card.className = "sel-pick-card reveal";
+    card.dataset.productId = product.id;
 
     const media = document.createElement("div");
     media.className = "sel-pick-media";
@@ -279,6 +320,7 @@ export function renderPicksGrid(container) {
     body.querySelector(".sel-pick-shipping").textContent = product.shipping
       ? `送料 ${product.shipping}`
       : "";
+    body.querySelector(".sel-pick-meta").hidden = !product.price && !product.shipping;
     body.appendChild(buildBuyControl(product));
 
     card.append(media, body);
@@ -293,4 +335,5 @@ export function initOkapoSelect() {
   renderCategoryGrid(document.getElementById("sel-cat-grid"));
   renderPickup(document.getElementById("sel-pickup"));
   renderPicksGrid(document.getElementById("sel-picks-grid"));
+  renderPicksGrid(document.getElementById("sel-digital-grid"), { kind: "digital" });
 }

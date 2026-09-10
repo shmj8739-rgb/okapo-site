@@ -222,7 +222,7 @@ body {
   .header-meta .meta-divider { display: none; }
 
   /* 画面上部に固定されるバーなので、モバイルでは上下パディングを詰めて
-     コンテンツの占有を抑える。ナビ「記事／植物／ゲーム／掲示板」と
+     コンテンツの占有を抑える。ナビ「記事／ショップ／ゲーム／掲示板」と
      メタ表記（EST. 2026）は横1行に収める。 */
   .site-header {
     padding: 16px 6vw;
@@ -234,6 +234,21 @@ body {
     gap: 4px;
     margin-right: 14px;
     font-size: 0.82rem;
+  }
+}
+
+/* 長いタブ名も折り返さず、小さいスマホではナビの幅を優先する。 */
+.site-nav a {
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .site-header:has(.site-nav) .header-meta {
+    display: none;
+  }
+
+  .site-nav {
+    margin-right: 0;
   }
 }
 
@@ -1128,11 +1143,14 @@ body {
   color: var(--grey);
 }
 
-@media (max-width: 640px) {
+/* フッターのショップリンクも、狭いタブレットから2列で収める。 */
+@media (max-width: 860px) {
   .footer-columns {
     grid-template-columns: 1fr 1fr;
   }
+}
 
+@media (max-width: 640px) {
   /* スマホでは桁箱を少し詰めて、狭い端末でも1〜2行に収める
      （収まらない場合は .visitor-counter の flex-wrap で中央寄せ折り返し）。 */
   .visitor-counter {

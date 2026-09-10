@@ -13,12 +13,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>OKAPO SELECT｜暮らしを、ちょっと面白く。</title>
-<meta name="description" content="おかぽるLABが選ぶ、デスク・ガジェット・インテリア・生活雑貨のセレクトショップ。毎日の暮らしに「これ、いいな」を。">
+<title>ショップ | おかぽるLAB — OKAPO SHOP</title>
+<meta name="description" content="おかぽるLABのショップ。デスク・ガジェット・インテリアなどの物販と、NFT「OKAPOMARU #001」・LINEスタンプ「Fluffy Muscle Routine」などのデジタル商品を紹介。">
 <meta name="robots" content="index,follow">
 
-<meta property="og:title" content="OKAPO SELECT｜暮らしを、ちょっと面白く。">
-<meta property="og:description" content="おかぽるLABが選ぶ、デスク・ガジェット・インテリア・生活雑貨のセレクトショップ。毎日の暮らしに「これ、いいな」を。">
+<meta property="og:title" content="ショップ | おかぽるLAB — OKAPO SHOP">
+<meta property="og:description" content="おかぽるLABのショップ。デスク・ガジェット・インテリアなどの物販と、NFT「OKAPOMARU #001」・LINEスタンプ「Fluffy Muscle Routine」などのデジタル商品を紹介。">
 <meta property="og:type" content="website">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,20 +34,20 @@
 
 <!-- ===== HEADER =====
      本体サイトの .site-header / .brand / .header-meta 構造を流用し、
-     css/okapo-select.css で白ベースに上書きしている。
+     css/okapo-select.css で本体と同じダーク＋青紫の配色を継承。
      .sel-subnav がショップページ内スクロール用のナビゲーション。 -->
 <header class="site-header">
   <div class="header-inner">
     <a href="../index.html" class="brand">おかぽる<span class="brand-dot">LAB</span></a>
     <nav class="sel-subnav" aria-label="ページ内ナビゲーション">
-      <a href="#select">SELECT</a>
-      <a href="#category">CATEGORY</a>
-      <a href="#pickup">PICK UP</a>
+      <a href="#pickup">物販</a>
+      <a href="#digital">デジタル商品</a>
+      <a href="#category">カテゴリー</a>
     </nav>
     <div class="header-meta">
-      <span>OKAPO SELECT</span>
+      <span>OKAPO SHOP</span>
       <span class="meta-divider">/</span>
-      <span>LIFESTYLE</span>
+      <span>SHOP</span>
     </div>
   </div>
 </header>
@@ -66,17 +66,30 @@
       <div class="sel-hero-content reveal">
         <p class="sel-hero-eyebrow">FROM OKAPO LAB — AI PRODUCT STUDIO</p>
         <h1 class="sel-hero-title">
-          OKAPO <span class="accent">SELECT</span>
+          OKAPO <span class="accent">SHOP</span>
         </h1>
-        <p class="sel-hero-lead">暮らしを、ちょっと面白く。</p>
+        <p class="sel-hero-lead">暮らしにも、デジタルにも。</p>
         <p class="sel-hero-copy">
           毎日の生活に「これ、いいな」を。<br>
-          おかぽるLABが選ぶ、デスク・ガジェット・インテリア・生活雑貨。
+          おかぽるLABが選ぶ生活雑貨と、オリジナルのデジタル商品。
         </p>
         <div class="sel-hero-actions">
-          <a href="#pickup" class="sel-btn sel-btn--primary">SHOP NOW <span aria-hidden="true">→</span></a>
+          <a href="#pickup" class="sel-btn sel-btn--primary">物販を見る <span aria-hidden="true">→</span></a>
+          <a href="#digital" class="sel-btn sel-btn--sm">デジタル商品を見る <span aria-hidden="true">→</span></a>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- DIGITAL: SELECT_PRODUCTS に kind: "digital" と販売先URLを追加すると掲載される。 -->
+  <section class="sel-digital" id="digital" aria-labelledby="digital-heading">
+    <div class="sel-inner">
+      <div class="sel-section-head reveal">
+        <p class="sel-label">DIGITAL GOODS</p>
+        <h2 class="sel-heading" id="digital-heading">デジタル商品</h2>
+        <p class="sel-section-copy">NFTとLINEスタンプ。各カードから販売ページをご覧いただけます。</p>
+      </div>
+      <div class="sel-picks-grid" id="sel-digital-grid"></div>
     </div>
   </section>
 
@@ -87,7 +100,7 @@
     <div class="sel-inner">
       <div class="sel-section-head reveal">
         <p class="sel-label">CATEGORY</p>
-        <h2 class="sel-heading">暮らしを彩る、カテゴリー</h2>
+        <h2 class="sel-heading">ショップのカテゴリー</h2>
       </div>
       <div class="sel-cat-grid" id="sel-cat-grid"></div>
     </div>
@@ -101,21 +114,20 @@
     <div class="sel-inner">
       <div class="sel-section-head reveal">
         <p class="sel-label">PICK UP</p>
-        <h2 class="sel-heading">いま、BASEで買えるもの</h2>
+        <h2 class="sel-heading">物販のピックアップ</h2>
       </div>
       <div id="sel-pickup"></div>
     </div>
   </section>
 
   <!-- ===== 4. OKAPO PICKS =====
-       商品を増やす場合は js/okapo-select.js の SELECT_PRODUCTS に
-       オブジェクトを1件追加するだけ。10件でも100件でも
-       グリッドは自動で折り返す。 -->
+       物販商品を増やす場合は js/okapo-select.js の SELECT_PRODUCTS に
+       kind: "physical" のオブジェクトを追加する。グリッドは自動で折り返す。 -->
   <section class="sel-picks" id="okapo-picks">
     <div class="sel-inner">
       <div class="sel-section-head reveal">
         <p class="sel-label">OKAPO PICKS</p>
-        <h2 class="sel-heading">おかぽるLABが面白いと思ったアイテム</h2>
+        <h2 class="sel-heading">物販の商品一覧</h2>
       </div>
       <div class="sel-picks-grid" id="sel-picks-grid"></div>
     </div>
@@ -127,8 +139,8 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-top">
-      <div class="footer-brand">OKAPO SELECT</div>
-      <p class="footer-tagline">暮らしを、ちょっと面白く。 — by おかぽるLAB</p>
+      <div class="footer-brand">OKAPO SHOP</div>
+      <p class="footer-tagline">暮らしにも、デジタルにも。 — by おかぽるLAB</p>
     </div>
     <div class="footer-bottom">
       <span>&copy; 2026 OKAPO. All rights reserved.</span>

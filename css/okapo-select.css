@@ -327,7 +327,7 @@ body.okapo-select ::selection {
 }
 
 .okapo-select .sel-digital {
-  padding: clamp(60px, 10vw, 110px) 0;
+  padding: clamp(28px, 4vw, 48px) 0;
   border-top: 1px solid var(--sel-line);
   background: var(--sel-bg-soft);
 }
@@ -362,6 +362,16 @@ body.okapo-select ::selection {
 
 .okapo-select .sel-section-head {
   margin-bottom: clamp(36px, 6vw, 56px);
+}
+
+.okapo-select .sel-digital .sel-section-head { margin-bottom: 24px; }
+.okapo-select .sel-digital .sel-picks-grid { gap: 20px; align-items: start; }
+.okapo-select .sel-digital .sel-pick-media { aspect-ratio: auto; height: 240px; }
+.okapo-select .sel-digital + .sel-category { padding-top: clamp(28px, 4vw, 48px); }
+
+@media (max-width: 640px) {
+  .okapo-select .sel-digital .sel-pick-media { height: 200px; }
+  .okapo-select .sel-digital .sel-section-copy { font-size: 0.875rem; }
 }
 
 .okapo-select .sel-cat-grid {
@@ -648,6 +658,164 @@ body.okapo-select ::selection {
 .okapo-select .sel-pick-body .sel-buy-pending {
   margin-top: 12px;
   align-self: flex-start;
+}
+
+/* 無料壁紙だけに適用する装飾。既存の商品カードは共通スタイルを維持。 */
+.okapo-select .sel-wallpaper-card {
+  border-color: rgba(145, 125, 255, 0.42);
+  box-shadow: 0 18px 42px -20px rgba(92, 76, 226, 0.5), inset 0 1px rgba(208, 200, 255, 0.1);
+}
+
+.okapo-select .sel-wallpaper-card:hover {
+  box-shadow: 0 24px 52px -18px rgba(92, 76, 226, 0.55);
+}
+
+.okapo-select .sel-wallpaper-card .sel-pick-media { padding: 0; }
+
+.okapo-select .sel-wallpaper-preview {
+  width: 100%;
+  height: 100%;
+  padding: 22px 20px 40px;
+  border: 0;
+  cursor: zoom-in;
+  background: radial-gradient(ellipse at 50% 70%, rgba(121, 93, 245, 0.3), transparent 70%), #0b0b1b;
+}
+
+.okapo-select .sel-wallpaper-preview .sel-pick-img {
+  width: auto;
+  max-width: 100%;
+  height: 100%;
+  margin: auto;
+  border-radius: 9px;
+  box-shadow: 0 14px 28px #02020a, 0 0 20px rgba(116, 105, 255, 0.3);
+}
+
+.okapo-select .sel-wallpaper-preview-label {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  width: 100%;
+  font: 0.875rem / 1.4 var(--ff-body);
+  color: #d8d3ff;
+}
+
+.okapo-select .sel-wallpaper-eyebrow {
+  font: 500 0.75rem / 1.6 var(--ff-display);
+  letter-spacing: 0.07em;
+  color: #b5acff;
+  overflow-wrap: anywhere;
+}
+
+.okapo-select .sel-wallpaper-card .sel-chip { font-size: 0.75rem; }
+.okapo-select .sel-wallpaper-card .sel-pick-name { font-size: 1.125rem; }
+.okapo-select .sel-wallpaper-card .sel-pick-desc,
+.okapo-select .sel-wallpaper-dialog-desc { font-size: 1rem; line-height: 1.8; }
+
+.okapo-select .sel-wallpaper-specs {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #c2bedb;
+}
+
+.okapo-select .sel-wallpaper-card .sel-pick-price,
+.okapo-select .sel-wallpaper-free {
+  font: 600 1.25rem / 1.5 var(--ff-display);
+  color: #d5cbff;
+}
+
+.okapo-select .sel-wallpaper-card .sel-btn,
+.okapo-select .sel-wallpaper-dialog .sel-btn {
+  align-self: stretch;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 14px;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: #fff;
+  border-color: #8174d9;
+  background: linear-gradient(120deg, #394b9a, #6842a7);
+}
+
+.okapo-select .sel-wallpaper-help a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #c6bdff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-size: 0.875rem;
+}
+
+.okapo-select .sel-wallpaper-help p {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #bbb7ce;
+}
+
+html.sel-wallpaper-modal-open { overflow: hidden; }
+
+.okapo-select .sel-wallpaper-dialog {
+  position: fixed;
+  inset: 0;
+  width: min(860px, calc(100% - 24px));
+  max-width: none;
+  max-height: calc(100% - 24px);
+  max-height: calc(100dvh - 24px);
+  margin: auto;
+  padding: 20px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid #7163b2;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #191529, #090a15);
+  color: var(--sel-ink);
+  box-shadow: 0 28px 100px #03030d;
+}
+
+.okapo-select .sel-wallpaper-dialog::backdrop { background: rgba(2, 3, 12, 0.88); }
+.okapo-select .sel-wallpaper-close-row { display: flex; justify-content: flex-end; margin-bottom: 12px; }
+.okapo-select .sel-wallpaper-close {
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid #7163b2;
+  border-radius: 999px;
+  font: inherit;
+  color: #e4deff;
+  background: #242037;
+  cursor: pointer;
+}
+
+.okapo-select .sel-wallpaper-dialog-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 28px;
+}
+
+.okapo-select .sel-wallpaper-full-media img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 70vh;
+  margin: auto;
+  border-radius: 10px;
+}
+
+.okapo-select .sel-wallpaper-dialog-body { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.okapo-select .sel-wallpaper-dialog h2 { font: 500 1.5rem / 1.4 var(--ff-display); overflow-wrap: anywhere; }
+.okapo-select .sel-wallpaper-card :focus-visible,
+.okapo-select .sel-wallpaper-dialog :focus-visible { outline: 3px solid #c7bdff; outline-offset: -4px; }
+
+@media (max-width: 640px) {
+  .okapo-select .sel-wallpaper-dialog { padding: 16px; }
+  .okapo-select .sel-wallpaper-dialog-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .okapo-select .sel-wallpaper-full-media img { max-height: 58vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .okapo-select .sel-wallpaper-card { transition: none; }
+  .okapo-select .sel-wallpaper-card:hover { transform: none; }
 }
 
 /* ===================================================

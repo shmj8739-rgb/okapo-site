@@ -27,12 +27,17 @@
 // ・空文字 "" のままなら、ボタンは「販売ページ準備中」の
 //   案内を表示します（リンク切れにはなりません）。
 // ---------------------------------------------------
-export const BASE_SHOP_URL = "https://okapolab.base.shop/";
+// 通常の defer スクリプトとして読み込み、file:// でのローカル確認にも対応。
+// ページ外へ変数を公開しない。
+(() => {
+"use strict";
+
+const BASE_SHOP_URL = "https://okapolab.base.shop/";
 
 // ---------------------------------------------------
 // カテゴリー（表示専用のカード。今は遷移先を持ちません）
 // ---------------------------------------------------
-export const SELECT_CATEGORIES = [
+const SELECT_CATEGORIES = [
   {
     en: "DESK & WORK",
     ja: "デスク & ワーク",
@@ -97,7 +102,7 @@ export const SELECT_CATEGORIES = [
 //   ctaLabel  … 販売先に合わせたボタン文言（物販の既定値: BASEで購入する）
 //   pickup    … true にすると PICK UP セクションに大きく表示されます
 // ---------------------------------------------------
-export const SELECT_PRODUCTS = [
+const SELECT_PRODUCTS = [
   {
     id: "steel-phone-stand",
     kind: "physical",
@@ -111,6 +116,18 @@ export const SELECT_PRODUCTS = [
     desc: "デスクにすっと置ける、上品でミニマルなスチール製スマホスタンド。動画視聴や作業中の確認に。",
     url: "https://okapolab.base.shop/items/156424169", // BASEの商品ページ
     pickup: true,
+  },
+  {
+    id: "okapo-luxe-fantasy-wallpaper",
+    kind: "digital",
+    name: "OKAPO LUXE FANTASY WALLPAPER",
+    category: "WALLPAPER / FREE",
+    price: "FREE",
+    image: "../assets/wallpapers/okapo-iphone-luxe-fantasy-thumb.webp?v=123f2f4b5369",
+    desc: "青紫の光と立体的な浮遊感をまとった、おかぽのiPhone向け高級幻想壁紙。スマートフォンのロック画面・ホーム画面で無料で使用できます。",
+    url: "../assets/wallpapers/okapo-iphone-luxe-fantasy.png?v=123f2f4b5369",
+    downloadFilename: "OKAPO_LUXE_FANTASY_WALLPAPER.png",
+    ctaLabel: "無料ダウンロード",
   },
   {
     id: "okapomaru-001",
@@ -185,8 +202,12 @@ function buildBuyControl(product, { large = false } = {}) {
     const a = document.createElement("a");
     a.className = cls;
     a.href = url;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
+    if (product.downloadFilename) {
+      a.download = product.downloadFilename;
+    } else {
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+    }
     setLabel(a);
     return a;
   }
@@ -209,8 +230,107 @@ function buildBuyControl(product, { large = false } = {}) {
   return wrap;
 }
 
+// 元PNGはプレビューを開くまで読み込まない。通常の一覧はWebPのみ。
+function buildWallpaperHelp(product) {
+  const help = document.createElement("div");
+  help.className = "sel-wallpaper-help";
+  const link = document.createElement("a");
+  link.href = product.url;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "画像を開く ↗";
+  const note = document.createElement("p");
+  note.textContent = "iPhoneで保存できない場合：画像を開く → 長押し → 写真に保存";
+  help.append(link, note);
+  return help;
+}
+
+function enhanceWallpaperCard(card, media, body, product) {
+  card.classList.add("sel-wallpaper-card");
+  const previewButton = document.createElement("button");
+  previewButton.type = "button";
+  previewButton.className = "sel-wallpaper-preview";
+  previewButton.setAttribute("aria-label", `${product.name}を拡大表示`);
+  previewButton.setAttribute("aria-haspopup", "dialog");
+  const thumbnail = media.querySelector("img");
+  if (thumbnail) {
+    thumbnail.width = 426;
+    thumbnail.height = 922;
+  }
+  previewButton.append(...media.childNodes);
+  const previewLabel = document.createElement("span");
+  previewLabel.className = "sel-wallpaper-preview-label";
+  previewLabel.textContent = "タップして拡大 ↗";
+  previewButton.append(previewLabel);
+  media.append(previewButton);
+
+  const eyebrow = document.createElement("p");
+  eyebrow.className = "sel-wallpaper-eyebrow";
+  eyebrow.textContent = "WALLPAPER / FREE DOWNLOAD";
+  body.prepend(eyebrow);
+  const specs = document.createElement("p");
+  specs.className = "sel-wallpaper-specs";
+  specs.textContent = "853 × 1844 px · iPhone Wallpaper";
+  body.querySelector(".sel-pick-meta").before(specs);
+  body.append(buildWallpaperHelp(product));
+
+  previewButton.addEventListener("click", () => {
+    const dialog = document.createElement("dialog");
+    dialog.className = "sel-wallpaper-dialog";
+    dialog.setAttribute("aria-labelledby", `${product.id}-title`);
+    dialog.innerHTML = `
+      <form method="dialog" class="sel-wallpaper-close-row">
+        <button class="sel-wallpaper-close" autofocus aria-label="壁紙プレビューを閉じる">閉じる ×</button>
+      </form>
+      <div class="sel-wallpaper-dialog-grid">
+        <div class="sel-wallpaper-full-media"></div>
+        <div class="sel-wallpaper-dialog-body">
+          <p class="sel-wallpaper-eyebrow">WALLPAPER / FREE DOWNLOAD</p>
+          <h2></h2>
+          <p class="sel-wallpaper-dialog-desc"></p>
+          <p class="sel-wallpaper-specs">853 × 1844 px · iPhone Wallpaper</p>
+          <p class="sel-wallpaper-free">FREE</p>
+        </div>
+      </div>
+    `;
+    const heading = dialog.querySelector("h2");
+    heading.id = `${product.id}-title`;
+    heading.textContent = product.name;
+    dialog.querySelector(".sel-wallpaper-dialog-desc").textContent = product.desc;
+    const image = document.createElement("img");
+    image.width = 853;
+    image.height = 1844;
+    image.alt = product.name;
+    image.decoding = "async";
+    image.src = product.url;
+    image.addEventListener("error", () => {
+      const message = document.createElement("p");
+      message.textContent = "プレビューを読み込めませんでした。「画像を開く」からもう一度お試しください。";
+      image.replaceWith(message);
+    });
+    dialog.querySelector(".sel-wallpaper-full-media").append(image);
+    dialog.querySelector(".sel-wallpaper-dialog-body").append(
+      buildBuyControl(product, { large: true }), buildWallpaperHelp(product)
+    );
+    dialog.addEventListener("click", (event) => {
+      if (event.target !== dialog) return;
+      const bounds = dialog.getBoundingClientRect();
+      if (event.clientX < bounds.left || event.clientX > bounds.right ||
+          event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
+    });
+    dialog.addEventListener("close", () => {
+      document.documentElement.classList.remove("sel-wallpaper-modal-open");
+      dialog.remove();
+      previewButton.focus({ preventScroll: true });
+    }, { once: true });
+    document.body.append(dialog);
+    dialog.showModal();
+    document.documentElement.classList.add("sel-wallpaper-modal-open");
+  });
+}
+
 // ---------- カテゴリーグリッド ----------
-export function renderCategoryGrid(container) {
+function renderCategoryGrid(container) {
   if (!container) return;
   const frag = document.createDocumentFragment();
 
@@ -235,7 +355,7 @@ export function renderCategoryGrid(container) {
 }
 
 // ---------- PICK UP（1商品を大きく） ----------
-export function renderPickup(container) {
+function renderPickup(container) {
   if (!container) return;
   const physicalProducts = SELECT_PRODUCTS.filter((p) => p.kind !== "digital");
   const product = physicalProducts.find((p) => p.pickup) || physicalProducts[0];
@@ -276,7 +396,7 @@ export function renderPickup(container) {
 }
 
 // ---------- OKAPO PICKS（商品グリッド） ----------
-export function renderPicksGrid(container, { kind = "physical" } = {}) {
+function renderPicksGrid(container, { kind = "physical" } = {}) {
   if (!container) return;
 
   const products = SELECT_PRODUCTS.filter((p) => (p.kind || "physical") === kind);
@@ -289,7 +409,8 @@ export function renderPicksGrid(container, { kind = "physical" } = {}) {
 
   products.forEach((product) => {
     const card = document.createElement("article");
-    card.className = "sel-pick-card reveal";
+    // 商品は描画直後から表示。スクロール演出の監視開始時刻に依存させない。
+    card.className = "sel-pick-card";
     card.dataset.productId = product.id;
 
     const media = document.createElement("div");
@@ -323,6 +444,8 @@ export function renderPicksGrid(container, { kind = "physical" } = {}) {
     body.querySelector(".sel-pick-meta").hidden = !product.price && !product.shipping;
     body.appendChild(buildBuyControl(product));
 
+    if (product.downloadFilename) enhanceWallpaperCard(card, media, body, product);
+
     card.append(media, body);
     frag.appendChild(card);
   });
@@ -331,9 +454,12 @@ export function renderPicksGrid(container, { kind = "physical" } = {}) {
 }
 
 // ---------- まとめて初期化 ----------
-export function initOkapoSelect() {
+function initOkapoSelect() {
+  renderPicksGrid(document.getElementById("sel-digital-grid"), { kind: "digital" });
   renderCategoryGrid(document.getElementById("sel-cat-grid"));
   renderPickup(document.getElementById("sel-pickup"));
   renderPicksGrid(document.getElementById("sel-picks-grid"));
-  renderPicksGrid(document.getElementById("sel-digital-grid"), { kind: "digital" });
 }
+
+initOkapoSelect();
+})();

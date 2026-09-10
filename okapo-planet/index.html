@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..600&family=Noto+Sans+JP:wght@300..600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/okapo-select.css">
+<link rel="stylesheet" href="../css/okapo-select.css?v=20260910-2">
 </head>
 
 <body class="okapo-select">
@@ -84,10 +84,10 @@
   <!-- DIGITAL: SELECT_PRODUCTS に kind: "digital" と販売先URLを追加すると掲載される。 -->
   <section class="sel-digital" id="digital" aria-labelledby="digital-heading">
     <div class="sel-inner">
-      <div class="sel-section-head reveal">
+      <div class="sel-section-head">
         <p class="sel-label">DIGITAL GOODS</p>
         <h2 class="sel-heading" id="digital-heading">デジタル商品</h2>
-        <p class="sel-section-copy">NFTとLINEスタンプ。各カードから販売ページをご覧いただけます。</p>
+        <p class="sel-section-copy">NFT・LINEスタンプと、おかぽオリジナルの無料壁紙。各カードからご覧いただけます。</p>
       </div>
       <div class="sel-picks-grid" id="sel-digital-grid"></div>
     </div>
@@ -150,9 +150,6 @@
 </footer>
 
 <script src="../js/script.js"></script>
-<script type="module">
-  import { initOkapoSelect } from "../js/okapo-select.js";
-  initOkapoSelect();
-</script>
+<script src="../js/okapo-select.js?v=20260910-3" defer></script>
 </body>
 </html>

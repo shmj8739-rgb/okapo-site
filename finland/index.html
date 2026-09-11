@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<!-- data-lang="ja" が既定。js/finland.js が値を書き換えて EN/JA を切り替える
+     （css/finland.css の html[data-lang="en"] ... 側で表示制御）。
+     JSが動かない環境でもこの初期値のまま正しく日本語が表示される。 -->
+<html lang="ja" data-lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZKJT7MEQVL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ZKJT7MEQVL');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>OKAPO LAB × FINLAND | Why is Finland so Happy?</title>
+<meta name="description" content="Explore everyday life, culture and happiness in Finland through a Japanese perspective and voices from Finland.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://okapo-site.netlify.app/finland/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="おかぽるLAB">
+<meta property="og:title" content="OKAPO LAB × FINLAND | Why is Finland so Happy?">
+<meta property="og:description" content="Explore everyday life, culture and happiness in Finland through a Japanese perspective and voices from Finland.">
+<meta property="og:url" content="https://okapo-site.netlify.app/finland/">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://okapo-site.netlify.app/assets/finland/hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OKAPO LAB × FINLAND | Why is Finland so Happy?">
+<meta name="twitter:description" content="Explore everyday life, culture and happiness in Finland through a Japanese perspective and voices from Finland.">
+<meta name="twitter:image" content="https://okapo-site.netlify.app/assets/finland/hero.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..600&family=Noto+Sans+JP:wght@300..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/finland.css">
+</head>
+
+<body class="finland-page">
+
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- ===== HEADER =====
+     ヘッダーの骨組み（.site-header／.header-inner／.header-meta）は
+     css/style.css を流用。右側に EN/JA の言語切替ボタンを追加している。
+     js/finland.js が .lang-ja / .lang-en 要素の hidden 属性を切り替える。
+     JS無効時は初期状態のまま（日本語が既定で表示）なので壊れない。 -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="../index.html" class="brand" style="text-decoration:none;">おかぽる<span class="brand-dot">LAB</span></a>
+    <div class="header-meta">
+      <span>OKAPO LAB</span>
+      <span class="meta-divider">/</span>
+      <span>FINLAND</span>
+    </div>
+    <div class="fi-lang-switch" role="group" aria-label="Language / 言語切替">
+      <button type="button" class="fi-lang-btn" data-lang-btn="en" aria-pressed="false">EN</button>
+      <button type="button" class="fi-lang-btn" data-lang-btn="ja" aria-pressed="true">JA</button>
+      <!-- FI（フィンランド語）は将来対応。ボタンを1つ増やし、
+           js/finland.js の SUPPORTED_LANGS に 'fi' を追加すれば動く構造。 -->
+    </div>
+  </div>
+</header>
+
+<main class="fi-page">
+
+  <nav class="fi-breadcrumb">
+    <a href="../index.html">おかぽるLAB</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">FINLAND</span>
+  </nav>
+
+  <!-- ===================================================
+       01 HERO
+  =================================================== -->
+  <section class="fi-hero" id="hero" aria-labelledby="fi-hero-title">
+    <div class="fi-hero-bg" aria-hidden="true">
+      <!-- hero.jpg が assets/finland/ に置かれた時だけ、CSSアートの背後に
+           うっすら重なる。無い間は onerror でこの img 自体が非表示になり、
+           下のCSSアート（オーロラ・森・雪）だけが表示される。 -->
+      <img class="fi-hero-photo" src="../assets/finland/hero.jpg" alt="" loading="eager" onerror="this.classList.add('is-missing')">
+      <div class="fi-aurora fi-aurora-1"></div>
+      <div class="fi-aurora fi-aurora-2"></div>
+      <div class="grid-overlay"></div>
+      <div class="fi-snow"></div>
+      <div class="fi-treeline"></div>
+    </div>
+
+    <div class="fi-hero-content reveal">
+      <p class="fi-hero-eyebrow">OKAPO LAB × FINLAND</p>
+      <h1 class="fi-hero-title" id="fi-hero-title">
+        <span class="line">OKAPO LAB</span>
+        <span class="line fi-x">×</span>
+        <span class="line fi-gradient">FINLAND</span>
+      </h1>
+      <p class="fi-hero-subtitle">Why is Finland so happy?</p>
+      <p class="fi-hero-jp">なぜフィンランドは「幸福度世界1位」なのか？</p>
+    </div>
+
+    <div class="scroll-cue reveal" aria-hidden="true">
+      <span class="scroll-cue-line"></span>
+      <span class="scroll-cue-text">SCROLL</span>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       02 WORLD'S HAPPIEST COUNTRY
+  =================================================== -->
+  <section class="fi-section" id="happiest" aria-labelledby="fi-happiest-title">
+    <p class="fi-section-label reveal">#1 WORLD HAPPINESS REPORT</p>
+
+    <div class="fi-happiest">
+      <div class="reveal">
+        <p class="fi-happiest-rank" aria-hidden="true">#1</p>
+        <p class="fi-happiest-rank-caption">World Happiness Report</p>
+      </div>
+
+      <div class="reveal">
+        <h2 class="fi-section-title" id="fi-happiest-title">
+          WORLD'S HAPPIEST COUNTRY<br>
+          <span style="color:var(--grey);font-size:0.6em;">世界一幸福な国</span>
+        </h2>
+
+        <div class="fi-section-lead">
+          <p class="lang-en">In the World Happiness Report, Finland has repeatedly been ranked as the world's happiest country — including the 2026 edition. But "the happiest country" doesn't mean people there are smiling and laughing every single day.</p>
+          <p class="lang-ja">「World Happiness Report（世界幸福度報告書）」では、フィンランドが繰り返し世界1位にランクされており、2026年版でもその評価は変わりませんでした。ただし「幸福度1位」は、毎日楽しく笑って過ごしているという意味ではありません。</p>
+
+          <p class="lang-en" style="margin-top:1.4em;">This ranking is closer to <strong style="color:var(--white);">overall life satisfaction</strong> — how people evaluate their whole life, considering stability, trust, freedom and social support — rather than how much fun they're having right now.</p>
+          <p class="lang-ja" style="margin-top:1.4em;">この順位が示しているのは、<strong style="color:var(--white);">人生全体への満足度</strong>に近い考え方です。安定・信頼・自由・支え合いなどを踏まえて「自分の人生をどう評価するか」を尋ねた結果であり、「今この瞬間、どれだけ楽しいか」を測るものではありません。</p>
+        </div>
+
+        <p class="fi-source">
+          <span class="lang-en">Source:</span><span class="lang-ja">出典：</span>
+          <a href="https://worldhappiness.report/" target="_blank" rel="noopener noreferrer">World Happiness Report ↗</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       03 WHY FINLAND?
+  =================================================== -->
+  <section class="fi-section" id="why" aria-labelledby="fi-why-title">
+    <p class="fi-section-label reveal">WHY FINLAND?</p>
+    <h2 class="fi-section-title reveal" id="fi-why-title">
+      <span class="lang-en">What might explain the happiness?</span>
+      <span class="lang-ja">幸福度を支えている、と考えられる要素</span>
+    </h2>
+
+    <div class="fi-why-grid">
+
+      <article class="fi-card reveal">
+        <p class="fi-card-en">Trust</p>
+        <p class="fi-card-ja">信頼</p>
+        <p class="fi-card-desc lang-en">People trust strangers, institutions and each other more than the world average.</p>
+        <p class="fi-card-desc lang-ja">見知らぬ人や社会の制度を、自然に信頼できる文化が根付いている。</p>
+      </article>
+
+      <article class="fi-card reveal">
+        <p class="fi-card-en">Social Support</p>
+        <p class="fi-card-ja">支え合い</p>
+        <p class="fi-card-desc lang-en">A strong safety net means no one has to face hard times completely alone.</p>
+        <p class="fi-card-desc lang-ja">困った時に頼れる仕組みが、社会全体に行き渡っている。</p>
+      </article>
+
+      <article class="fi-card reveal">
+        <p class="fi-card-en">Freedom</p>
+        <p class="fi-card-ja">人生を選択する自由</p>
+        <p class="fi-card-desc lang-en">Freedom to choose how to live, work, learn and spend one's time.</p>
+        <p class="fi-card-desc lang-ja">働き方も暮らし方も、自分で選べる自由がある。</p>
+      </article>
+
+      <article class="fi-card reveal">
+        <p class="fi-card-en">Nature</p>
+        <p class="fi-card-ja">自然との距離</p>
+        <p class="fi-card-desc lang-en">Forests and lakes are never far from everyday life, even in the city.</p>
+        <p class="fi-card-desc lang-ja">森や湖が、都市部でも日常のすぐそばにある。</p>
+      </article>
+
+      <article class="fi-card reveal">
+        <p class="fi-card-en">Work-Life Balance</p>
+        <p class="fi-card-ja">仕事と生活</p>
+        <p class="fi-card-desc lang-en">Work doesn't take over life — rest and family time are respected too.</p>
+        <p class="fi-card-desc lang-ja">仕事が生活のすべてにならない。休むことへの敬意がある。</p>
+      </article>
+
+      <article class="fi-card reveal">
+        <p class="fi-card-en">Safety</p>
+        <p class="fi-card-ja">安心して生活できる環境</p>
+        <p class="fi-card-desc lang-en">Low crime and strong public systems create a quiet, everyday peace of mind.</p>
+        <p class="fi-card-desc lang-ja">治安の良さと公共制度が、日々の安心を支えている。</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================================================
+       04 JAPAN × FINLAND
+       各項目は <details>/<summary> によるアコーディオン。追加のJSなしで
+       キーボード操作・スクリーンリーダーにも対応する。
+       「LOCAL GUIDE'S COMMENT」欄は、フィンランドの友人からコメントを
+       受け取り次第、各 <p class="lang-en">/<p class="lang-ja"> の中身を
+       書き換えるだけで更新できる（構造・IDの変更は不要）。 -->
+  <section class="fi-section" id="compare" aria-labelledby="fi-jf-title">
+    <div class="fi-jf-head">
+      <p class="fi-section-label reveal">JAPAN × FINLAND</p>
+      <h2 class="fi-jf-title reveal" id="fi-jf-title">
+        <span class="line">JAPAN</span>
+        <span class="line fi-x">×</span>
+        <span class="line fi-gradient">FINLAND</span>
+      </h2>
+      <p class="fi-jf-sub reveal">Same world. Different everyday life.</p>
+      <p class="fi-jf-sub-ja reveal">同じ世界の、違う日常。</p>
+    </div>
+
+    <div class="fi-jf-list">
+
+      <!-- ---- WORK / 仕事 ---- -->
+      <details class="fi-compare reveal">
+        <summary class="fi-compare-summary">
+          <span class="fi-compare-heading">
+            <span class="fi-compare-en">Work</span>
+            <span class="fi-compare-ja">仕事</span>
+          </span>
+          <span class="fi-compare-caret" aria-hidden="true">＋</span>
+        </summary>
+        <div class="fi-compare-body">
+          <div class="fi-compare-col fi-compare-col--jp">
+            <p class="fi-compare-col-label">Japan / 日本</p>
+            <p class="lang-en">Long working hours and unpaid overtime are still common in many workplaces.</p>
+            <p class="lang-ja">長時間労働やサービス残業が、今も根強く残っている職場が多い。</p>
+          </div>
+          <div class="fi-compare-col fi-compare-col--fi">
+            <p class="fi-compare-col-label">Finland / フィンランド</p>
+            <p class="lang-en">A standard 37.5-hour work week is common, and leaving on time is normal, not rare.</p>
+            <p class="lang-ja">週37.5時間ほどの労働が一般的で、定時退社がごく当たり前とされている。</p>
+          </div>
+          <div class="fi-compare-col fi-compare-col--guide">
+            <p class="fi-compare-col-label">Local Guide's Comment</p>
+            <p class="lang-en">COMMENT COMING SOON — a comment from our Finland local guide will be added here.</p>
+            <p class="lang-ja">COMMENT COMING SOON — フィンランドの友人のコメントを、後日ここに掲載予定です。</p>
+            <span class="fi-guide-tag">FINLAND LOCAL GUIDE</span>
+          </div>
+        </div>
+      </details>
+
+      <!-- ---- HOLIDAY / 休日 ---- -->
+      <details class="fi-compare reveal">
+        <summary class="fi-compare-summary">
+          <span class="fi-compare-heading">
+            <span class="fi-compare-en">Holiday</span>
+            <span class="fi-compare-ja">休日</span>
+          </span>
+          <span class="fi-compare-caret" aria-hidden="true">＋</span>
+        </summary>
+        <div class="fi-compare-body">
+          <div class="fi-compare-col fi-compare-col--jp">
+            <p class="fi-compare-col-label">Japan / 日本</p>
+            <p class="lang-en">Paid leave often goes unused, due to workplace pressure and a sense of guilt.</p>
+            <p class="lang-ja">有給休暇があっても、職場の空気や気兼ねから消化しきれないことが多い。</p>
+          </div>
+          <div class="fi-compare-col fi-compare-col--fi">
+            <p class="fi-compare-col-label">Finland / フィンランド</p>
+            <p class="lang-en">Long summer holidays of several weeks are standard, and genuinely taken.</p>
+            <p class="lang-ja">数週間にわたる夏休みを取るのが標準的で、実際にしっかり休む。</p>
+          </div>
+          <div class="fi-compare-col fi-compare-col--guide">
+            <p class="fi-compare-col-label">Local Guide's Comment</p>
+            <p class="lang-en">COMMENT COMING SOON — a comment from our Finland local guide will be added here.</p>
+            <p class="lang-ja">COMMENT COMING SOON — フィンランドの友人のコメントを、後日ここに掲載予定です。</p>
+            <span class="fi-guide-tag">FINLAND LOCAL GUIDE</span>
+          </div>
+        </div>
+      </details>
+
+      <!-- ---- RELATIONSHIPS / 人間関係 ---- -->
+      <details class="fi-compare reveal">
+        <summary class="fi-compare-summary">
+          <span class="fi-compare-heading">
+            <span class="fi-compare-en">Relationships</span>
+            <span class="fi-compare-ja">人間関係</span>
+          </span>
+          <span class="fi-compare-caret" aria-hidden="true">＋</span>
+        </summary>
+        <div class="fi-compare-body">
+          <div class="fi-compare-col fi-compare-col--jp">
+            <p class="fi-compare-col-label">Japan / 日本</p>
+            <p class="lang-en">Relationships often value reading the room and maintaining group harmony.</p>
+            <p class="lang-ja">場の空気を読み、集団の調和を保つことが重視されやすい。</p>
+          </div>
+          <div class="fi-compare-col fi-compare-col--fi">
+            <p class="fi-compare-col-label">Finland / フィンランド</p>
+            <p class="lang-en">Personal space and directness are respected — silence isn't considered awkward.</p>
+            <p class="lang-ja">個人の距離感と率直さが尊重され、沈黙も不自然とはされない。</p>
+          </div>
+          <div class="fi-compare-col fi-compare-col--guide">
+            <p class="fi-compare-col-label">Local Guide's Comment</p>
+            <p class="lang-en">COMMENT COMING SOON — a comment from our Finland local guide will be added here.</p>
+            <p class="lang-ja">COMMENT COMING SOON — フィンランドの友人のコメントを、後日ここに掲載予定です。</p>
+            <span class="fi-guide-tag">FINLAND LOCAL GUIDE</span>
+          </div>
+        </div>
+      </details>
+
+      <!-- ---- SAUNA / サウナ ---- -->
+      <details class="fi-compare reveal">
+        <summary class="fi-compare-summary">
+          <span class="fi-compare-heading">
+            <span class="fi-compare-en">Sauna</span>
+            <span class="fi-compare-ja">サウナ</span>
+          </span>
+          <span class="fi-compare-caret" aria-hidden="true">＋</span>
+        </summary>
+        <div class="fi-compare-body">
+          <div class="fi-compare-col fi-compare-col--jp">
+            <p class="fi-compare-col-label">Japan / 日本</p>
+            <p class="lang-en">Sauna is mostly enjoyed as a leisure activity or hobby.</p>
+            <p class="lang-ja">サウナはレジャー・趣味として利用する人が多い。</p>
+          </div>
+          <div class="fi-compare-col fi-compare-col--fi">
+            <p class="fi-compare-col-label">Finland / フィンランド</p>
+            <p class="lang-en">Sauna is close to everyday and family life — almost like a second living room.</p>
+            <p class="lang-ja">日常生活や家庭文化に近い存在。もう一つのリビングのような場所。</p>
+          </div>
+          <div class="fi-compare-col fi-compare-col--guide">
+            <p class="fi-compare-col-label">Local Guide's Comment</p>
+            <p class="lang-en">COMMENT COMING SOON — a comment from our Finland local guide will be added here.</p>
+            <p class="lang-ja">COMMENT COMING SOON — フィンランドの友人のコメントを、後日ここに掲載予定です。</p>
+            <span class="fi-guide-tag">FINLAND LOCAL GUIDE</span>
+          </div>
+        </div>
+      </details>
+
+      <!-- ---- NATURE / 自然 ---- -->
+      <details class="fi-compare reveal">
+        <summary class="fi-compare-summary">
+          <span class="fi-compare-heading">
+            <span class="fi-compare-en">Nature</span>
+            <span class="fi-compare-ja">自然</span>
+          </span>
+          <span class="fi-compare-caret" aria-hidden="true">＋</span>
+        </summary>
+        <div class="fi-compare-body">
+          <div class="fi-compare-col fi-compare-col--jp">
+            <p class="fi-compare-col-label">Japan / 日本</p>
+            <p class="lang-en">Nature is often something you travel to on weekends or vacations.</p>
+            <p class="lang-ja">自然は週末や休暇に「出かけて楽しむもの」であることが多い。</p>
+          </div>
+          <div class="fi-compare-col fi-compare-col--fi">
+            <p class="fi-compare-col-label">Finland / フィンランド</p>
+            <p class="lang-en">Forests and lakes are part of the daily routine — sometimes a short walk from home.</p>
+            <p class="lang-ja">森や湖が生活の一部で、自宅から歩いてすぐの距離にあることも多い。</p>
+          </div>
+          <div class="fi-compare-col fi-compare-col--guide">
+            <p class="fi-compare-col-label">Local Guide's Comment</p>
+            <p class="lang-en">COMMENT COMING SOON — a comment from our Finland local guide will be added here.</p>
+            <p class="lang-ja">COMMENT COMING SOON — フィンランドの友人のコメントを、後日ここに掲載予定です。</p>
+            <span class="fi-guide-tag">FINLAND LOCAL GUIDE</span>
+          </div>
+        </div>
+      </details>
+
+      <!-- ---- EDUCATION / 教育 ---- -->
+      <details class="fi-compare reveal">
+        <summary class="fi-compare-summary">
+          <span class="fi-compare-heading">
+            <span class="fi-compare-en">Education</span>
+            <span class="fi-compare-ja">教育</span>
+          </span>
+          <span class="fi-compare-caret" aria-hidden="true">＋</span>
+        </summary>
+        <div class="fi-compare-body">
+          <div class="fi-compare-col fi-compare-col--jp">
+            <p class="fi-compare-col-label">Japan / 日本</p>
+            <p class="lang-en">Exams, competition and standardized results are often emphasized.</p>
+            <p class="lang-ja">試験や競争、画一的な成果が重視されやすい教育文化。</p>
+          </div>
+          <div class="fi-compare-col fi-compare-col--fi">
+            <p class="fi-compare-col-label">Finland / フィンランド</p>
+            <p class="lang-en">Education focuses on equality and trust in teachers, with fewer standardized tests.</p>
+            <p class="lang-ja">平等性や教師への信頼が重視され、画一的なテストは少ない。</p>
+          </div>
+          <div class="fi-compare-col fi-compare-col--guide">
+            <p class="fi-compare-col-label">Local Guide's Comment</p>
+            <p class="lang-en">COMMENT COMING SOON — a comment from our Finland local guide will be added here.</p>
+            <p class="lang-ja">COMMENT COMING SOON — フィンランドの友人のコメントを、後日ここに掲載予定です。</p>
+            <span class="fi-guide-tag">FINLAND LOCAL GUIDE</span>
+          </div>
+        </div>
+      </details>
+
+      <!-- ---- FOOD / 食文化 ---- -->
+      <details class="fi-compare reveal">
+        <summary class="fi-compare-summary">
+          <span class="fi-compare-heading">
+            <span class="fi-compare-en">Food</span>
+            <span class="fi-compare-ja">食文化</span>
+          </span>
+          <span class="fi-compare-caret" aria-hidden="true">＋</span>
+        </summary>
+        <div class="fi-compare-body">
+          <div class="fi-compare-col fi-compare-col--jp">
+            <p class="fi-compare-col-label">Japan / 日本</p>
+            <p class="lang-en">A wide variety of dishes, with a strong food culture built around the seasons.</p>
+            <p class="lang-ja">多様な料理と、四季を意識した豊かな食文化。</p>
+          </div>
+          <div class="fi-compare-col fi-compare-col--fi">
+            <p class="fi-compare-col-label">Finland / フィンランド</p>
+            <p class="lang-en">Simple, local ingredients — rye bread, berries, fish and coffee are everyday staples.</p>
+            <p class="lang-ja">ライ麦パンやベリー、魚、コーヒーなど、シンプルで身近な食材が中心。</p>
+          </div>
+          <div class="fi-compare-col fi-compare-col--guide">
+            <p class="fi-compare-col-label">Local Guide's Comment</p>
+            <p class="lang-en">COMMENT COMING SOON — a comment from our Finland local guide will be added here.</p>
+            <p class="lang-ja">COMMENT COMING SOON — フィンランドの友人のコメントを、後日ここに掲載予定です。</p>
+            <span class="fi-guide-tag">FINLAND LOCAL GUIDE</span>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- ===================================================
+       05 LOCAL VOICE
+       回答欄（.fi-qcard-answer 内の lang-en/lang-ja）は、回答を受け取り次第
+       ここのテキストを書き換えるだけで更新できる。 -->
+  <section class="fi-section" id="voice" aria-labelledby="fi-voice-title">
+    <p class="fi-section-label reveal">VOICE FROM FINLAND</p>
+    <h2 class="fi-section-title reveal" id="fi-voice-title">
+      <span class="lang-en">Voice from Finland</span>
+      <span class="lang-ja">現地の声</span>
+    </h2>
+    <p class="fi-section-lead reveal">
+      <span class="lang-en">Statistics tell us one story. People living there tell us another.</span>
+      <span class="lang-ja">統計だけでは分からない、フィンランドの日常を現地の人に聞いてみます。</span>
+    </p>
+
+    <div class="fi-voice-grid">
+
+      <article class="fi-qcard reveal">
+        <p class="fi-qcard-no">Q1</p>
+        <p class="fi-qcard-q">Do you think Finland is really the happiest country in the world?</p>
+        <p class="fi-qcard-q-ja">フィンランドは本当に「世界一幸せな国」だと思いますか？</p>
+        <div class="fi-qcard-answer">
+          <p class="lang-en">ANSWER COMING SOON</p>
+          <p class="lang-ja">ANSWER COMING SOON（回答は後日掲載予定です）</p>
+        </div>
+      </article>
+
+      <article class="fi-qcard reveal">
+        <p class="fi-qcard-no">Q2</p>
+        <p class="fi-qcard-q">What makes you happy about living in Finland?</p>
+        <p class="fi-qcard-q-ja">フィンランドでの暮らしの中で、何に幸せを感じますか？</p>
+        <div class="fi-qcard-answer">
+          <p class="lang-en">ANSWER COMING SOON</p>
+          <p class="lang-ja">ANSWER COMING SOON（回答は後日掲載予定です）</p>
+        </div>
+      </article>
+
+      <article class="fi-qcard reveal">
+        <p class="fi-qcard-no">Q3</p>
+        <p class="fi-qcard-q">What is very different between Finland and Japan?</p>
+        <p class="fi-qcard-q-ja">フィンランドと日本で、大きく違うと感じることは？</p>
+        <div class="fi-qcard-answer">
+          <p class="lang-en">ANSWER COMING SOON</p>
+          <p class="lang-ja">ANSWER COMING SOON（回答は後日掲載予定です）</p>
+        </div>
+      </article>
+
+      <article class="fi-qcard reveal">
+        <p class="fi-qcard-no">Q4</p>
+        <p class="fi-qcard-q">What should Japanese people know about Finland?</p>
+        <p class="fi-qcard-q-ja">日本の人たちに知っておいてほしいフィンランドのことは？</p>
+        <div class="fi-qcard-answer">
+          <p class="lang-en">ANSWER COMING SOON</p>
+          <p class="lang-ja">ANSWER COMING SOON（回答は後日掲載予定です）</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================================================
+       06 LIFE IN FINLAND
+       写真差し替え：assets/finland/ に対応ファイル名（nature-01.jpg 等）を
+       置くだけで反映される。無い間は自動でプレースホルダー表示。
+       コメント差し替え：.fi-photo-comment 内の lang-en/lang-ja を書き換えるだけ。 -->
+  <section class="fi-section" id="life" aria-labelledby="fi-life-title">
+    <p class="fi-section-label reveal">LIFE IN FINLAND</p>
+    <h2 class="fi-section-title reveal" id="fi-life-title">
+      <span class="lang-en">Life in Finland</span>
+      <span class="lang-ja">フィンランドの暮らし</span>
+    </h2>
+    <p class="fi-section-lead reveal">
+      <span class="lang-en">Photos from our Finland local guide — added as they're shared with us.</span>
+      <span class="lang-ja">フィンランドの友人から届き次第、少しずつ写真を掲載していきます。</span>
+    </p>
+
+    <div class="fi-photo-grid">
+
+      <article class="fi-photo-card reveal">
+        <div class="fi-photo-frame">
+          <span class="fi-photo-tag">NATURE</span>
+          <img class="fi-photo-img" src="../assets/finland/nature-01.jpg" alt="フィンランドの森と湖の風景" loading="lazy" decoding="async" onerror="this.classList.add('is-missing')">
+          <div class="fi-photo-placeholder" aria-hidden="true">
+            <svg class="fi-photo-placeholder-icon" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="10" r="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M4 17l5-5 4 4 3-3 4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="fi-photo-placeholder-text">PHOTO<br>COMING SOON</span>
+          </div>
+        </div>
+        <div class="fi-photo-body">
+          <p class="fi-photo-place">Finnish Lakeland</p>
+          <p class="fi-photo-comment">
+            <span class="fi-photo-comment-label">Local Guide's Comment</span>
+            <span class="lang-en">COMMENT COMING SOON</span>
+            <span class="lang-ja">COMMENT COMING SOON（コメントは後日掲載予定です）</span>
+          </p>
+        </div>
+      </article>
+
+      <article class="fi-photo-card reveal">
+        <div class="fi-photo-frame">
+          <span class="fi-photo-tag">CITY</span>
+          <img class="fi-photo-img" src="../assets/finland/city-01.jpg" alt="フィンランドの街並み" loading="lazy" decoding="async" onerror="this.classList.add('is-missing')">
+          <div class="fi-photo-placeholder" aria-hidden="true">
+            <svg class="fi-photo-placeholder-icon" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="10" r="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M4 17l5-5 4 4 3-3 4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="fi-photo-placeholder-text">PHOTO<br>COMING SOON</span>
+          </div>
+        </div>
+        <div class="fi-photo-body">
+          <p class="fi-photo-place">Helsinki</p>
+          <p class="fi-photo-comment">
+            <span class="fi-photo-comment-label">Local Guide's Comment</span>
+            <span class="lang-en">COMMENT COMING SOON</span>
+            <span class="lang-ja">COMMENT COMING SOON（コメントは後日掲載予定です）</span>
+          </p>
+        </div>
+      </article>
+
+      <article class="fi-photo-card reveal">
+        <div class="fi-photo-frame">
+          <span class="fi-photo-tag">FOOD</span>
+          <img class="fi-photo-img" src="../assets/finland/food-01.jpg" alt="フィンランドの食事" loading="lazy" decoding="async" onerror="this.classList.add('is-missing')">
+          <div class="fi-photo-placeholder" aria-hidden="true">
+            <svg class="fi-photo-placeholder-icon" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="10" r="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M4 17l5-5 4 4 3-3 4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="fi-photo-placeholder-text">PHOTO<br>COMING SOON</span>
+          </div>
+        </div>
+        <div class="fi-photo-body">
+          <p class="fi-photo-place">Everyday Finnish Table</p>
+          <p class="fi-photo-comment">
+            <span class="fi-photo-comment-label">Local Guide's Comment</span>
+            <span class="lang-en">COMMENT COMING SOON</span>
+            <span class="lang-ja">COMMENT COMING SOON（コメントは後日掲載予定です）</span>
+          </p>
+        </div>
+      </article>
+
+      <article class="fi-photo-card reveal">
+        <div class="fi-photo-frame">
+          <span class="fi-photo-tag">SAUNA</span>
+          <img class="fi-photo-img" src="../assets/finland/sauna-01.jpg" alt="フィンランドのサウナ" loading="lazy" decoding="async" onerror="this.classList.add('is-missing')">
+          <div class="fi-photo-placeholder" aria-hidden="true">
+            <svg class="fi-photo-placeholder-icon" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="10" r="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M4 17l5-5 4 4 3-3 4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="fi-photo-placeholder-text">PHOTO<br>COMING SOON</span>
+          </div>
+        </div>
+        <div class="fi-photo-body">
+          <p class="fi-photo-place">Home Sauna</p>
+          <p class="fi-photo-comment">
+            <span class="fi-photo-comment-label">Local Guide's Comment</span>
+            <span class="lang-en">COMMENT COMING SOON</span>
+            <span class="lang-ja">COMMENT COMING SOON（コメントは後日掲載予定です）</span>
+          </p>
+        </div>
+      </article>
+
+      <article class="fi-photo-card reveal">
+        <div class="fi-photo-frame">
+          <span class="fi-photo-tag">EVERYDAY LIFE</span>
+          <img class="fi-photo-img" src="../assets/finland/everyday-01.jpg" alt="フィンランドの日常風景" loading="lazy" decoding="async" onerror="this.classList.add('is-missing')">
+          <div class="fi-photo-placeholder" aria-hidden="true">
+            <svg class="fi-photo-placeholder-icon" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="10" r="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M4 17l5-5 4 4 3-3 4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="fi-photo-placeholder-text">PHOTO<br>COMING SOON</span>
+          </div>
+        </div>
+        <div class="fi-photo-body">
+          <p class="fi-photo-place">Everyday Life</p>
+          <p class="fi-photo-comment">
+            <span class="fi-photo-comment-label">Local Guide's Comment</span>
+            <span class="lang-en">COMMENT COMING SOON</span>
+            <span class="lang-ja">COMMENT COMING SOON（コメントは後日掲載予定です）</span>
+          </p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================================================
+       07 LOCAL RECOMMENDS
+       写真・名前・コメントの差し替え方法は 06 LIFE IN FINLAND と同じ。 -->
+  <section class="fi-section" id="recommends" aria-labelledby="fi-rec-title">
+    <p class="fi-section-label reveal">LOCAL RECOMMENDS</p>
+    <h2 class="fi-section-title reveal" id="fi-rec-title">
+      <span class="lang-en">Local Recommends</span>
+      <span class="lang-ja">現地の友人が個人的に好きなもの</span>
+    </h2>
+    <p class="fi-section-lead reveal">
+      <span class="lang-en">Not a typical tourist ranking — just what our Finland local guide personally loves.</span>
+      <span class="lang-ja">一般的な観光ランキングではなく、フィンランド在住者が個人的に好きなものを紹介する場所です。</span>
+    </p>
+
+    <div class="fi-photo-grid">
+
+      <article class="fi-photo-card reveal">
+        <div class="fi-photo-frame">
+          <span class="fi-photo-tag">PLACE</span>
+          <img class="fi-photo-img" src="../assets/finland/recommend-01.jpg" alt="フィンランドの友人おすすめの場所" loading="lazy" decoding="async" onerror="this.classList.add('is-missing')">
+          <div class="fi-photo-placeholder" aria-hidden="true">
+            <svg class="fi-photo-placeholder-icon" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="10" r="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M4 17l5-5 4 4 3-3 4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="fi-photo-placeholder-text">PHOTO<br>COMING SOON</span>
+          </div>
+        </div>
+        <div class="fi-photo-body">
+          <p class="fi-rec-title">
+            <span class="lang-en">My Favorite Place</span>
+            <span class="lang-ja">お気に入りの場所</span>
+          </p>
+          <p class="fi-rec-name lang-en">NAME COMING SOON</p>
+          <p class="fi-rec-name lang-ja">名前は後日掲載予定</p>
+          <p class="fi-photo-comment">
+            <span class="fi-photo-comment-label">Local Guide's Comment</span>
+            <span class="lang-en">COMMENT COMING SOON</span>
+            <span class="lang-ja">COMMENT COMING SOON（コメントは後日掲載予定です）</span>
+          </p>
+          <span class="fi-rec-byline">
+            <span class="lang-en">Recommendation from Finland Local Guide</span>
+            <span class="lang-ja">FINLAND LOCAL GUIDE からのおすすめ</span>
+          </span>
+        </div>
+      </article>
+
+      <article class="fi-photo-card reveal">
+        <div class="fi-photo-frame">
+          <span class="fi-photo-tag">FOOD</span>
+          <img class="fi-photo-img" src="../assets/finland/recommend-02.jpg" alt="フィンランドの友人おすすめの食べ物" loading="lazy" decoding="async" onerror="this.classList.add('is-missing')">
+          <div class="fi-photo-placeholder" aria-hidden="true">
+            <svg class="fi-photo-placeholder-icon" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="10" r="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M4 17l5-5 4 4 3-3 4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="fi-photo-placeholder-text">PHOTO<br>COMING SOON</span>
+          </div>
+        </div>
+        <div class="fi-photo-body">
+          <p class="fi-rec-title">
+            <span class="lang-en">My Favorite Food</span>
+            <span class="lang-ja">お気に入りの食べ物</span>
+          </p>
+          <p class="fi-rec-name lang-en">NAME COMING SOON</p>
+          <p class="fi-rec-name lang-ja">名前は後日掲載予定</p>
+          <p class="fi-photo-comment">
+            <span class="fi-photo-comment-label">Local Guide's Comment</span>
+            <span class="lang-en">COMMENT COMING SOON</span>
+            <span class="lang-ja">COMMENT COMING SOON（コメントは後日掲載予定です）</span>
+          </p>
+          <span class="fi-rec-byline">
+            <span class="lang-en">Recommendation from Finland Local Guide</span>
+            <span class="lang-ja">FINLAND LOCAL GUIDE からのおすすめ</span>
+          </span>
+        </div>
+      </article>
+
+      <article class="fi-photo-card reveal">
+        <div class="fi-photo-frame">
+          <span class="fi-photo-tag">CAFE</span>
+          <img class="fi-photo-img" src="../assets/finland/recommend-03.jpg" alt="フィンランドの友人おすすめのカフェ" loading="lazy" decoding="async" onerror="this.classList.add('is-missing')">
+          <div class="fi-photo-placeholder" aria-hidden="true">
+            <svg class="fi-photo-placeholder-icon" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="10" r="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M4 17l5-5 4 4 3-3 4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="fi-photo-placeholder-text">PHOTO<br>COMING SOON</span>
+          </div>
+        </div>
+        <div class="fi-photo-body">
+          <p class="fi-rec-title">
+            <span class="lang-en">My Favorite Cafe</span>
+            <span class="lang-ja">お気に入りのカフェ</span>
+          </p>
+          <p class="fi-rec-name lang-en">NAME COMING SOON</p>
+          <p class="fi-rec-name lang-ja">名前は後日掲載予定</p>
+          <p class="fi-photo-comment">
+            <span class="fi-photo-comment-label">Local Guide's Comment</span>
+            <span class="lang-en">COMMENT COMING SOON</span>
+            <span class="lang-ja">COMMENT COMING SOON（コメントは後日掲載予定です）</span>
+          </p>
+          <span class="fi-rec-byline">
+            <span class="lang-en">Recommendation from Finland Local Guide</span>
+            <span class="lang-ja">FINLAND LOCAL GUIDE からのおすすめ</span>
+          </span>
+        </div>
+      </article>
+
+      <article class="fi-photo-card reveal">
+        <div class="fi-photo-frame">
+          <span class="fi-photo-tag">NATURE</span>
+          <img class="fi-photo-img" src="../assets/finland/recommend-04.jpg" alt="フィンランドの友人おすすめの自然スポット" loading="lazy" decoding="async" onerror="this.classList.add('is-missing')">
+          <div class="fi-photo-placeholder" aria-hidden="true">
+            <svg class="fi-photo-placeholder-icon" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="10" r="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M4 17l5-5 4 4 3-3 4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="fi-photo-placeholder-text">PHOTO<br>COMING SOON</span>
+          </div>
+        </div>
+        <div class="fi-photo-body">
+          <p class="fi-rec-title">
+            <span class="lang-en">My Favorite Nature Spot</span>
+            <span class="lang-ja">お気に入りの自然スポット</span>
+          </p>
+          <p class="fi-rec-name lang-en">NAME COMING SOON</p>
+          <p class="fi-rec-name lang-ja">名前は後日掲載予定</p>
+          <p class="fi-photo-comment">
+            <span class="fi-photo-comment-label">Local Guide's Comment</span>
+            <span class="lang-en">COMMENT COMING SOON</span>
+            <span class="lang-ja">COMMENT COMING SOON（コメントは後日掲載予定です）</span>
+          </p>
+          <span class="fi-rec-byline">
+            <span class="lang-en">Recommendation from Finland Local Guide</span>
+            <span class="lang-ja">FINLAND LOCAL GUIDE からのおすすめ</span>
+          </span>
+        </div>
+      </article>
+
+      <article class="fi-photo-card reveal">
+        <div class="fi-photo-frame">
+          <span class="fi-photo-tag">SAUNA</span>
+          <img class="fi-photo-img" src="../assets/finland/recommend-05.jpg" alt="フィンランドの友人おすすめのサウナ" loading="lazy" decoding="async" onerror="this.classList.add('is-missing')">
+          <div class="fi-photo-placeholder" aria-hidden="true">
+            <svg class="fi-photo-placeholder-icon" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="10" r="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M4 17l5-5 4 4 3-3 4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="fi-photo-placeholder-text">PHOTO<br>COMING SOON</span>
+          </div>
+        </div>
+        <div class="fi-photo-body">
+          <p class="fi-rec-title">
+            <span class="lang-en">My Favorite Sauna</span>
+            <span class="lang-ja">お気に入りのサウナ</span>
+          </p>
+          <p class="fi-rec-name lang-en">NAME COMING SOON</p>
+          <p class="fi-rec-name lang-ja">名前は後日掲載予定</p>
+          <p class="fi-photo-comment">
+            <span class="fi-photo-comment-label">Local Guide's Comment</span>
+            <span class="lang-en">COMMENT COMING SOON</span>
+            <span class="lang-ja">COMMENT COMING SOON（コメントは後日掲載予定です）</span>
+          </p>
+          <span class="fi-rec-byline">
+            <span class="lang-en">Recommendation from Finland Local Guide</span>
+            <span class="lang-ja">FINLAND LOCAL GUIDE からのおすすめ</span>
+          </span>
+        </div>
+      </article>
+
+      <article class="fi-photo-card reveal">
+        <div class="fi-photo-frame">
+          <span class="fi-photo-tag">EXPERIENCE</span>
+          <img class="fi-photo-img" src="../assets/finland/recommend-06.jpg" alt="フィンランドの友人おすすめの体験" loading="lazy" decoding="async" onerror="this.classList.add('is-missing')">
+          <div class="fi-photo-placeholder" aria-hidden="true">
+            <svg class="fi-photo-placeholder-icon" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="10" r="1.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M4 17l5-5 4 4 3-3 4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="fi-photo-placeholder-text">PHOTO<br>COMING SOON</span>
+          </div>
+        </div>
+        <div class="fi-photo-body">
+          <p class="fi-rec-title">
+            <span class="lang-en">My Favorite Experience</span>
+            <span class="lang-ja">お気に入りの体験</span>
+          </p>
+          <p class="fi-rec-name lang-en">NAME COMING SOON</p>
+          <p class="fi-rec-name lang-ja">名前は後日掲載予定</p>
+          <p class="fi-photo-comment">
+            <span class="fi-photo-comment-label">Local Guide's Comment</span>
+            <span class="lang-en">COMMENT COMING SOON</span>
+            <span class="lang-ja">COMMENT COMING SOON（コメントは後日掲載予定です）</span>
+          </p>
+          <span class="fi-rec-byline">
+            <span class="lang-en">Recommendation from Finland Local Guide</span>
+            <span class="lang-ja">FINLAND LOCAL GUIDE からのおすすめ</span>
+          </span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================================================
+       08 HAPPINESS ≠ SMILING
+  =================================================== -->
+  <section class="fi-statement" id="statement" aria-labelledby="fi-statement-title">
+    <h2 class="fi-statement-title reveal" id="fi-statement-title">
+      HAPPINESS<span class="fi-ne" aria-hidden="true">≠</span>SMILING
+    </h2>
+    <div class="fi-statement-body reveal">
+      <p class="lang-ja">幸福とは、<br>毎日笑っていることだけではない。</p>
+      <p class="lang-ja">安心して暮らせること。<br>自分の人生を選べること。<br>誰かを信頼できること。<br>自然の中で過ごせること。</p>
+      <p class="lang-ja">フィンランドから、<br>「幸せとは何か」を考えてみる。</p>
+
+      <p class="lang-en">Happiness isn't only<br>about smiling every day.</p>
+      <p class="lang-en">Feeling safe enough to live without fear.<br>Being free to choose your own life.<br>Being able to trust someone.<br>Having time to be in nature.</p>
+      <p class="lang-en">From Finland, a chance<br>to rethink what happiness really means.</p>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       09 FROM JAPAN TO FINLAND
+  =================================================== -->
+  <section class="fi-section" id="message" aria-labelledby="fi-message-title">
+    <div class="fi-message">
+      <p class="fi-message-arrow reveal" id="fi-message-title">
+        JAPAN
+        <span class="fi-arrow-down" aria-hidden="true">↓</span>
+        FINLAND
+      </p>
+
+      <div class="fi-message-body reveal">
+        <div class="lang-en">
+          <p>Hello from Japan.</p>
+          <p>OKAPO LAB is a small experimental website created in Japan.</p>
+          <p>I became curious about why Finland continues to rank as one of the happiest countries in the world.</p>
+          <p>So I created this page with help from a friend in Finland.</p>
+          <p>This isn't just a page about Finland.</p>
+          <p>It's a place where Japan and Finland can exchange everyday life, culture, photos and ideas about happiness.</p>
+        </div>
+        <div class="lang-ja">
+          <p>日本からこんにちは。</p>
+          <p>おかぽるLABは、日本発の小さな実験的なWebサイトです。</p>
+          <p>なぜフィンランドが世界で最も幸福な国の一つであり続けているのか、その理由が気になりました。</p>
+          <p>そこで、フィンランドに住む友人の協力を得て、このページを作りました。</p>
+          <p>これは単なる「フィンランド紹介ページ」ではありません。</p>
+          <p>日本とフィンランドが、日常・文化・写真、そして「幸せとは何か」について交換し合える場所を目指しています。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">LAB<span class="brand-dot">.</span></div>
+      <p class="footer-tagline">
+        <span class="lang-en">OKAPO LAB — Japan × Finland, Local Culture Project</span>
+        <span class="lang-ja">おかぽるLAB — JAPAN × FINLAND ／ LOCAL CULTURE PROJECT</span>
+      </p>
+      <p class="fi-footer-note">
+        <span class="lang-en">Source:</span><span class="lang-ja">出典：</span>
+        <a href="https://worldhappiness.report/" target="_blank" rel="noopener noreferrer">World Happiness Report ↗</a>
+      </p>
+      <a class="fi-footer-back" href="../index.html">
+        <span class="lang-en">Back to OKAPO LAB →</span>
+        <span class="lang-ja">おかぽるLABへ戻る →</span>
+      </a>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 OKAPO. All rights reserved.</span>
+      <span class="footer-bottom-sub">JAPAN × FINLAND</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/script.js"></script>
+<script src="../js/finland.js"></script>
+</body>
+</html>

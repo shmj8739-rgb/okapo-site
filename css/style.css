@@ -1626,6 +1626,74 @@ body {
 }
 
 /* ===================================================
+   OKAPO 4COMA
+   縦長作品を切り取らず、PC・スマホとも自然な幅で表示する。
+=================================================== */
+.okapo-comic {
+  padding: clamp(80px, 12vw, 140px) 0;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(106, 141, 255, 0.1), transparent 62%),
+    var(--charcoal);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.okapo-comic-inner {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(40px, 7vw, 96px);
+}
+
+.okapo-comic-header {
+  position: sticky;
+  top: 120px;
+}
+
+.okapo-comic-header .section-title {
+  margin-bottom: 24px;
+}
+
+.okapo-comic-lead {
+  max-width: 28em;
+  color: var(--grey);
+  font-size: 0.95rem;
+  line-height: 1.9;
+}
+
+.okapo-comic-frame {
+  width: min(100%, 720px);
+  margin-left: auto;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: clamp(14px, 2vw, 24px);
+  background: #ebe5dc;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.38);
+}
+
+.okapo-comic-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 760px) {
+  .okapo-comic-inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .okapo-comic-header {
+    position: static;
+  }
+
+  .okapo-comic-frame {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+/* ===================================================
    FUTURE OKAPO — 挑戦の管理ボード（NEXT / COMPLETED）
    2026-09 追加。上の .future-viewport / .future-track /
    .future-card（自動横スクロール版）は残してあるが、

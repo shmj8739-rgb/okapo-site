@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 504" role="img" aria-label="燃えるOKAPO紙幣のイラスト">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0714"/>
+      <stop offset="100%" stop-color="#1c1230"/>
+    </linearGradient>
+    <linearGradient id="fire" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#ff3b3b"/>
+      <stop offset="55%" stop-color="#ff7a1a"/>
+      <stop offset="100%" stop-color="#ffcf4d"/>
+    </linearGradient>
+    <linearGradient id="note" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#271a44"/>
+      <stop offset="100%" stop-color="#3a230a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="896" height="504" fill="url(#bg)"/>
+
+  <!-- 背景グリッド（うっすら） -->
+  <g stroke="#ffffff" stroke-opacity="0.05" stroke-width="1">
+    <path d="M0 126 H896 M0 252 H896 M0 378 H896"/>
+    <path d="M224 0 V504 M448 0 V504 M672 0 V504"/>
+  </g>
+
+  <!-- 紙幣（回転させたカード） -->
+  <g transform="translate(448 268) rotate(-8)">
+    <rect x="-190" y="-108" width="380" height="216" rx="18" fill="url(#note)" stroke="#ffffff" stroke-opacity="0.35" stroke-width="3"/>
+    <circle cx="130" cy="-58" r="26" fill="none" stroke="#ffcf4d" stroke-width="3" opacity="0.8"/>
+    <circle cx="130" cy="-58" r="9" fill="#ffcf4d" opacity="0.8"/>
+    <text x="-160" y="-64" fill="#ffcf4d" font-family="Space Grotesk, sans-serif" font-size="26" font-weight="700" opacity="0.9">1000</text>
+    <text x="-160" y="86" fill="#ffcf4d" font-family="Space Grotesk, sans-serif" font-size="15" letter-spacing="2" opacity="0.7">OKAPO CENTRAL BANK</text>
+    <text x="-30" y="18" fill="#f6f5f8" font-family="Space Grotesk, sans-serif" font-size="46" font-weight="700" text-anchor="middle" opacity="0.95">OKAPO</text>
+  </g>
+
+  <!-- 焦げ跡 -->
+  <ellipse cx="560" cy="330" rx="120" ry="70" fill="#0a0604" opacity="0.65"/>
+
+  <!-- 炎 -->
+  <g transform="translate(560 300)">
+    <path d="M0 60 C-46 20 -30 -30 -6 -70 C-2 -40 18 -34 16 -8 C34 -20 30 -50 18 -80 C60 -46 62 6 34 40 C50 24 54 4 50 -10 C64 20 56 56 20 66 C40 50 34 30 26 20 C18 40 -6 44 0 60 Z" fill="url(#fire)"/>
+  </g>
+
+  <!-- 灰・火の粉 -->
+  <g fill="#ffcf4d" opacity="0.8">
+    <circle cx="640" cy="230" r="4"/>
+    <circle cx="668" cy="180" r="3"/>
+    <circle cx="612" cy="160" r="2.4"/>
+    <circle cx="700" cy="240" r="2.6"/>
+  </g>
+  <g fill="#9d97ab" opacity="0.5">
+    <rect x="500" y="120" width="3" height="3"/>
+    <rect x="520" y="150" width="2.4" height="2.4"/>
+    <rect x="470" y="170" width="2" height="2"/>
+  </g>
+</svg>

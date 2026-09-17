@@ -23,6 +23,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..600&family=Noto+Sans+JP:wght@300..600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/hero-galaxy.css">
+<link rel="stylesheet" href="css/anniversary-calendar.css">
 </head>
 
 <body>
@@ -87,6 +88,38 @@
     <span class="scroll-cue-text">SCROLL</span>
   </div>
   <button class="hero-galaxy-toggle" id="hero-galaxy-toggle" type="button" aria-controls="hero-galaxy" hidden>背景を一時停止</button>
+</section>
+
+<!-- ===== WEEKLY ANNIVERSARY CALENDAR / 今週は何の日？ ===== -->
+<section class="anniversary-calendar" id="anniversary-calendar" aria-labelledby="anniversary-calendar-title">
+  <div class="section-inner">
+    <div class="anniversary-calendar-header">
+      <div>
+        <p class="section-label reveal">THIS WEEK</p>
+        <h2 class="section-title reveal" id="anniversary-calendar-title">📅 今週は何の日？</h2>
+      </div>
+      <p class="anniversary-week-range reveal" id="anniversary-week-range" aria-live="polite"></p>
+    </div>
+
+    <div class="anniversary-week" id="anniversary-week" aria-label="今週の記念日"></div>
+  </div>
+
+  <dialog class="anniversary-dialog" id="anniversary-dialog" aria-labelledby="anniversary-dialog-title">
+    <button class="anniversary-dialog-close" type="button" data-anniversary-close aria-label="閉じる">×</button>
+    <p class="anniversary-dialog-date" id="anniversary-dialog-date"></p>
+    <div class="anniversary-dialog-icon" id="anniversary-dialog-icon" aria-hidden="true"></div>
+    <h3 class="anniversary-dialog-title" id="anniversary-dialog-title"></h3>
+    <dl class="anniversary-dialog-details">
+      <div>
+        <dt>どんな日？</dt>
+        <dd id="anniversary-dialog-description"></dd>
+      </div>
+      <div>
+        <dt>由来</dt>
+        <dd id="anniversary-dialog-origin"></dd>
+      </div>
+    </dl>
+  </dialog>
 </section>
 
 <!-- ===== WORKS / PROJECTS / OKAPO PLANTS ティザー =====
@@ -410,6 +443,8 @@
   </div>
 </footer>
 
+<script src="data/anniversaries.js"></script>
+<script src="js/anniversary-calendar.js"></script>
 <script src="js/script.js"></script>
 <script src="js/hero-galaxy.js" defer></script>
 <!-- FUTURE OKAPO 挑戦ボード。以前の future-marquee.js は削除せず残しているが、

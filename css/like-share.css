@@ -1,0 +1,214 @@
+/* ===================================================
+   OKAPO LAB — LIKE / SHARE
+   記事・アプリ・ゲーム共通。既存ページへ影響しないよう
+   okapo-reactions 接頭辞のクラスだけで構成する。
+=================================================== */
+.okapo-reactions {
+  --okapo-reactions-bg: rgba(8, 10, 18, 0.92);
+  --okapo-reactions-panel: rgba(17, 20, 34, 0.96);
+  --okapo-reactions-line: rgba(142, 160, 220, 0.24);
+  --okapo-reactions-blue: #7f9cff;
+  --okapo-reactions-purple: #a777ff;
+  --okapo-reactions-text: #f7f8ff;
+  --okapo-reactions-muted: #a4abc1;
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  margin: clamp(28px, 5vw, 52px) 0 0;
+  padding: 18px;
+  border: 1px solid var(--okapo-reactions-line);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(167, 119, 255, 0.12), transparent 45%),
+    var(--okapo-reactions-bg);
+  color: var(--okapo-reactions-text);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+  font-family: "Noto Sans JP", sans-serif;
+  box-sizing: border-box;
+  isolation: isolate;
+}
+
+.okapo-reactions *,
+.okapo-reactions *::before,
+.okapo-reactions *::after {
+  box-sizing: border-box;
+}
+
+.okapo-reactions__bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.okapo-reactions__button {
+  display: inline-flex;
+  min-width: 0;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid var(--okapo-reactions-line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--okapo-reactions-text);
+  font: 500 0.82rem/1.2 "Noto Sans JP", sans-serif;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.22s ease, background 0.22s ease, transform 0.22s ease;
+}
+
+.okapo-reactions__button:hover,
+.okapo-reactions__button:focus-visible {
+  border-color: rgba(127, 156, 255, 0.72);
+  background: rgba(127, 156, 255, 0.11);
+}
+
+.okapo-reactions__button:focus-visible {
+  outline: 2px solid var(--okapo-reactions-purple);
+  outline-offset: 3px;
+}
+
+.okapo-reactions__button:active {
+  transform: translateY(1px);
+}
+
+.okapo-reactions__button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.okapo-reactions__like[aria-pressed="true"] {
+  border-color: rgba(167, 119, 255, 0.78);
+  background: linear-gradient(135deg, rgba(127, 156, 255, 0.28), rgba(167, 119, 255, 0.24));
+}
+
+.okapo-reactions__flame {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.okapo-reactions__flame path {
+  fill: transparent;
+  stroke: #d9deef;
+  stroke-width: 1.8;
+  transition: fill 0.22s ease, stroke 0.22s ease, filter 0.22s ease;
+}
+
+.okapo-reactions__like[aria-pressed="true"] .okapo-reactions__flame path {
+  fill: #050507;
+  stroke: #c7b3ff;
+  filter: drop-shadow(0 0 5px rgba(167, 119, 255, 0.8));
+}
+
+.okapo-reactions__count {
+  min-width: 1.4em;
+  color: #cbd5ff;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+}
+
+.okapo-reactions__share-wrap {
+  position: relative;
+  min-width: 0;
+}
+
+.okapo-reactions__share-toggle::after {
+  content: "▾";
+  color: var(--okapo-reactions-muted);
+  font-size: 0.68rem;
+  transition: transform 0.22s ease;
+}
+
+.okapo-reactions__share-toggle[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+
+.okapo-reactions__menu {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  top: calc(100% + 10px);
+  display: grid;
+  width: min(248px, calc(100vw - 52px));
+  gap: 7px;
+  padding: 10px;
+  border: 1px solid rgba(127, 156, 255, 0.34);
+  border-radius: 14px;
+  background: var(--okapo-reactions-panel);
+  box-shadow: 0 20px 54px rgba(0, 0, 0, 0.54);
+}
+
+.okapo-reactions__menu[hidden] {
+  display: none;
+}
+
+.okapo-reactions__menu .okapo-reactions__button {
+  width: 100%;
+  justify-content: flex-start;
+  border-radius: 10px;
+  white-space: normal;
+  text-align: left;
+}
+
+.okapo-reactions__status {
+  min-height: 1.4em;
+  margin: 9px 2px 0;
+  color: var(--okapo-reactions-muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.okapo-reactions__status:empty {
+  display: none;
+}
+
+/* ゲーム一覧カード内では、既存CTAの下へコンパクトに収める。 */
+.work-card .okapo-reactions {
+  margin-top: 18px;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.work-card .okapo-reactions__button {
+  min-height: 40px;
+  padding: 8px 11px;
+  font-size: 0.74rem;
+}
+
+@media (max-width: 560px) {
+  .okapo-reactions {
+    padding: 14px;
+  }
+
+  .okapo-reactions__bar {
+    align-items: stretch;
+  }
+
+  .okapo-reactions__like,
+  .okapo-reactions__share-wrap {
+    flex: 1 1 145px;
+  }
+
+  .okapo-reactions__share-toggle {
+    width: 100%;
+  }
+
+  .okapo-reactions__menu {
+    right: 0;
+    left: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .okapo-reactions__button,
+  .okapo-reactions__flame path,
+  .okapo-reactions__share-toggle::after {
+    transition: none;
+  }
+}

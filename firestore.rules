@@ -185,6 +185,32 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // ---- 記事・アプリ・ゲーム共通のいいね数 ----
+    // URLから生成した固定IDごとに count だけを保存する。
+    // UI側は同一ブラウザで「いいね / 取り消し」のトグル動作にし、
+    // ルール側でも1回の更新につき ±1 以外の変更を拒否する。
+    match /page_reactions/{pageId} {
+
+      allow read: if true;
+
+      allow create: if
+        request.resource.data.keys().hasOnly(['count']) &&
+        request.resource.data.count == 1;
+
+      allow update: if
+        request.resource.data.keys().hasOnly(['count']) &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['count']) &&
+        (
+          request.resource.data.count == resource.data.count + 1 ||
+          (
+            resource.data.count > 0 &&
+            request.resource.data.count == resource.data.count - 1
+          )
+        );
+
+      allow delete: if false;
+    }
+
     // ===================================================
     // FUTURE OKAPO — おかぽの挑戦リスト（2026-09 追加）
     // ---------------------------------------------------

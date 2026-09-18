@@ -21,6 +21,7 @@
 <!-- web フォント・外部リソースは読み込まない（ブラウザ内で完結）。
      おかぽサイトへ組み込む際に Space Grotesk / Noto Sans JP を追加する。 -->
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="../../css/like-share.css">
 </head>
 <body>
 
@@ -126,6 +127,8 @@
     </div>
   </section>
 
+  <div data-okapo-reactions data-share-title="LIFE HOURGLASS｜あと何時間？"></div>
+
   <footer class="lh-footer">
     <p class="lh-privacy">この砂時計は、あなたのブラウザの中だけで動いています。</p>
     <p>入力した内容がどこかへ送られたり、保存されたりすることはありません。</p>
@@ -139,5 +142,6 @@
 <script src="js/hourglass.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/main.js"></script>
+<script type="module" src="../../js/like-share.js"></script>
 </body>
 </html>

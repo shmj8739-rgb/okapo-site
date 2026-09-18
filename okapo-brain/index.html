@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="../css/like-share.css" />
 </head>
 <body>
   <div id="scene" aria-label="おかぽブレイン。ドラッグで回転、ホイールでズーム、右ドラッグで平行移動"></div>
@@ -55,6 +56,8 @@
     </aside>
   </main>
 
+  <div data-okapo-reactions data-share-title="おかぽブレイン｜岡ぽの頭の中を旅する3D思考探索空間"></div>
+
   <footer>
 
     <span class="signal-bars"><i></i><i></i><i></i><i></i><i></i></span>
@@ -63,5 +66,6 @@
 
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.167.1/examples/jsm/"}}</script>
   <script type="module">import('./app.js').catch(error=>{document.getElementById('loadStatus').textContent='3D空間を読み込めませんでした。通信環境とWebGL対応を確認し、再読み込みしてください。';console.error(error);});</script>
+  <script type="module" src="../js/like-share.js"></script>
 </body>
 </html>

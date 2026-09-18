@@ -147,14 +147,26 @@ function initializeMount(mount) {
   const shareWrap = document.createElement("div");
   shareWrap.className = "okapo-reactions__share-wrap";
   const shareToggle = createButton("okapo-reactions__share-toggle", "共有する");
-  const menuId = `okapo-share-${key}-${Math.random().toString(36).slice(2, 7)}`;
+  const modalId = `okapo-share-${key}-${Math.random().toString(36).slice(2, 7)}`;
   shareToggle.setAttribute("aria-expanded", "false");
-  shareToggle.setAttribute("aria-controls", menuId);
+  shareToggle.setAttribute("aria-controls", modalId);
+  shareToggle.setAttribute("aria-haspopup", "dialog");
 
-  const menu = document.createElement("div");
-  menu.className = "okapo-reactions__menu";
-  menu.id = menuId;
-  menu.hidden = true;
+  const modal = document.createElement("dialog");
+  modal.className = "okapo-reactions__modal";
+  modal.id = modalId;
+  modal.setAttribute("aria-labelledby", `${modalId}-title`);
+
+  const modalPanel = document.createElement("div");
+  modalPanel.className = "okapo-reactions__modal-panel";
+
+  const modalTitle = document.createElement("h2");
+  modalTitle.className = "okapo-reactions__modal-title";
+  modalTitle.id = `${modalId}-title`;
+  modalTitle.textContent = "このページを共有";
+
+  const closeButton = createButton("okapo-reactions__modal-close", "×");
+  closeButton.setAttribute("aria-label", "共有画面を閉じる");
 
   const shareText = `${title}\n${url}`;
   const xUrl = `https://x.com/intent/post?text=${encodeURIComponent(shareText)}`;
@@ -163,48 +175,64 @@ function initializeMount(mount) {
   const lineLink = createShareLink("LINEで共有", lineUrl, `${title}をLINEで共有`);
   const copyButton = createButton("okapo-reactions__copy", "リンクをコピー");
 
+  const copyStatus = document.createElement("p");
+  copyStatus.className = "okapo-reactions__modal-status";
+  copyStatus.setAttribute("role", "status");
+  copyStatus.setAttribute("aria-live", "polite");
+
   const status = document.createElement("p");
   status.className = "okapo-reactions__status";
   status.setAttribute("role", "status");
   status.setAttribute("aria-live", "polite");
 
-  const closeMenu = () => {
-    menu.hidden = true;
+  const closeModal = () => {
+    if (modal.open) modal.close();
+  };
+
+  const syncClosedState = () => {
     shareToggle.setAttribute("aria-expanded", "false");
+    document.body.classList.toggle(
+      "okapo-reactions-modal-open",
+      Boolean(document.querySelector(".okapo-reactions__modal[open]")),
+    );
   };
 
   shareToggle.addEventListener("click", () => {
-    const willOpen = menu.hidden;
-    document.querySelectorAll(".okapo-reactions__menu:not([hidden])").forEach((openMenu) => {
-      openMenu.hidden = true;
-      openMenu.previousElementSibling?.setAttribute("aria-expanded", "false");
+    document.querySelectorAll(".okapo-reactions__modal[open]").forEach((openModal) => {
+      if (openModal !== modal) openModal.close();
     });
-    menu.hidden = !willOpen;
-    shareToggle.setAttribute("aria-expanded", String(willOpen));
+    modal.showModal();
+    document.body.classList.add("okapo-reactions-modal-open");
+    shareToggle.setAttribute("aria-expanded", "true");
+    closeButton.focus();
   });
 
-  document.addEventListener("click", (event) => {
-    if (!shareWrap.contains(event.target)) closeMenu();
+  closeButton.addEventListener("click", closeModal);
+
+  modal.addEventListener("click", (event) => {
+    if (event.target !== modal) return;
+    const rect = modal.getBoundingClientRect();
+    const inside = event.clientX >= rect.left && event.clientX <= rect.right
+      && event.clientY >= rect.top && event.clientY <= rect.bottom;
+    if (!inside) closeModal();
   });
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !menu.hidden) {
-      closeMenu();
-      shareToggle.focus();
-    }
+  modal.addEventListener("close", () => {
+    syncClosedState();
+    if (document.contains(shareToggle)) shareToggle.focus();
   });
 
   copyButton.addEventListener("click", async () => {
     try {
       await copyText(url);
-      status.textContent = "リンクをコピーしました。";
+      copyStatus.textContent = "コピーしました";
       copyButton.textContent = "コピーしました";
       window.setTimeout(() => {
         copyButton.textContent = "リンクをコピー";
-        status.textContent = "";
-      }, 2200);
+        copyStatus.textContent = "";
+      }, 1800);
     } catch {
-      status.textContent = "コピーできませんでした。URLを選択してコピーしてください。";
+      copyStatus.textContent = "コピーできませんでした。URLを選択してコピーしてください。";
     }
   });
 
@@ -239,7 +267,6 @@ function initializeMount(mount) {
       liked = nextLiked;
       writeLiked(key, liked);
       renderLiked();
-      status.textContent = liked ? "いいねしました。" : "いいねを取り消しました。";
     } catch (error) {
       console.error("Failed to update reaction", error);
       status.textContent = "いいねを更新できませんでした。時間をおいて再度お試しください。";
@@ -262,8 +289,13 @@ function initializeMount(mount) {
     },
   );
 
-  menu.append(xLink, lineLink, copyButton);
-  shareWrap.append(shareToggle, menu);
+  const modalActions = document.createElement("div");
+  modalActions.className = "okapo-reactions__modal-actions";
+  modalActions.append(xLink, lineLink, copyButton);
+  modalPanel.append(closeButton, modalTitle, modalActions, copyStatus);
+  modal.appendChild(modalPanel);
+  document.body.appendChild(modal);
+  shareWrap.appendChild(shareToggle);
   bar.append(likeButton, shareWrap);
   mount.append(bar, status);
 }

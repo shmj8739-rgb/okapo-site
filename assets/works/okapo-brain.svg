@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 896 504" role="img" aria-labelledby="title desc">
+  <title id="title">おかぽブレイン</title>
+  <desc id="desc">暗い宇宙に浮かぶ思考ノードと4本の座標軸</desc>
+  <defs>
+    <radialGradient id="bg" cx="54%" cy="48%" r="72%">
+      <stop offset="0" stop-color="#14284b"/>
+      <stop offset=".42" stop-color="#071225"/>
+      <stop offset="1" stop-color="#02050b"/>
+    </radialGradient>
+    <radialGradient id="cyan">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".2" stop-color="#bcecff"/>
+      <stop offset=".55" stop-color="#579bff" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#579bff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="violet">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".22" stop-color="#dccaff"/>
+      <stop offset=".6" stop-color="#8d6cff" stop-opacity=".65"/>
+      <stop offset="1" stop-color="#8d6cff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <pattern id="stars" width="74" height="58" patternUnits="userSpaceOnUse">
+      <circle cx="9" cy="12" r="1" fill="#a8c9ff" opacity=".5"/><circle cx="56" cy="39" r=".8" fill="#fff" opacity=".35"/>
+    </pattern>
+  </defs>
+  <rect width="896" height="504" fill="url(#bg)"/>
+  <rect width="896" height="504" fill="url(#stars)"/>
+  <g transform="translate(448 250)" stroke-linecap="round">
+    <path d="M-205 0H205M0-165V165M-145 116L145-116" stroke="#74baff" stroke-opacity=".48" stroke-width="2"/>
+    <path d="M-135-135L135 135" stroke="#c9aaff" stroke-opacity=".75" stroke-width="2" stroke-dasharray="9 10"/>
+    <g stroke="#91baff" stroke-opacity=".32">
+      <path d="M0 0L-150-76M0 0L-138 93M0 0L120-95M0 0L155 60M0 0L85 126"/>
+    </g>
+    <circle r="62" fill="url(#cyan)" filter="url(#glow)"/>
+    <circle cx="-150" cy="-76" r="47" fill="url(#cyan)"/>
+    <circle cx="-138" cy="93" r="42" fill="url(#cyan)"/>
+    <circle cx="120" cy="-95" r="49" fill="url(#violet)"/>
+    <circle cx="155" cy="60" r="44" fill="url(#violet)"/>
+    <circle cx="85" cy="126" r="38" fill="url(#cyan)"/>
+    <circle r="8" fill="#fff" filter="url(#glow)"/>
+  </g>
+  <text x="42" y="55" fill="#eef6ff" font-family="sans-serif" font-size="27" font-weight="700">おかぽブレイン</text>
+  <text x="44" y="82" fill="#8297bb" font-family="monospace" font-size="12" letter-spacing="4">NEURAL UNIVERSE</text>
+</svg>

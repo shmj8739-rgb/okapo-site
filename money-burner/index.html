@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!-- ゲーム名は js/constants.js の GAME_TITLE を編集するだけで、
+     このページ内のタイトル表示・document.title が両方追従する
+     （JS無効環境では、このHTMLに静的に書いた文言がそのまま表示される）。 -->
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZKJT7MEQVL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ZKJT7MEQVL');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#07060a">
+
+<title>OKAPO MONEY CRASH｜おかぽるLAB</title>
+<meta name="description" content="紙幣を燃やして破る、シンプルな破壊系ミニゲーム。破壊した合計金額だけが増えていく、おかぽるLABのブラウザゲーム。">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://okapo-site.netlify.app/money-burner/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="おかぽるLAB">
+<meta property="og:title" content="OKAPO MONEY CRASH｜おかぽるLAB">
+<meta property="og:description" content="紙幣を燃やして破る、シンプルな破壊系ミニゲーム。">
+<meta property="og:url" content="https://okapo-site.netlify.app/money-burner/">
+<meta property="og:locale" content="ja_JP">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..600&family=Noto+Sans+JP:wght@300..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="mb-body">
+
+<!-- ===== HEADER ===== -->
+<header class="mb-header">
+  <a href="../index.html" class="mb-brand">おかぽる<span class="mb-brand-dot">LAB</span></a>
+  <div class="mb-header-meta">
+    <a href="../games/index.html">GAMES</a>
+    <span aria-hidden="true">/</span>
+    <span id="mb-title-tag">MONEY CRASH</span>
+  </div>
+</header>
+
+<main class="mb-main">
+
+  <!-- ===================================================
+       TOPBAR：タイトル
+  =================================================== -->
+  <div class="mb-topbar">
+    <h1 class="mb-game-title" id="mb-game-title">OKAPO MONEY CRASH</h1>
+  </div>
+
+  <!-- ===================================================
+       合計破壊金額（これだけがスコア表示）
+  =================================================== -->
+  <div class="mb-stats-bar">
+    <div class="mb-stat mb-stat--lead">
+      <span class="mb-stat-label">TOTAL DESTROYED</span>
+      <span class="mb-stat-value" id="mb-stat-destroyed">0 YEN</span>
+    </div>
+  </div>
+
+  <!-- ===================================================
+       GAME STAGE
+  =================================================== -->
+  <section class="mb-stage">
+    <div class="mb-game-area" id="mb-game-area">
+      <canvas id="mb-particles" aria-hidden="true"></canvas>
+      <div id="mb-notes-layer"></div>
+      <p class="mb-empty-hint" id="mb-empty-hint" hidden>紙幣がありません。RESETで補充してください。</p>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       TOOLS（JSが TOOL_ORDER から生成：FIRE / TEAR）
+  =================================================== -->
+  <div class="mb-toolbar-wrap">
+    <div class="mb-toolbar" id="mb-toolbar" role="group" aria-label="ツール選択"></div>
+    <button type="button" class="mb-reset-btn" id="mb-reset-field-btn">RESET</button>
+  </div>
+
+  <p class="mb-hint">紙幣をタップ／ドラッグして、燃やす・破る。</p>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="mb-footer">
+  <p class="mb-footer-tagline">OKAPO LAB — MONEY CRASH</p>
+  <a class="mb-footer-back" href="../games/index.html">← ゲーム一覧へ戻る</a>
+  <a class="mb-footer-back" href="../index.html">おかぽるLABへ戻る →</a>
+</footer>
+
+<script src="js/constants.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/notes.js"></script>
+<script src="js/game.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

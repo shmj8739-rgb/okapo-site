@@ -1,0 +1,634 @@
+/* ===================================================
+   OKAPO MONEY CRASH — style.css（シンプル版）
+   ---------------------------------------------------
+   ミッション・ランク・実績・設定パネルなどのUIをすべて廃止し、
+   「紙幣を壊すことそのもの」に集中できるレイアウトに全面刷新。
+   紙幣は実在紙幣の写真ではなく、額面・配色の系統だけを踏襲した
+   オリジナルデザイン（SVG/CSSで生成）。
+=================================================== */
+
+:root {
+  --mb-black: #050308;
+  --mb-navy: #0a0714;
+  --mb-navy-light: #14101f;
+  --mb-panel: #120c1c;
+  --mb-border: rgba(255, 255, 255, 0.1);
+  --mb-white: #f6f5f8;
+  --mb-grey: #9d97ab;
+  --mb-grey-dim: #6b6578;
+
+  --mb-fire-orange: #ff7a1a;
+  --mb-fire-red: #ff3b3b;
+  --mb-fire-yellow: #ffcf4d;
+  --mb-gold: #d8b46a;
+
+  --mb-fire-gradient: linear-gradient(120deg, var(--mb-fire-yellow), var(--mb-fire-orange) 55%, var(--mb-fire-red));
+
+  /* 紙幣の額面ごとのインク色（実在紙幣の配色系統を踏襲したオリジナル配色） */
+  --note-paper: #f4edd9;
+  --note-paper-dark: #e8dfc0;
+  --note-1000-ink: #1f3f78;
+  --note-5000-ink: #6a2456;
+  --note-10000-ink: #6b4413;
+
+  --ff-display: "Space Grotesk", "Noto Sans JP", sans-serif;
+  --ff-body: "Inter", "Noto Sans JP", sans-serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; }
+
+/* .mb-stage / .mb-toolbar-wrap などに hidden を併用する要素があるため、
+   UA既定の [hidden]{display:none} が author側の display 指定に
+   上書きされないよう最優先にしておく。 */
+[hidden] { display: none !important; }
+
+html { color-scheme: dark; }
+
+body.mb-body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(ellipse 90% 55% at 50% -10%, rgba(216, 180, 106, 0.08), transparent 60%), var(--mb-black);
+  color: var(--mb-white);
+  font-family: var(--ff-body);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.mb-visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+button { font-family: inherit; }
+
+/* ===================================================
+   HEADER
+=================================================== */
+.mb-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 5vw;
+  border-bottom: 1px solid var(--mb-border);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(5, 3, 8, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.mb-brand {
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--mb-white);
+  text-decoration: none;
+  flex: none;
+}
+.mb-brand-dot { color: var(--mb-fire-orange); }
+
+.mb-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  font-family: var(--ff-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--mb-grey);
+  text-transform: uppercase;
+}
+.mb-header-meta a { color: var(--mb-grey); text-decoration: none; }
+.mb-header-meta a:hover, .mb-header-meta a:focus-visible { color: var(--mb-fire-orange); }
+
+/* ===================================================
+   MAIN / TOPBAR
+=================================================== */
+.mb-main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 28px 5vw 44px;
+}
+
+.mb-topbar { text-align: center; margin-bottom: 22px; }
+.mb-game-title {
+  margin: 0;
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 5.6vw, 2.3rem);
+  letter-spacing: -0.01em;
+  background: linear-gradient(120deg, var(--mb-gold), var(--mb-fire-yellow) 50%, var(--mb-gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ===================================================
+   TOTAL DESTROYED
+=================================================== */
+.mb-stats-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.mb-stat--lead {
+  text-align: center;
+  border: 1px solid rgba(216, 180, 106, 0.35);
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(216, 180, 106, 0.12), rgba(255, 122, 26, 0.04));
+  padding: 14px 32px;
+}
+.mb-stat-label {
+  display: block;
+  font-family: var(--ff-display);
+  font-size: 0.64rem;
+  letter-spacing: 0.2em;
+  color: var(--mb-grey-dim);
+  text-transform: uppercase;
+}
+.mb-stat-value {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 6vw, 2rem);
+  color: var(--mb-gold);
+  white-space: nowrap;
+}
+
+/* ===================================================
+   STAGE / GAME AREA
+=================================================== */
+.mb-stage { margin-bottom: 14px; }
+
+.mb-game-area {
+  position: relative;
+  height: min(58vh, 500px);
+  min-height: 340px;
+  border-radius: 20px;
+  border: 1px solid var(--mb-border);
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 34px),
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(216,180,106,0.07), transparent 70%),
+    var(--mb-navy);
+  overflow: hidden;
+  touch-action: none;
+  isolation: isolate;
+}
+
+#mb-particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+#mb-notes-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.mb-empty-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 10%;
+  margin: 0;
+  font-family: var(--ff-display);
+  font-size: 0.82rem;
+  color: var(--mb-grey-dim);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.mb-score-pop {
+  position: absolute;
+  z-index: 6;
+  transform: translate(-50%, -50%);
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--mb-fire-yellow);
+  text-shadow: 0 0 10px rgba(255, 122, 26, 0.6);
+  pointer-events: none;
+  animation: mb-score-float 0.85s var(--ease) forwards;
+}
+@keyframes mb-score-float {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+  20% { opacity: 1; transform: translate(-50%, -80%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -180%) scale(1); }
+}
+
+/* ===================================================
+   OKAPO NOTE（紙幣）
+   ---------------------------------------------------
+   常に「左右2つの破片(half)」を重ねて表示する構造。
+   tear=0のときはギザギザのclip-pathがぴったり噛み合って1枚に見え、
+   tearProgressが進むと左右に分かれて離れていく（TEAR）。
+   燃焼(FIRE)は halves の上に重なる .okapo-note-burn / -flame で表現する。
+=================================================== */
+.okapo-note {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 130px;
+  height: 72px;
+  margin: -36px 0 0 -65px;
+  transform: translate(var(--x, 0), var(--y, 0)) rotate(var(--rot, 0deg));
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  will-change: transform;
+}
+.okapo-note.is-gone {
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+  opacity: 0;
+  transform: translate(var(--x, 0), var(--y, 0)) rotate(var(--rot, 0deg)) scale(0.6);
+}
+
+.okapo-note-half {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: transform 0.12s linear, opacity 0.2s linear;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.5));
+}
+/* 左右で噛み合うギザギザの切れ目（同じ中央の頂点列を共有している） */
+.okapo-note-half--a {
+  clip-path: polygon(0% 0%, 52% 0%, 46% 9%, 57% 19%, 43% 31%, 59% 44%, 41% 57%, 57% 71%, 45% 84%, 55% 100%, 0% 100%);
+}
+.okapo-note-half--b {
+  clip-path: polygon(100% 0%, 52% 0%, 46% 9%, 57% 19%, 43% 31%, 59% 44%, 41% 57%, 57% 71%, 45% 84%, 55% 100%, 100% 100%);
+}
+.okapo-note.is-tearing .okapo-note-half--a {
+  transform: translate(calc(var(--tear, 0) * -16px), calc(var(--tear, 0) * 7px)) rotate(calc(var(--tear, 0) * -8deg));
+}
+.okapo-note.is-tearing .okapo-note-half--b {
+  transform: translate(calc(var(--tear, 0) * 16px), calc(var(--tear, 0) * -7px)) rotate(calc(var(--tear, 0) * 8deg));
+}
+
+.okapo-note-face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(155deg, var(--note-paper) 0%, var(--note-paper-dark) 100%);
+  border: 1.5px solid rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink, var(--note-1000-ink));
+  animation: mb-note-bob 4.2s ease-in-out infinite;
+  animation-delay: calc(var(--x, 0) * -0.013s);
+}
+@keyframes mb-note-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+.okapo-note.is-dragging .okapo-note-face { animation: none; }
+
+/* 細い二重罫線の額縁（実在紙幣の縁飾りを連想させる、完全オリジナルの模様） */
+.okapo-note-frame {
+  position: absolute;
+  inset: 4px;
+  border: 1px solid var(--ink, var(--note-1000-ink));
+  opacity: 0.45;
+  border-radius: 2px;
+  pointer-events: none;
+}
+.okapo-note-frame::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px dashed currentColor;
+  opacity: 0.5;
+}
+
+/* ギョーシェ風の彫刻模様（同心の波線）。実在紙幣を再現するものではなく、
+   高級感を出すための幾何学パターン。 */
+.okapo-note-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image:
+    repeating-radial-gradient(circle at 12% 15%, transparent 0 3px, var(--ink, var(--note-1000-ink)) 3px 4px, transparent 4px 7px),
+    repeating-radial-gradient(circle at 88% 85%, transparent 0 3px, var(--ink, var(--note-1000-ink)) 3px 4px, transparent 4px 7px);
+  mix-blend-mode: multiply;
+}
+
+.okapo-note-corner {
+  position: absolute;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 0.64rem;
+  letter-spacing: 0.01em;
+  color: var(--ink, var(--note-1000-ink));
+}
+.okapo-note-corner--tl { top: 5px; left: 8px; }
+.okapo-note-corner--br { bottom: 5px; right: 8px; }
+
+.okapo-note-medallion {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  color: var(--ink, var(--note-1000-ink));
+  opacity: 0.8;
+}
+
+.okapo-note-center { position: relative; z-index: 1; text-align: center; line-height: 1; }
+.okapo-note-value {
+  margin: 0;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--ink, var(--note-1000-ink));
+}
+.okapo-note-unit {
+  margin: 2px 0 0;
+  font-family: var(--ff-display);
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  color: var(--ink, var(--note-1000-ink));
+  opacity: 0.75;
+}
+.okapo-note-bank {
+  position: absolute;
+  bottom: 16px;
+  left: 10px;
+  margin: 0;
+  font-family: var(--ff-display);
+  font-size: 0.4rem;
+  letter-spacing: 0.08em;
+  color: var(--ink, var(--note-1000-ink));
+  opacity: 0.75;
+  text-transform: uppercase;
+}
+.okapo-note-serial {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  margin: 0;
+  font-family: "Courier New", monospace;
+  font-size: 0.36rem;
+  letter-spacing: 0.06em;
+  color: var(--ink, var(--note-1000-ink));
+  opacity: 0.55;
+}
+
+/* ---- 額面ごとの配色（実在紙幣の系統色を踏襲したオリジナル配色） ---- */
+.note--1000 .okapo-note-face { --ink: var(--note-1000-ink); }
+.note--5000 { width: 138px; height: 76px; margin: -38px 0 0 -69px; }
+.note--5000 .okapo-note-face { --ink: var(--note-5000-ink); }
+.note--10000 { width: 148px; height: 82px; margin: -41px 0 0 -74px; }
+.note--10000 .okapo-note-face {
+  --ink: var(--note-10000-ink);
+  background: linear-gradient(155deg, #f6efd8 0%, #ecdfae 100%);
+  box-shadow: 0 3px 10px rgba(216, 180, 106, 0.25);
+}
+.note--10000 .okapo-note-value { font-size: 1.3rem; }
+
+/* ---- 焦げ演出（オーバーレイ）----
+   --bx/--by: 着火点（ノート内 %） / --r: 焦げの広がり半径 % */
+.okapo-note-burn {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: var(--burn, 0);
+  background: radial-gradient(
+    circle at var(--bx, 50%) var(--by, 50%),
+    rgba(10, 6, 4, 0.96) 0%,
+    rgba(30, 12, 4, 0.9) calc(var(--r, 0%) * 0.55),
+    rgba(255, 90, 20, 0.55) calc(var(--r, 0%) * 0.8),
+    rgba(255, 160, 40, 0.25) var(--r, 0%),
+    transparent calc(var(--r, 0%) + 12%)
+  );
+  transition: opacity 0.1s linear;
+}
+.okapo-note.is-scorched .okapo-note-face { filter: saturate(0.6) brightness(0.9) contrast(1.05); }
+.okapo-note.is-burning-hot .okapo-note-face { filter: saturate(0.3) brightness(0.55); }
+.okapo-note.is-ash .okapo-note-face { filter: saturate(0.08) brightness(0.3); }
+.okapo-note.is-ash { animation: mb-ash-shiver 0.4s ease-in-out infinite; }
+@keyframes mb-ash-shiver {
+  0%, 100% { transform: translate(var(--x, 0), var(--y, 0)) rotate(var(--rot, 0deg)); }
+  50% { transform: translate(var(--x, 0), var(--y, 0)) rotate(calc(var(--rot, 0deg) + 1.2deg)); }
+}
+
+/* ---- 炎（レイヤーを重ねてリアルさを出す。画像は使わずCSSで表現） ---- */
+.okapo-note-flame {
+  position: absolute;
+  left: var(--bx, 50%);
+  top: var(--by, 50%);
+  transform: translate(-50%, -75%);
+  width: 40px;
+  height: 52px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 6;
+}
+.okapo-note.is-scorched .okapo-note-flame,
+.okapo-note.is-burning-hot .okapo-note-flame {
+  opacity: 1;
+}
+.okapo-note.is-ash .okapo-note-flame { opacity: 0.3; }
+
+.okapo-note-flame-glow {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 160, 40, 0.55), transparent 70%);
+  filter: blur(4px);
+  animation: mb-flame-glow 0.6s ease-in-out infinite alternate;
+}
+.okapo-note-flame-core,
+.okapo-note-flame-mid,
+.okapo-note-flame-tip {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  transform-origin: 50% 100%;
+}
+.okapo-note-flame-core {
+  width: 30px; height: 46px; margin-left: -15px;
+  background: linear-gradient(0deg, #b32b0e 0%, var(--mb-fire-red) 30%, var(--mb-fire-orange) 68%, var(--mb-fire-yellow) 100%);
+  filter: blur(0.3px);
+  animation: mb-flame-flicker-a 0.52s ease-in-out infinite alternate;
+  opacity: 0.95;
+}
+.okapo-note-flame-mid {
+  width: 20px; height: 34px; margin-left: -10px;
+  background: linear-gradient(0deg, var(--mb-fire-orange) 0%, var(--mb-fire-yellow) 70%, #fff3c4 100%);
+  animation: mb-flame-flicker-b 0.38s ease-in-out infinite alternate;
+  opacity: 0.9;
+  mix-blend-mode: screen;
+}
+.okapo-note-flame-tip {
+  width: 10px; height: 18px; margin-left: -5px; bottom: 6px;
+  background: linear-gradient(0deg, transparent 0%, #fff3c4 60%, #ffffff 100%);
+  animation: mb-flame-flicker-c 0.3s ease-in-out infinite alternate;
+  opacity: 0.85;
+  mix-blend-mode: screen;
+}
+@keyframes mb-flame-flicker-a {
+  from { transform: scaleY(1) scaleX(1) skewX(0deg); }
+  to { transform: scaleY(1.14) scaleX(0.9) skewX(-3deg) translateY(-2px); }
+}
+@keyframes mb-flame-flicker-b {
+  from { transform: scaleY(1) skewX(2deg); }
+  to { transform: scaleY(1.22) skewX(-4deg) translateY(-3px); }
+}
+@keyframes mb-flame-flicker-c {
+  from { transform: scaleY(1) translateX(0); }
+  to { transform: scaleY(1.3) translateX(1.5px) translateY(-4px); }
+}
+@keyframes mb-flame-glow {
+  from { opacity: 0.5; transform: scale(0.9); }
+  to { opacity: 0.85; transform: scale(1.08); }
+}
+
+/* ===================================================
+   TOOLBAR + RESET
+=================================================== */
+.mb-toolbar-wrap {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.mb-toolbar {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.mb-tool-btn {
+  flex: 1;
+  min-width: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 12px 8px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--mb-border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--mb-grey);
+  cursor: pointer;
+  transition: border-color 0.25s var(--ease), background 0.25s var(--ease), transform 0.25s var(--ease), color 0.25s var(--ease);
+}
+.mb-tool-icon { font-size: 1.4rem; line-height: 1; }
+.mb-tool-label {
+  font-family: var(--ff-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--mb-white);
+}
+.mb-tool-label-jp { font-size: 0.6rem; color: var(--mb-grey-dim); }
+.mb-tool-btn:hover { border-color: rgba(216, 180, 106, 0.4); }
+.mb-tool-btn:focus-visible { outline: 2px solid var(--mb-fire-orange); outline-offset: 2px; }
+.mb-tool-btn.is-active {
+  border-color: var(--mb-gold);
+  background: linear-gradient(160deg, rgba(216, 180, 106, 0.22), rgba(255, 122, 26, 0.06));
+  transform: translateY(-2px);
+}
+.mb-tool-btn.is-active .mb-tool-label { color: var(--mb-fire-yellow); }
+
+.mb-reset-btn {
+  flex: none;
+  padding: 0 20px;
+  border-radius: 14px;
+  border: 1px solid var(--mb-border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--mb-grey);
+  font-family: var(--ff-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: border-color 0.25s var(--ease), color 0.25s var(--ease);
+}
+.mb-reset-btn:hover, .mb-reset-btn:focus-visible {
+  border-color: var(--mb-fire-orange);
+  color: var(--mb-white);
+  outline: none;
+}
+
+.mb-hint {
+  text-align: center;
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--mb-grey-dim);
+}
+
+/* ===================================================
+   FOOTER
+=================================================== */
+.mb-footer {
+  max-width: 860px;
+  margin: 20px auto 0;
+  padding: 24px 5vw 40px;
+  text-align: center;
+  border-top: 1px solid var(--mb-border);
+}
+.mb-footer-tagline {
+  font-family: var(--ff-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--mb-grey-dim);
+  text-transform: uppercase;
+}
+.mb-footer-back {
+  display: inline-block;
+  margin: 6px 10px 0;
+  font-family: var(--ff-display);
+  font-size: 0.78rem;
+  color: var(--mb-grey);
+  text-decoration: none;
+  border-bottom: 1px solid var(--mb-border);
+}
+.mb-footer-back:hover, .mb-footer-back:focus-visible { color: var(--mb-fire-orange); border-color: var(--mb-fire-orange); }
+
+/* ===================================================
+   レスポンシブ（375px でも崩れない・横スクロールしない）
+=================================================== */
+@media (max-width: 480px) {
+  .mb-header { padding: 14px 4vw; }
+  .mb-main { padding: 20px 4vw 32px; }
+  .mb-game-area { height: min(56vh, 440px); min-height: 300px; border-radius: 16px; }
+  .okapo-note { width: 100px; height: 56px; margin: -28px 0 0 -50px; }
+  .note--5000 { width: 108px; height: 60px; margin: -30px 0 0 -54px; }
+  .note--10000 { width: 116px; height: 64px; margin: -32px 0 0 -58px; }
+  .okapo-note-value { font-size: 0.92rem; }
+  .note--10000 .okapo-note-value { font-size: 1rem; }
+  .mb-tool-btn { min-width: 0; padding: 10px 6px 8px; }
+  .mb-reset-btn { padding: 0 14px; font-size: 0.64rem; }
+}
+
+/* ===================================================
+   prefers-reduced-motion 対応
+=================================================== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

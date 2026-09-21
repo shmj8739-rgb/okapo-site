@@ -1,0 +1,15 @@
+Mode: Built-in image_gen image editing
+Input: C:/Users/PC_User/Desktop/開発プロジェクト/占いサイト/output/wallpapers/okapo-iphone-luxe-fantasy.png
+Output: okapo-iphone-minimal-neutral.png
+
+Use case: precise-object-edit.
+Asset type: finished, full-bleed iPhone wallpaper, very tall portrait 9:19.5 aspect ratio, ideally 1440 x 3120 or equivalent high resolution. Render the wallpaper itself, not a phone mockup.
+Input image 1 is the edit target and exact character identity reference.
+Primary request: retain the beautiful dimensional quality of the reference character, make the mouth truly neutral and NOT smiling, and completely simplify the surroundings into an exceptionally polished minimal premium industrial-design studio composition, inspired by the restraint and immaculate lighting of Apple product imagery.
+
+Subject invariants: the same charming small full-body bald faceted ivory character with an oversized geometric head, round black sunglasses, beige belted double-breasted trench coat with black buttons and buckle, white shirt, muted dark red tie, black shoes. Preserve its proportions, polygon facets, camera angle and recognizable facial features. Keep the same upright pose with the one visible hand held vertically before the lower face and the other arm behind the body. Do not reinterpret the hand as two prayer hands. Keep anatomically coherent fingers.
+Required facial edit: a small closed mouth with a nearly straight relaxed horizontal lip seam and LEVEL corners. No upturned corners, no smile, no smirk, no dimples; also no frown or angry expression. Quiet, cool, composed neutral expression.
+Background: completely empty seamless deep charcoal-black background with only a very subtle soft dark graphite/navy tonal gradient. No visible horizon. Remove ALL glass shards, crystal prisms, glass pedestal, orbit ring, purple light trails, nebula, smoke, particles, glitter, stars and surrounding objects. No new props.
+Lighting/materials: premium high-end 3D product render; large diffused studio softbox key light from upper left, restrained clean neutral edge separation, realistic soft self-shadowing and ambient occlusion. Sculpt the original ivory triangular face planes with refined satin ceramic finish. Keep coat believable matte beige material with subtle tactility; glossy sunglasses and shoes with controlled tasteful reflections. Warm ivory and beige against dark charcoal; no neon colored edge lighting, plastic toy sheen or excessive gloss.
+Composition: one isolated character centered horizontally and positioned in the lower-middle, entire figure from head to both shoes fully visible, approximately from 30% to 82% of image height. Leave the top approximately 28% clean and dark for the iPhone clock and generous bottom safe area. Preserve original sense of gentle floating with only a very faint soft diffuse grounding shadow below the shoes, no platform or reflective floor. The visual hierarchy is solely character, nuanced light and generous empty space.
+No text, clock, UI, logo, Apple logo, watermark, borders, additional characters or objects. Deliver one exquisitely restrained finished wallpaper.

@@ -1,14 +1,14 @@
 // ===================================================
 // おかぽるLAB — トップページ訪問者カウンター
 // ---------------------------------------------------
-// 「あなたは 000267 人目のお客様です」表示。データは Firestore の
+// 「現在 000267 人のお客様が訪れました」表示。データは Firestore の
 // site_meta/visitorCounter ドキュメント（count フィールド）を使う。
 //
 //  - そのブラウザでの初回訪問時だけ runTransaction で count を +1 し、
-//    発行された通し番号を localStorage（キー: okapoVisitorNo）へ保存する。
-//  - 2回目以降（リロード・再訪問）は localStorage の番号をそのまま表示し、
-//    Firestore には一切アクセスしない（読み取り・書き込みゼロ）。
-//    → 同一ユーザーの再読み込みで番号が増えない。
+//    初回訪問済みの目印として通し番号を localStorage
+//    （キー: okapoVisitorNo）へ保存する。
+//  - 2回目以降（リロード・再訪問）は count を増やさず、Firestore から
+//    現在の総訪問者数を取得して表示する。
 //  - runTransaction を使うことで、複数人が同時にアクセスしても
 //    Firestore 側が書き込み競合を検知して自動的にやり直すため、
 //    同じ番号が重複発行されることはない。
@@ -24,6 +24,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/fireba
 import {
   getFirestore,
   doc,
+  getDoc,
   runTransaction,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
@@ -63,6 +64,19 @@ function writeStoredVisitorNumber(number) {
 const app = initializeApp(firebaseConfig, "okapoCounter");
 const db = getFirestore(app);
 const counterRef = doc(db, "site_meta", "visitorCounter");
+
+async function getCurrentVisitorCount() {
+  const snap = await getDoc(counterRef);
+
+  if (!snap.exists()) return 0;
+
+  const count = snap.data().count;
+  if (!Number.isSafeInteger(count) || count < 0) {
+    throw new Error("visitor counter has an invalid count");
+  }
+
+  return count;
+}
 
 // 初回訪問時のみ呼ぶ。count を +1 して、発行された番号を返す。
 // ドキュメントが未作成なら count:1 で作成、既存なら count+1 に更新する
@@ -104,10 +118,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const root = document.getElementById("visitor-counter");
   if (!root) return;
 
-  // 2回目以降: 保存済みの番号を表示して終了（Firestore へアクセスしない）。
   const stored = readStoredVisitorNumber();
+
   if (stored !== null) {
-    showVisitorNumber(root, stored);
+    // 再訪問者はカウントを増やさない。
+    // localStorage の古い通し番号ではなく、現在の総数を表示する。
+    getCurrentVisitorCount()
+      .then((number) => {
+        showVisitorNumber(root, number);
+      })
+      .catch((err) => {
+        console.error("visitor counter error:", err);
+        root.hidden = true;
+      });
+
     return;
   }
 

@@ -313,8 +313,7 @@ html:has(.calendar-panel[open]) { overflow: hidden; }
   .hero-ja { display: inline; font-size: 10px; margin-left: 0; }
   .hero-tagline { font-size: 23px; margin-top: 20px; line-height: 1.65; }
   .hero-tagline br { display: none; }
-  .hero-description { font-size: 10px; margin: 13px 0 16px; }
-  .hero-message .lab-button { min-height: 48px; padding: 12px 18px; font-size: 11px; gap: 30px; }
+  .hero-description { font-size: 10px; margin: 13px 0 0; }
   .hero-character { width: 100%; height: 335px; margin-top: 5px; align-self: auto; }
   .hero-character picture { width: 85%; }
   .hero-character img { height: 332px; min-height: 0; }
@@ -323,8 +322,6 @@ html:has(.calendar-panel[open]) { overflow: hidden; }
   .character-id { min-width: 184px; padding: 11px 13px; gap: 10px; right: 0; bottom: -5px; }
   .character-id strong { font-size: 15px; }
   .character-id small { font-size: 7px; }
-  .hero-bottom { margin-inline: 24px; min-height: 52px; font-size: 8px; }
-  .hero-bottom > span { display: none; }
   .hero-movie { object-fit: contain; }
   .follow-section { padding: 32px 0 35px; }
   .follow-heading { display: block; }
@@ -376,7 +373,7 @@ html:has(.calendar-panel[open]) { overflow: hidden; }
   .shop-layout h2 { font-size: 38px; }
   .shop-visual { height: 355px; }
   .shop-visual img { height: 315px; width: 147px; margin-right: 22px; }
-  .shop-type { font-size: 47px; left: 0; }
+  .shop-type { left: 0; font-size: clamp(39px, 10vw, 47px); transform: translateY(-100px); }
   .shop-caption { bottom: 0; right: 20px; }
   .home .promo { padding-block: 55px; }
   .home .promo-card { padding: 22px; }
@@ -490,7 +487,7 @@ html:has(.calendar-panel[open]) { overflow: hidden; }
     width: fit-content;
     max-width: 90%;
     min-height: 0;
-    margin: 20px auto 16px;
+    margin: 14px auto 16px;
     transform: none;
   }
   .home .visitor-counter {
@@ -568,12 +565,6 @@ html:has(.calendar-panel[open]) { overflow: hidden; }
     min-width: 0;
     margin: -24px 0 12px auto;
     padding: 12px 14px;
-  }
-  .hero-bottom {
-    position: relative;
-    z-index: 2;
-    min-height: 58px;
-    margin-inline: 24px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

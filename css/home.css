@@ -69,8 +69,7 @@
 .hero-kicker { font-size: 12px; font-weight: 500; letter-spacing: .16em; margin-bottom: 22px; color: #66677f; }
 .hero-message h1 { font-family: var(--ff-display); font-size: clamp(86px, 10vw, 160px); font-weight: 700; letter-spacing: -.075em; line-height: .86; }
 .hero-message h1 > span { display: flex; align-items: baseline; gap: 10px; color: #7460b2; }
-.hero-asterisk { font-weight: 400; font-size: .75em; margin-left: 8px; }
-.hero-ja { font: 500 11px var(--ff-body); letter-spacing: .12em; margin-left: 8px; }
+.hero-ja { font: 500 11px/1.5 var(--ff-body); letter-spacing: .12em; margin-left: 12px; white-space: nowrap; }
 .hero-tagline { font-size: clamp(26px, 2.65vw, 43px); font-weight: 600; line-height: 1.6; letter-spacing: .04em; margin-top: 28px; }
 .hero-tagline em { font-style: normal; }
 .hero-description { font-size: 12px; line-height: 2.1; color: #5c6177; margin: 19px 0 25px; }
@@ -152,10 +151,6 @@
 .content-number { color: #8b879d; font: 500 9px var(--ff-display); letter-spacing: .1em; }
 .content-copy h3 { display: flex; justify-content: space-between; gap: 10px; font: 600 clamp(16px,1.6vw,23px) var(--ff-display); margin-top: 10px; letter-spacing: -.035em; }
 .content-copy p { font-size: 12px; line-height: 1.9; color: #767287; margin-top: 12px; }
-.world-link { border-block: 1px solid var(--border); display: flex; align-items: center; gap: 32px; padding: 25px 0; margin-top: 35px; }
-.world-link > span { font: 500 10px var(--ff-display); letter-spacing: .1em; color: #7a718f; }
-.world-link strong { font-size: 14px; font-weight: 500; }
-.world-link > span:last-child { margin-left: auto; letter-spacing: 0; }
 .latest-section { background: #f4f5f9; }
 .latest-layout { display: grid; grid-template-columns: .75fr 1.5fr; gap: 65px; }
 .latest-layout .text-link { margin-top: 35px; }
@@ -316,7 +311,6 @@ html:has(.calendar-panel[open]) { overflow: hidden; }
   .hero-message h1 { font-size: clamp(79px,24vw,116px); line-height: .86; }
   .hero-message h1 > span { gap: 8px; }
   .hero-ja { display: inline; font-size: 10px; margin-left: 0; }
-  .hero-asterisk { font-size: .65em; margin-left: 0; }
   .hero-tagline { font-size: 23px; margin-top: 20px; line-height: 1.65; }
   .hero-tagline br { display: none; }
   .hero-description { font-size: 10px; margin: 13px 0 16px; }
@@ -363,8 +357,6 @@ html:has(.calendar-panel[open]) { overflow: hidden; }
   .content-copy { padding-top: 17px; }
   .content-copy h3 { font-size: 23px; }
   .content-copy p { font-size: 12px; }
-  .world-link { flex-direction: column; align-items: flex-start; gap: 10px; margin-top: 22px; }
-  .world-link > span:last-child { margin: 0; }
   .latest-layout { grid-template-columns: 1fr; gap: 28px; }
   .latest-layout .text-link { margin-top: 15px; }
   .news-list h3 { font-size: 13px; }
@@ -395,6 +387,92 @@ html:has(.calendar-panel[open]) { overflow: hidden; }
   .home .visitor-counter-label { font-size: 9px; }
   .home .footer-columns { gap: 28px; }
   .home .footer-bottom { gap: 10px; font-size: 9px; }
+}
+/* Solid, engraved direction marks: vector geometry, never emoji glyphs. */
+.home .link-mark, .home .promo-card-link-wrap a::after, .home .ai-tool-link::after {
+  display: inline-block; width: 25px; height: 25px; flex: 0 0 25px;
+  background: linear-gradient(135deg, #b6a784, #655774 48%, #95839b);
+  -webkit-mask: url('../assets/link-emblem.svg') center / contain no-repeat;
+  mask: url('../assets/link-emblem.svg') center / contain no-repeat;
+  vertical-align: middle;
+}
+.home .link-mark--down { transform: rotate(90deg); }
+.home .link-mark--back { transform: rotate(180deg); }
+.home .lab-button { border: 1px solid #92809a; border-radius: 2px; background: linear-gradient(165deg, #4c465e, #29263d 60%, #3c3447); box-shadow: inset 0 0 0 3px #ffffff10, inset 0 1px #eee0c270, 0 3px 0 #1d1b2b; }
+.home .lab-button:hover { background: linear-gradient(165deg, #60526f, #373044); }
+.home .lab-button .link-mark { background: linear-gradient(135deg, #fff9e8, #b4a18c 65%, #f5e7c7); }
+.home .text-link, .home .header-follow { border: 1px solid #bab0c6; border-radius: 2px; background: linear-gradient(155deg, #fff, #ece8f1); box-shadow: inset 0 0 0 3px #ffffffb0, 0 2px 0 #d7d0e1; padding: 12px 17px; min-height: 48px; }
+.home .header-follow { display: inline-flex; align-items: center; }
+.home .text-link:hover, .home .header-follow:hover { border-color: #85718f; background: #e9e3f0; }
+.home .character-id { border: 1px solid #c9bfd2; border-left: 3px solid #8776a4; box-shadow: inset 0 0 0 3px #fff9, 0 3px 10px #29263d0a; }
+.home .lab-scroll { gap: 18px; min-height: 52px; }
+.home .lab-scroll .link-mark { width: 21px; height: 21px; flex-basis: 21px; }
+.home .shop-green { display: flex; align-items: center; gap: 18px; width: fit-content; }
+.home .member-controls button, .home .promo-controls button { display: grid; place-items: center; border: 1px solid #bcb0ca; border-radius: 2px; background: linear-gradient(145deg, #fff, #e4deec); box-shadow: inset 0 0 0 3px #fff8, 0 2px 0 #d2c9dc; }
+.home .menu-toggle { color: #38344d; }
+.home .hero-message h1 > span { gap: 12px; }
+
+/* Recognizable brand colors in both the main SNS cards and footer. */
+.home .social-panel > svg { box-sizing: content-box; width: 25px; height: 25px; padding: 10px; border-radius: 50%; }
+.home .social-panel--x { background: #f5f5f7; border-color: #dcdce3; }
+.home .social-panel--x > svg, .home .social-icon[aria-label="X"] { color: #fff; background: #101114; border-color: #101114; }
+.home .social-panel--instagram { background: linear-gradient(130deg, #fff3e9, #fcecf4 55%, #f0ebff); border-color: #e7ccdb; }
+.home .social-panel--instagram > svg, .home .social-icon[aria-label="Instagram"] { color: #fff; background: radial-gradient(circle at 28% 100%, #ffd776, #fb8e2c 27%, #ee2a7b 53%, #a933bc 72%, #515bd4); border-color: transparent; }
+.home .social-panel--youtube { background: #fff4f3; border-color: #eed4d2; }
+.home .social-panel--youtube > svg, .home .social-icon[aria-label="YouTube"] { color: #f00024; background: #fff; border-color: #eed4d2; }
+.home .social-panel--tiktok { background: linear-gradient(125deg, #edfafa, #fcf0f4); border-color: #d1e5e8; }
+.home .social-panel--tiktok > svg, .home .social-icon[aria-label="TikTok"] { color: #fff; background: #111216; border-color: #111216; }
+.home .social-icon[aria-label="note"] { background: #fff; color: #111; border-color: #dedee4; }
+
+/* One row of portrait cards keeps the affiliate section compact. */
+.home .promo { overflow: hidden; }
+.home .promo-disclosure { margin-bottom: 18px; }
+.promo-swipe-hint { font-size: 11px; color: #716a7f; margin-bottom: 14px; }
+.home .promo-grid { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: calc((100% - 40px) / 3); gap: 20px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 0; padding: 5px 2px 18px; margin-inline: -2px; scrollbar-width: thin; scrollbar-color: #a89ab9 #eae6ef; }
+.home .promo-grid:focus-visible { outline: 3px solid #6264dc; outline-offset: 4px; }
+.home .promo-card { grid-column: auto; min-width: 0; padding: 0 20px 22px; scroll-snap-align: start; border-radius: 5px; overflow: hidden; border: 1px solid #cec6d7; background: #fff; box-shadow: 0 3px 0 #e4deeb; }
+.promo-card-cover { position: relative; isolation: isolate; display: flex; flex-direction: column; justify-content: center; min-height: 144px; margin: 0 -20px 20px; padding: 22px; overflow: hidden; color: #f4ecff; background: linear-gradient(135deg, #342c4b, #71618c); }
+.promo-card-cover::after { content: ''; position: absolute; z-index: -1; width: 180px; height: 180px; right: -65px; top: -45px; border: 1px solid #ffffff40; transform: rotate(30deg); box-shadow: 0 0 0 20px #ffffff08, 0 0 0 40px #ffffff08; }
+.promo-card-cover > span { font: 500 9px var(--ff-display); letter-spacing: .16em; opacity: .8; }
+.promo-card-cover > strong { font: 600 clamp(23px, 2.2vw, 30px)/1.3 var(--ff-display); margin-block: 12px 7px; letter-spacing: -.035em; }
+.promo-card-cover > small { font-size: 10px; letter-spacing: .04em; }
+.promo-card-cover--2 { background: linear-gradient(135deg, #233e68, #527b9b); }
+.promo-card-cover--3 { background: linear-gradient(135deg, #604839, #a2805c); }
+.promo-card-cover--4 { background: linear-gradient(135deg, #34574e, #62887b); }
+.promo-card-cover--5 { background: linear-gradient(135deg, #343b4b, #66758c); }
+.home .promo-badge { align-self: flex-start; border-radius: 2px; margin-bottom: 12px; padding: 2px 8px; font-size: 9px; }
+.home .promo-card-desc { font-size: 12px; line-height: 1.9; margin-bottom: 18px; }
+.home .promo-card-desc strong { font-weight: 500; }
+.home .promo-card-link-wrap { margin-top: auto; }
+.home .promo-card-link-wrap a, .home .ai-tool-link { display: flex; width: 100%; min-width: 0; white-space: normal; gap: 10px; padding: 12px 10px; font-size: 11px; line-height: 1.6; border: 1px solid #c7bdcf; border-radius: 2px; background: linear-gradient(145deg, #fff, #eee9f3); box-shadow: inset 0 0 0 3px #fff9; }
+.home .ai-tool-link { margin-top: auto; }
+.home .promo-card-link-wrap a::after, .home .ai-tool-link::after { content: ''; margin-left: auto; width: 20px; height: 20px; flex-basis: 20px; }
+.home .ai-tool-link > span { display: none; }
+.home .promo-card-link-wrap a:hover, .home .ai-tool-link:hover { transform: none; border-color: #897096; background: #eee7f4; }
+.home .ai-tool-banner-wrap { margin-top: 14px; }
+.home .promo-card--pc-rental .promo-card-title { font-size: 13px; }
+.home .promo-pc-rental-banner { max-width: 210px; }
+.promo-controls { display: flex; align-items: center; gap: 10px; margin-top: 18px; }
+.promo-controls > span { margin-right: auto; color: #655971; font: 500 12px var(--ff-display); letter-spacing: .14em; }
+.home .promo-controls button { width: 46px; height: 44px; color: #655971; }
+.home .promo-controls button:disabled { opacity: .35; cursor: default; box-shadow: none; }
+@media (max-width: 1150px) {
+  .home .header-follow { display: none; }
+  .home .promo-grid { grid-auto-columns: calc((100% - 20px) / 2); }
+}
+@media (max-width: 600px) {
+  .home .hero-ja { font-size: 10px; margin-left: 8px; letter-spacing: .1em; }
+  .home .social-panel { min-height: 154px; }
+  .home .social-panel > svg { width: 25px; height: 25px; padding: 8px; }
+  .home .social-panel .social-arrow { width: 20px; height: 20px; }
+  .home .promo-grid { grid-auto-columns: 84%; gap: 14px; }
+  .home .promo-card { padding: 0 18px 20px; }
+  .promo-card-cover { margin-inline: -18px; min-height: 146px; }
+  .promo-card-cover > strong { font-size: 26px; }
+  .home .promo-card-desc { font-size: 12px; }
+  .home .promo-pc-rental-banner { max-width: 175px; }
+  .home .promo .section-title { font-size: 25px; line-height: 1.55; text-wrap: balance; }
+  .home .promo-lead { font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html:has(.home) { scroll-behavior: auto; }

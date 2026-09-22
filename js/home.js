@@ -118,6 +118,43 @@
     document.querySelectorAll('.lab-section-head, .content-card, .news-list > a').forEach(el => observer.observe(el));
   }
 
+  const promoTrack = document.getElementById('promo-track');
+  if (promoTrack) {
+    const cards = [...promoTrack.querySelectorAll('.promo-card')];
+    const previous = document.getElementById('promo-prev');
+    const next = document.getElementById('promo-next');
+    const status = document.getElementById('promo-status');
+    const current = () => cards.reduce((best, card, index) =>
+      Math.abs(card.getBoundingClientRect().left - promoTrack.getBoundingClientRect().left) <
+      Math.abs(cards[best].getBoundingClientRect().left - promoTrack.getBoundingClientRect().left) ? index : best, 0);
+    const update = () => {
+      previous.disabled = promoTrack.scrollLeft <= 3;
+      next.disabled = promoTrack.scrollWidth - promoTrack.clientWidth - promoTrack.scrollLeft < 2;
+      const start = current();
+      const end = cards.reduce((last, card, index) => card.getBoundingClientRect().right <= promoTrack.getBoundingClientRect().right + 2 ? index : last, start);
+      status.textContent = `${String(start + 1).padStart(2, '0')}${end > start ? `–${String(end + 1).padStart(2, '0')}` : ''} / ${String(cards.length).padStart(2, '0')}`;
+    };
+    const move = direction => {
+      const target = cards[Math.max(0, Math.min(cards.length - 1, current() + direction))];
+      promoTrack.scrollBy({ left: target.getBoundingClientRect().left - promoTrack.getBoundingClientRect().left - 2, behavior: motion.matches ? 'instant' : 'smooth' });
+    };
+    previous.addEventListener('click', () => move(-1));
+    next.addEventListener('click', () => move(1));
+    promoTrack.addEventListener('keydown', event => {
+      if (event.target !== promoTrack || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      event.preventDefault();
+      move(event.key === 'ArrowLeft' ? -1 : 1);
+    });
+    let frame;
+    promoTrack.addEventListener('scroll', () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(update);
+    }, { passive: true });
+    new ResizeObserver(update).observe(promoTrack);
+    document.querySelector('.promo-controls').hidden = false;
+    update();
+  }
+
   const video = document.getElementById('hero-movie');
   const toggle = document.getElementById('movie-toggle');
   if (!video || !toggle || video.dataset.videoEnabled !== 'true') return;

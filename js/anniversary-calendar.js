@@ -19,7 +19,7 @@
     title: "記念日を準備中",
     icon: "🗓️",
     description: "この日の記念日は、ただいま選定中です。",
-    origin: "月日をキーにしたデータへ追加すると、毎年同じ日に自動で表示されます。"
+    origin: "由来の確認ができた記念日から、順次ご紹介します。"
   };
 
   const sunday = new Date(monday);
@@ -43,7 +43,9 @@
     const isToday = date.getTime() === todayDate.getTime();
     const card = document.createElement("button");
     card.type = "button";
-    card.className = `anniversary-card reveal${isToday ? " is-today" : ""}`;
+    // Do not depend on the DOMContentLoaded reveal observer: external module
+    // downloads (including Firebase) can postpone it indefinitely.
+    card.className = `anniversary-card${isToday ? " is-today" : ""}`;
     card.setAttribute("aria-label", `${fullDate(date)} ${anniversary.title}の詳細を見る`);
     card.setAttribute("aria-haspopup", "dialog");
     if (isToday) card.setAttribute("aria-current", "date");

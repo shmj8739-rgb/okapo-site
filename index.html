@@ -22,88 +22,123 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..600&family=Noto+Sans+JP:wght@300..600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/hero-galaxy.css">
 <link rel="stylesheet" href="css/anniversary-calendar.css">
+<link rel="stylesheet" href="css/home.css">
+<link rel="canonical" href="https://okapo-site.netlify.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="おかぽるLAB">
+<meta property="og:title" content="おかぽるLAB — 想像の、その先をつくろう。">
+<meta property="og:description" content="AIと遊び心で、アイデアをかたちに。ゲーム、Webアプリ、作品が集まる個人開発ラボ。">
+<meta property="og:url" content="https://okapo-site.netlify.app/">
+<meta property="og:image" content="https://okapo-site.netlify.app/assets/okapo-character.png">
+<meta property="og:image:alt" content="トレンチコートとサングラス姿のおかぽ">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f8f9ff">
 </head>
 
-<body>
-
-<div class="noise-overlay" aria-hidden="true"></div>
-
-<!-- ===== HEADER ===== -->
-<header class="site-header">
-  <div class="header-inner">
-    <nav class="site-nav" aria-label="サイト内ナビゲーション">
-      <a href="articles/index.html">記事</a>
-      <a href="okapo-planet/index.html">ショップ</a>
-      <a href="games/index.html">ゲーム</a>
-      <a href="finland/">WORLD</a>
-      <a href="okapo-hiroba/index.html">掲示板</a>
-    </nav>
-    <div class="header-meta">
-      <span>AI PRODUCT STUDIO</span>
-      <span class="meta-divider">/</span>
-      <span>EST. 2026</span>
-    </div>
-  </div>
+<body class="home">
+<a class="skip-link" href="#main">メインコンテンツへ</a>
+<header class="lab-header">
+  <a class="lab-brand" href="index.html" aria-label="おかぽるLAB トップ"><span class="brand-symbol" aria-hidden="true">O<span>+</span></span><span>OKAPO<span class="brand-lab">LAB / おかぽる</span></span></a>
+  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="lab-nav" hidden>MENU <span aria-hidden="true">＋</span></button>
+  <nav class="lab-nav" id="lab-nav" aria-label="サイト内ナビゲーション">
+    <a href="#members">メンバー</a><a href="games/index.html">ゲーム</a><a href="articles/index.html">記事</a><a href="okapo-planet/index.html">ショップ</a><button type="button" id="calendar-menu" aria-haspopup="dialog" aria-expanded="false" aria-controls="calendar-panel">カレンダー</button><a href="finland/">WORLD</a><a href="okapo-hiroba/index.html">掲示板</a>
+  </nav>
+  <a class="header-follow" href="#follow">FOLLOW US <span aria-hidden="true">↗</span></a>
 </header>
-
-<!-- ===== HERO ===== -->
-<section class="hero hero--galaxy" id="hero">
-  <div class="hero-bg" aria-hidden="true">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <canvas class="hero-galaxy" id="hero-galaxy" aria-hidden="true"></canvas>
-    <div class="grid-overlay"></div>
-  </div>
-
-  <div class="hero-content reveal">
-    <p class="hero-eyebrow">OKAPO LAB</p>
-    <h1 class="hero-title">
-      <span class="line">おかぽる</span>
-      <span class="line hero-gradient-text">LAB</span>
-    </h1>
-
-    <!-- ===== 訪問者カウンター =====
-         昔ながらの「あなたは○○人目のお客様です」を、おかぽるLABのトーンで
-         再解釈したもの。ファーストビュー内・タイトルとキャッチコピーの間に置く。
-         数値は js/visitor-counter.js が Firestore（site_meta/visitorCounter）
-         の通し番号を差し込む。そのブラウザでの初回訪問時だけ +1 し、番号は
-         localStorage（okapoVisitorNo）に保存。再読み込み・再訪問では保存済みの
-         番号をそのまま表示する（Firestore へはアクセスしない）。数字は6桁ゼロ
-         埋めで、JS が1桁ずつ .visitor-counter-digit の「桁箱」に置き換える。
-         下の "000000" はその前の静的プレースホルダ。取得に失敗した場合は
-         この要素ごと hidden になる。 -->
-    <div class="visitor-counter" id="visitor-counter">
-      <span class="visitor-counter-label">現在</span>
-      <span class="visitor-counter-number">000000</span>
-      <span class="visitor-counter-label">人のお客様が訪れました</span>
+<main id="main">
+<section class="lab-hero" id="hero" aria-labelledby="hero-title">
+  <div class="hero-environment" aria-hidden="true"></div>
+  <!-- assets/video/hero-movie.mp4 を配置後、data-video-enabled を true にしてください。 -->
+  <video id="hero-movie" class="hero-movie" autoplay muted loop playsinline preload="none" poster="assets/hero-poster.svg" data-src="assets/video/hero-movie.mp4" data-video-enabled="false" aria-hidden="true"></video>
+  <div class="hero-index"><span class="status-dot"></span> INDEPENDENT CREATIVE LAB <span class="hero-coordinate">NAGOYA, JP / EST. 2026</span></div>
+  <div class="hero-layout">
+    <div class="hero-message">
+      <p class="hero-kicker">好奇心から、まだ見ぬ世界へ。</p>
+      <h1 id="hero-title">OKAPO<span>LAB<span class="hero-asterisk" aria-hidden="true">✳</span><span class="hero-ja">おかぽるラボ</span></span></h1>
+      <p class="hero-tagline">想像の、その先を<br><em>つくろう。</em></p>
+      <p class="hero-description">AIと遊び心で、アイデアをかたちに。<br>ゲーム・Webアプリ・作品が集まる個人開発ラボ。</p>
+      <a class="lab-button" href="#contents">ラボの作品で遊ぶ <span aria-hidden="true">↗</span></a>
     </div>
-
-    <p class="hero-copy">AIが、アイデアを次世代のプロダクトへ。<br class="br-pc">構想からかたちへ、その先へ。</p>
+    <div class="hero-counter-slot">
+      <div class="visitor-counter" id="visitor-counter">
+        <span class="visitor-counter-label">現在</span>
+        <span class="visitor-counter-number">000000</span>
+        <span class="visitor-counter-label">人のお客様が訪れました</span>
+      </div>
+    </div>
+    <div class="hero-character">
+      <span class="character-orbit" aria-hidden="true"></span>
+      <span class="hero-vertical" aria-hidden="true">IMAGINATION INTO REALITY</span>
+      <picture><source srcset="assets/members/okapo-480.webp 480w, assets/members/okapo-960.webp 960w" sizes="(max-width: 600px) 78vw, 46vw" type="image/webp"><img src="assets/okapo-character.png" width="1149" height="1369" alt="サングラスとトレンチコートを身につけたローポリキャラクター、おかぽ" fetchpriority="high" decoding="async"></picture>
+      <a class="character-id" href="#members"><span class="status-dot"></span><span><small>MEET THE MEMBERS / 001</small><strong>OKAPO <span>おかぽ</span></strong></span><span aria-hidden="true">↗</span></a>
+    </div>
   </div>
-
-  <div class="scroll-cue reveal" aria-hidden="true">
-    <span class="scroll-cue-line"></span>
-    <span class="scroll-cue-text">SCROLL</span>
-  </div>
-  <button class="hero-galaxy-toggle" id="hero-galaxy-toggle" type="button" aria-controls="hero-galaxy" hidden>背景を一時停止</button>
+  <div class="hero-bottom"><a href="#follow" class="lab-scroll">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a><span>IDEAS. PLAY. POSSIBILITY.</span><button type="button" id="movie-toggle" class="movie-toggle" hidden>映像を再生</button></div>
 </section>
-
-<!-- ===== WEEKLY ANNIVERSARY CALENDAR / 今週は何の日？ ===== -->
-<section class="anniversary-calendar" id="anniversary-calendar" aria-labelledby="anniversary-calendar-title">
+<section class="follow-section" id="follow" aria-labelledby="follow-title">
+  <div class="lab-shell">
+    <div class="follow-heading"><div><p class="lab-eyebrow">02 / STAY CONNECTED</p><h2 id="follow-title">FOLLOW <span>OKAPO.</span></h2></div><p>ラボの「いま」を、いちばん近くで。</p></div>
+    <div class="social-panels"><a class="social-panel social-panel--x" href="https://x.com/okapo_lab" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg><span><strong>X</strong><small>開発・更新情報</small></span><span class="social-arrow" aria-hidden="true">↗</span></a>
+<a class="social-panel social-panel--instagram" href="https://www.instagram.com/okapo_lab?igsh=MXRqeDVhbzZtZjY1eg%3D%3D&igsi=MXRqeDVhbzZtZjY1eg%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C8.74 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.014 8.333 0 8.74 0 12s.014 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.986 8.74 24 12 24s3.667-.014 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.014-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.014 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227a3.81 3.81 0 0 1-.899 1.382 3.744 3.744 0 0 1-1.38.896c-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421a3.716 3.716 0 0 1-1.379-.899 3.644 3.644 0 0 1-.9-1.38c-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zM12 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm7.846-10.405a1.44 1.44 0 1 1-2.881.001 1.44 1.44 0 0 1 2.881-.001z"/></svg><span><strong>Instagram</strong><small>おかぽの日常・作品</small></span><span class="social-arrow" aria-hidden="true">↗</span></a>
+<a class="social-panel social-panel--tiktok" href="https://www.tiktok.com/@okapomal?_r=1&_t=ZS-994M7NAzVCC" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48z"/></svg><span><strong>TikTok</strong><small>ゲーム・ショート動画</small></span><span class="social-arrow" aria-hidden="true">↗</span></a>
+<a class="social-panel social-panel--youtube" href="https://www.youtube.com/@okapo_philosophy" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg><span><strong>YouTube</strong><small>映像・開発記録</small></span><span class="social-arrow" aria-hidden="true">↗</span></a>
+</div></div></section>
+<section class="members-section lab-section" id="members" aria-labelledby="members-title">
+  <div class="lab-shell">
+    <div class="lab-section-head"><div><p class="lab-eyebrow">03 / MEET THE CREW</p><h2 id="members-title">MEMBERS<span>メンバー</span></h2></div><p>ひとクセある仲間と、<br>まだ見ぬアイデアの先へ。</p></div>
+    <div class="member-viewer" role="region" aria-roledescription="カルーセル" aria-label="おかぽるLABのメンバー">
+      <div class="member-tabs" role="group" aria-label="メンバーを選択" hidden><button type="button" data-member-index="0" aria-controls="member-okapo" aria-pressed="true"><img src="assets/members/okapo-480.webp" width="64" height="72" loading="lazy" alt=""><span><small>01</small>おかぽ</span></button><button type="button" data-member-index="1" aria-controls="member-hacker" aria-pressed="false"><img src="assets/members/hacker-480.webp" width="64" height="72" loading="lazy" alt=""><span><small>02</small>天才ハッカー</span></button><button type="button" data-member-index="2" aria-controls="member-informant" aria-pressed="false"><img src="assets/members/informant-480.webp" width="64" height="72" loading="lazy" alt=""><span><small>03</small>情報屋</span></button><button type="button" data-member-index="3" aria-controls="member-sniper" aria-pressed="false"><img src="assets/members/sniper-480.webp" width="64" height="72" loading="lazy" alt=""><span><small>04</small>スナイパー</span></button><button type="button" data-member-index="4" aria-controls="member-broker" aria-pressed="false"><img src="assets/members/broker-480.webp" width="64" height="72" loading="lazy" alt=""><span><small>05</small>ブローカー</span></button></div><div class="member-slides"><article class="member-slide" id="member-okapo" aria-label="1 / 5 おかぽ">
+      <div class="member-art member-art--okapo"><span class="member-watermark" aria-hidden="true">01</span><img src="assets/members/okapo-960.webp" srcset="assets/members/okapo-480.webp 480w, assets/members/okapo-960.webp 960w" sizes="(max-width: 600px) 88vw, 42vw" width="960" height="1144" alt="サングラスとトレンチコートが特徴のおかぽ" loading="lazy" decoding="async"></div>
+      <div class="member-info"><p class="lab-eyebrow">OKAPO LAB MEMBERS / 01</p><p class="member-english" aria-hidden="true">OKAPO</p><h3>おかぽ</h3><p class="member-role">ROLE <span>LABの案内役</span></p><p class="member-description">丸いサングラスに、トレンチコート。<br>おかぽるLABへ、ようこそ。</p><div class="member-feature"><span>CHARACTER</span><p>サングラス / トレンチコート</p></div></div>
+    </article><article class="member-slide" id="member-hacker" aria-label="2 / 5 天才ハッカー">
+      <div class="member-art member-art--hacker"><span class="member-watermark" aria-hidden="true">02</span><img src="assets/members/hacker-960.webp" srcset="assets/members/hacker-480.webp 480w, assets/members/hacker-960.webp 960w" sizes="(max-width: 600px) 88vw, 42vw" width="960" height="1144" alt="フードとノートPCが特徴の天才ハッカー" loading="lazy" decoding="async"></div>
+      <div class="member-info"><p class="lab-eyebrow">OKAPO LAB MEMBERS / 02</p><p class="member-english" aria-hidden="true">HACKER</p><h3>天才ハッカー</h3><p class="member-role">ROLE <span>天才ハッカー</span></p><p class="member-description">フードをかぶり、ノートPCに向かう少年。<br>その視線は、いつも画面の向こうへ。</p><div class="member-feature"><span>CHARACTER</span><p>フード / ノートPC</p></div></div>
+    </article><article class="member-slide" id="member-informant" aria-label="3 / 5 情報屋">
+      <div class="member-art member-art--informant"><span class="member-watermark" aria-hidden="true">03</span><img src="assets/members/informant-960.webp" srcset="assets/members/informant-480.webp 480w, assets/members/informant-960.webp 960w" sizes="(max-width: 600px) 88vw, 42vw" width="960" height="1144" alt="柄入りスーツとゴールドが特徴の情報屋" loading="lazy" decoding="async"></div>
+      <div class="member-info"><p class="lab-eyebrow">OKAPO LAB MEMBERS / 03</p><p class="member-english" aria-hidden="true">INFORMANT</p><h3>情報屋</h3><p class="member-role">ROLE <span>情報屋</span></p><p class="member-description">華やかな柄のスーツと、落ち着いた佇まい。<br>サングラスの奥に、何を見ている？</p><div class="member-feature"><span>CHARACTER</span><p>柄入りスーツ / ゴールド</p></div></div>
+    </article><article class="member-slide" id="member-sniper" aria-label="4 / 5 スナイパー">
+      <div class="member-art member-art--sniper"><span class="member-watermark" aria-hidden="true">04</span><img src="assets/members/sniper-960.webp" srcset="assets/members/sniper-480.webp 480w, assets/members/sniper-960.webp 960w" sizes="(max-width: 600px) 88vw, 42vw" width="960" height="1144" alt="ベレー帽とスコープが特徴のスナイパー" loading="lazy" decoding="async"></div>
+      <div class="member-info"><p class="lab-eyebrow">OKAPO LAB MEMBERS / 04</p><p class="member-english" aria-hidden="true">SNIPER</p><h3>スナイパー</h3><p class="member-role">ROLE <span>スナイパー</span></p><p class="member-description">ベレー帽をかぶり、静かに照準を合わせる。<br>鋭い視線が印象的なメンバー。</p><div class="member-feature"><span>CHARACTER</span><p>ベレー帽 / スコープ</p></div></div>
+    </article><article class="member-slide" id="member-broker" aria-label="5 / 5 ブローカー">
+      <div class="member-art member-art--broker"><span class="member-watermark" aria-hidden="true">05</span><img src="assets/members/broker-960.webp" srcset="assets/members/broker-480.webp 480w, assets/members/broker-960.webp 960w" sizes="(max-width: 600px) 88vw, 42vw" width="960" height="1144" alt="毛皮のコートとゴールドヘアが特徴のブローカー" loading="lazy" decoding="async"></div>
+      <div class="member-info"><p class="lab-eyebrow">OKAPO LAB MEMBERS / 05</p><p class="member-english" aria-hidden="true">BROKER</p><h3>ブローカー</h3><p class="member-role">ROLE <span>ブローカー</span></p><p class="member-description">大きな毛皮のコートをまとった存在感。<br>ゴールドの髪とサングラスが目印。</p><div class="member-feature"><span>CHARACTER</span><p>毛皮のコート / ゴールドヘア</p></div></div>
+    </article></div><div class="member-controls" hidden><p id="member-status" aria-live="polite" aria-atomic="true">01 / 05 — おかぽ</p><span class="swipe-hint">SWIPE / SELECT</span><button type="button" id="member-prev" aria-label="前のメンバー">←</button><button type="button" id="member-next" aria-label="次のメンバー">→</button></div></div>
+  </div>
+</section>
+<section class="contents-section lab-section" id="contents" aria-labelledby="contents-title">
+  <div class="lab-shell"><div class="lab-section-head"><div><p class="lab-eyebrow">04 / MADE IN THE LAB</p><h2 id="contents-title">LET’S PLAY.<span>ゲーム・作品</span></h2></div><a class="text-link" href="games/index.html">すべての作品を見る <span aria-hidden="true">↗</span></a></div>
+  <div class="content-grid">
+    <a class="content-card" href="https://okapo-money-production.up.railway.app" target="_blank" rel="noopener noreferrer"><div class="content-media"><img src="assets/works/money-burner-thumb.svg" width="896" height="504" loading="lazy" alt="燃え上がる架空のOKAPO紙幣"><span>WEB GAME</span></div><div class="content-copy"><span class="content-number">01 / EXPERIMENT</span><h3>OKAPO MONEY <span aria-hidden="true">↗</span></h3><p>燃やす、切る、破く。仮想紙幣で非日常を遊ぼう。</p></div></a>
+    <a class="content-card" href="games/hourglass/index.html"><div class="content-media"><img src="assets/works/life-hourglass-480.webp" width="896" height="504" loading="lazy" alt="人生の残り時間を表す砂時計"><span>WEB APP</span></div><div class="content-copy"><span class="content-number">02 / DISCOVERY</span><h3>LIFE HOURGLASS <span aria-hidden="true">↗</span></h3><p>あなたの人生を、砂時計にしたら。時間と向き合う小さな体験。</p></div></a>
+    <a class="content-card" href="https://okapo-fortune.vercel.app/" target="_blank" rel="noopener noreferrer"><div class="content-media"><img src="assets/works/okapo-fortune-480.webp" width="896" height="504" loading="lazy" alt="おかぽが案内する占いアプリ"><span>FORTUNE</span></div><div class="content-copy"><span class="content-number">03 / JUST FOR FUN</span><h3>OKAPO FORTUNE <span aria-hidden="true">↗</span></h3><p>今日のあなたを、少しだけ先読み。気軽に楽しむ運勢チェック。</p></div></a>
+  </div><a class="world-link" href="finland/"><span>EXPLORE THE WORLD</span><strong>ラボの外にも、好奇心を。</strong><span>WORLDを見る ↗</span></a></div>
+</section>
+<section class="latest-section lab-section" id="latest" aria-labelledby="latest-title"><div class="lab-shell latest-layout"><div><p class="lab-eyebrow">05 / FROM THE LAB</p><h2 id="latest-title">LATEST<span>最新情報・制作記録</span></h2><a class="text-link" href="articles/index.html">記事一覧へ <span aria-hidden="true">↗</span></a></div><div class="news-list">
+<a href="articles/what-is-ai-agent.html"><div><time datetime="2026-08-26">2026.08.26</time><span>GUIDE</span></div><h3>AIエージェントとは？<br>仕組み・できること・活用例を解説。</h3><span class="news-arrow" aria-hidden="true">↗</span></a>
+<a href="articles/claude-code-web-site.html"><div><time datetime="2026-08-26">2026.08.26</time><span>MAKING OF</span></div><h3>Claude Codeで初心者がWebサイトを作ってみた。</h3><span class="news-arrow" aria-hidden="true">↗</span></a>
+<a href="https://note.com/glad_okapi5040" target="_blank" rel="noopener noreferrer"><div><span>OKAPO DIARY / note</span></div><h3>日々の冒険を、ゆるく記録。おかぽ日記</h3><span class="news-arrow" aria-hidden="true">↗</span></a>
+</div></div></section>
+<dialog class="calendar-panel" id="calendar-panel" aria-labelledby="anniversary-calendar-title">
+  <button class="calendar-panel-close" type="button" id="calendar-panel-close" autofocus>閉じる <span aria-hidden="true">×</span></button>
+  <section class="anniversary-calendar" id="anniversary-calendar" aria-labelledby="anniversary-calendar-title">
   <div class="section-inner">
     <div class="anniversary-calendar-header">
       <div>
-        <p class="section-label reveal">THIS WEEK</p>
-        <h2 class="section-title reveal" id="anniversary-calendar-title">📅 今週は何の日？</h2>
+        <p class="section-label">CALENDAR</p>
+        <h2 class="section-title reveal" id="anniversary-calendar-title">今週は、何の日？</h2>
       </div>
       <p class="anniversary-week-range reveal" id="anniversary-week-range" aria-live="polite"></p>
     </div>
 
+    <p class="calendar-hint">何気ない一日に、小さな発見を。日付をタップして記念日をチェック。</p>
+    <noscript><p>記念日を表示するにはJavaScriptを有効にしてください。</p></noscript>
     <div class="anniversary-week" id="anniversary-week" aria-label="今週の記念日"></div>
   </div>
 
+  </section>
+</dialog>
   <dialog class="anniversary-dialog" id="anniversary-dialog" aria-labelledby="anniversary-dialog-title">
     <button class="anniversary-dialog-close" type="button" data-anniversary-close aria-label="閉じる">×</button>
     <p class="anniversary-dialog-date" id="anniversary-dialog-date"></p>
@@ -120,34 +155,11 @@
       </div>
     </dl>
   </dialog>
-</section>
-
-<!-- ===== WORKS / PROJECTS / OKAPO PLANTS ティザー =====
-     トップページの構成整理（2026-08-26）により、以下は撤去してカテゴリー
-     入口ページ側へ移設済み。ヘッダーナビゲーション「記事｜ショップ｜ゲーム｜掲示板」
-     から各ページへ直接アクセスする構造に変更したため。
-     ・オカリス／KICK MEAL／OKAPO FORTUNE → games/index.html（新規ゲーム一覧）
-     ・おかぽ掲示板カード                 → 削除（ナビ「掲示板」が okapo-hiroba/index.html に直リンク）
-     ・おかぽるLAB制作記／AIエージェントとは？カード → 削除（既に articles/index.html に掲載済み）
-     ・おかぽるPLANTSティザーカード       → 削除（ナビ「ショップ」が okapo-planet/index.html に直リンク）
-     いずれも元のページ・機能は削除していない。 -->
-
-<!-- ===== FUTURE OKAPO / 未来のおかぽ（挑戦の管理ボード） =====
-     おかぽ自身が「これからやること（NEXT）」を追加し、やり遂げたら
-     「COMPLETED」へ積み上げていくボード。データは Firestore の
-     future_challenges コレクション（js/future-okapo.js が担当）。
-
-     ・訪問者は NEXT / COMPLETED の閲覧のみ。
-     ・「＋ 新しい挑戦」「✓ 完了する」は Firebase Authentication で
-       管理者アカウントとしてログインしたときだけ表示される。
-     ・以前の自動横スクロール版（future-marquee.js / .future-viewport /
-       .future-track / .future-card）は削除していない。JS の読み込みを
-       future-okapo.js に差し替えているだけなので、必要になれば戻せる。 -->
 <section class="future" id="future" aria-labelledby="future-title">
   <div class="section-inner">
     <div class="future-header">
-      <p class="section-label reveal">FUTURE OKAPO</p>
-      <h2 class="section-title reveal" id="future-title">未来のおかぽ、予告中。<br>これから挑戦すること。</h2>
+      <p class="section-label reveal">06 / NEXT CHALLENGE</p>
+      <h2 class="section-title reveal" id="future-title">未来のおかぽ、予告中。</h2>
     </div>
 
     <div class="future-board" id="future-board" data-admin="false">
@@ -179,14 +191,19 @@
         <h3 class="future-group-head">
           <span class="future-group-icon" aria-hidden="true">✓</span>
           <span class="future-group-name">COMPLETED</span>
-          <span class="future-group-count" id="future-done-count" aria-hidden="true"></span>
+          <span class="future-group-count" id="future-done-count"></span>
         </h3>
         <p class="future-group-sub">やり遂げてきた挑戦。</p>
-        <div class="future-list future-list--done" id="future-done-list" role="list"></div>
-        <p class="future-empty" id="future-done-empty" hidden>まだ完了した挑戦はありません。</p>
+        <details class="completed-disclosure" id="completed-disclosure">
+          <summary aria-expanded="false" aria-controls="completed-panel"><span class="completed-show">一覧を見る <span aria-hidden="true">▼</span></span><span class="completed-hide">閉じる <span aria-hidden="true">▲</span></span></summary>
+          <div class="completed-panel" id="completed-panel">
+            <div class="future-list future-list--done" id="future-done-list" role="list"></div>
+            <p class="future-empty" id="future-done-empty" hidden>まだ完了した挑戦はありません。</p>
+          </div>
+        </details>
       </div>
 
-      <p class="future-state" id="future-state" role="status" hidden></p>
+      <p class="future-state" id="future-state" role="status">挑戦リストを読み込み中…</p>
     </div>
   </div>
 
@@ -257,18 +274,9 @@
       </form>
     </div>
   </div>
-</section>
-
-<!-- ===== DIARY / おかぽ日記 =====
-     トップページの構成整理（2026-08-26）により撤去。note誘導リンク自体は
-     削除しておらず、articles/index.html の記事一覧カードから参照できる。 -->
-
-<!-- ===== PROMO / おすすめサービス（広告） ===== -->
-<!-- 広告を増やす場合は .promo-card を .promo-grid の中にコピーして増やすだけでOK -->
-<!-- ※ 各カード内の <a>/<img>（A8広告タグ）は広告主体タグのため
-     属性・内容を変更しないこと。 -->
-<section class="promo" id="promo">
+</section><section class="shop-section lab-section" id="shop" aria-labelledby="shop-title"><div class="lab-shell shop-layout"><div><p class="lab-eyebrow">07 / OKAPO SELECT</p><h2 id="shop-title">遊び心を、<br>日常にも。</h2><p>暮らしを彩るアイテムと、デジタル作品。<br>おかぽのセレクトを、のぞいてみよう。</p><a class="lab-button" href="okapo-planet/index.html">ショップへ <span aria-hidden="true">↗</span></a><a class="shop-green" href="okapo-planet/green/index.html">GREEN / 観葉植物を見る ↗</a></div><div class="shop-visual"><span class="shop-type" aria-hidden="true">SELECT<br>YOUR<br>FAVORITE.</span><img src="assets/members/okapo-wallpaper-480.webp" width="480" height="1038" alt="トレンチコートのおかぽを描いた壁紙作品" loading="lazy" decoding="async"><span class="shop-caption">OKAPO DIGITAL COLLECTION</span></div></div></section><section class="promo" id="promo">
   <div class="section-inner">
+    <p class="section-label">LAB SELECT / PR</p>
     <h2 class="section-title reveal">おかぽが選んだ、気になるサービス。</h2>
     <p class="promo-lead reveal">おかぽるLABが実際に調べて、気になったサービスを紹介しています。</p>
     <p class="promo-disclosure reveal">広告・PRを含みます</p>
@@ -375,10 +383,7 @@
 
     </div>
   </div>
-</section>
-
-<!-- ===== FOOTER ===== -->
-<footer class="site-footer">
+</section></main><footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-columns">
       <div class="footer-col">
@@ -419,15 +424,9 @@
       <span class="footer-bottom-sub">Designed with intelligence.</span>
     </div>
   </div>
-</footer>
-
-<script src="data/anniversaries.js"></script>
+</footer><script src="data/anniversaries.js"></script>
 <script src="js/anniversary-calendar.js"></script>
-<script src="js/script.js"></script>
-<script src="js/hero-galaxy.js" defer></script>
-<!-- FUTURE OKAPO 挑戦ボード。以前の future-marquee.js は削除せず残しているが、
-     このページでは読み込まない（必要になれば下行を差し替えて戻せる）。 -->
+<script src="js/home.js"></script>
 <script type="module" src="js/future-okapo.js"></script>
 <script type="module" src="js/visitor-counter.js"></script>
-</body>
-</html>
+</body></html>

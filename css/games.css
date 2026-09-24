@@ -121,6 +121,33 @@
   max-width: 100%;
 }
 
+/* カード全体を1つのリンクにする新作カード用。 */
+.games-page .work-card-main-link {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+}
+
+.games-page .work-card-main-link:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: -4px;
+  border-radius: 22px;
+}
+
+.games-page .work-card-media--manbaken {
+  background: #0e1012;
+}
+
+.games-page .work-card-media--manbaken img {
+  object-position: center 48%;
+}
+
+.games-page .work-card-main-link:hover .work-card-cta-arrow {
+  transform: translateX(4px);
+}
+
 /* ---------- レスポンシブ ---------- */
 @media (max-width: 640px) {
   .games-page {

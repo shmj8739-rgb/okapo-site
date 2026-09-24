@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101113">
+  <title>おかぽ会社 | 本部探索</title>
+  <meta name="description" content="おかぽ会社へようこそ。黒と赤の近未来オフィスを歩き、5人の社員と出会うブラウザ3D探索。">
+  <link rel="icon" href="./logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body data-mode="overview">
+  <main id="experience" aria-label="おかぽ会社 3D探索">
+    <canvas id="world" tabindex="0" aria-label="3Dオフィス。移動パッドまたはWASDで移動し、画面ドラッグまたはマウスで見回せます。" aria-describedby="controls-text"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="おかぽ会社 本部探索トップ"><img src="./logo.svg" alt="サングラスをかけた顔のシンボル"><span>おかぽ会社<small>OKAPO COMPANY</small></span></a>
+      <div class="location"><span id="room-number">01</span><div><strong id="room-name">中央司令室</strong><small id="room-en">COMMAND CENTER</small></div></div>
+      <div class="top-actions"><span class="live"><i></i> HQ ONLINE</span><button id="help-button" class="icon-button" aria-label="操作ガイドを開く" title="操作ガイド">?</button><button id="settings-button" class="icon-button" aria-label="表示設定を開く" title="表示設定">⚙</button><button id="fullscreen-button" class="icon-button" aria-label="全画面に切り替え" title="全画面">⛶</button></div>
+    </header>
+    <div class="section-mark" aria-hidden="true"><span>HEADQUARTERS</span><b>本部 / 第01区画</b></div>
+    <div id="intro" class="intro">
+      <p class="eyebrow"><span></span> INSIDE OKAPO COMPANY</p>
+      <h1>ようこそ、<br>おかぽ会社へ。</h1>
+      <p class="intro-copy">この会社には、まだ知らない顔がある。<br>司令室の扉は、あなたに開かれている。</p>
+      <button id="start-button" class="primary-button" disabled><span id="start-label">本部を準備中…</span><span aria-hidden="true">↗</span></button>
+      <p class="entry-note" id="entry-note">PC・キーボードとマウスで探索</p>
+    </div>
+    <div id="reticle" aria-hidden="true"><span></span></div>
+    <button id="interact" class="interact" hidden><kbd>E</kbd><span id="interact-text">調べる</span></button>
+    <div id="walk-hud" class="walk-hud" hidden><button id="pause-button">メニュー <kbd>Esc</kbd></button><span>自分のペースで、社内を探索。</span></div>
+    <div id="touch-controls" class="touch-controls" hidden aria-label="タッチ操作">
+      <div class="move-control">
+        <button id="move-pad" class="move-pad" aria-label="移動パッド：押したまま行きたい方向へ動かす">
+          <span class="pad-directions" aria-hidden="true">＋</span><span id="move-stick" class="move-stick" aria-hidden="true"></span>
+        </button><span class="touch-caption">移動</span>
+      </div>
+      <div class="touch-look-hint">画面をドラッグで見回す</div>
+      <button id="touch-run" class="touch-run" aria-pressed="false">速く歩く</button>
+    </div>
+    <aside class="map-panel" aria-label="フロアマップ">
+      <div class="map-heading"><span>FLOOR MAP</span><span id="visited">01 / 03</span></div>
+      <canvas id="minimap" width="480" height="320" aria-label="現在地、社員、3つの部屋を示すミニマップ"></canvas>
+      <div class="map-legend"><span><i class="player-dot"></i>現在地</span><span><i></i>社員 5名</span><span id="view-label">俯瞰表示</span></div>
+    </aside>
+    <footer class="bottom-bar"><div id="controls-text"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移動</span><span><b class="mouse-icon" aria-hidden="true"></b> 視点</span><span><kbd>E</kbd> 調べる・ドア</span><span><kbd>Shift</kbd> 速く歩く</span></div><span class="bottom-id">OKAPO HQ <b>/</b> EXPLORE 001</span></footer>
+    <div id="toast" role="status" hidden></div>
+    <section id="error-panel" class="error-panel" hidden role="alert"><p class="eyebrow">CONNECTION INTERRUPTED</p><h2>3D画面を開けませんでした</h2><p id="error-message">ページを再読み込みしてください。</p><button class="primary-button" onclick="location.reload()">再読み込み ↗</button></section>
+    <noscript><div class="error-panel">3D探索にはJavaScriptを有効にしてください。</div></noscript>
+  </main>
+  <dialog id="menu-dialog">
+    <button class="close-button" data-close aria-label="閉じる">×</button><p class="eyebrow">EXPLORATION PAUSED</p><h2>ひと息、つきますか。</h2><p>探索はいつでも再開できます。</p>
+    <button id="resume-button" class="primary-button">探索を再開 <span>↗</span></button><button id="overview-button" class="secondary-button">本部を俯瞰する</button><button id="reset-button" class="text-button">入口へ戻る</button>
+  </dialog>
+  <dialog id="help-dialog">
+    <button class="close-button" data-close aria-label="閉じる">×</button><p class="eyebrow">FIELD GUIDE</p><h2>本部の歩き方</h2>
+    <dl class="guide-list touch-guide"><div><dt>左下の移動パッド</dt><dd>押したまま前後左右へ動かす</dd></div><div><dt>画面をドラッグ</dt><dd>周囲を見渡す。移動と同時操作もできます</dd></div><div><dt>「話しかける」「開く」</dt><dd>社員やドアに近づくとボタンが表示されます</dd></div><div><dt>「速く歩く」</dt><dd>タップで切り替え</dd></div><div><dt>「メニュー」</dt><dd>一時停止・入口へ戻る</dd></div></dl>
+    <dl class="guide-list desktop-guide"><div><dt><kbd>W A S D</kbd> / <kbd>↑ ← ↓ →</kbd></dt><dd>前後左右へ移動</dd></div><div><dt>マウス</dt><dd>周囲を見渡す</dd></div><div><dt><kbd>E</kbd></dt><dd>近くの社員に話しかける・ドアを開閉</dd></div><div><dt><kbd>Shift</kbd></dt><dd>速く歩く</dd></div><div><dt><kbd>Esc</kbd></dt><dd>マウスを解放・メニュー</dd></div></dl>
+    <p>左右の赤いドアの先にはサーバールームと資料室があります。マップの白い点が社員です。</p><p class="muted">マウスの固定が使えない場合も、画面をドラッグして視点を動かせます。矢印キーと Q / R の左右旋回にも対応。</p><button class="secondary-button" data-close>わかりました</button>
+  </dialog>
+  <dialog id="settings-dialog">
+    <button class="close-button" data-close aria-label="閉じる">×</button><p class="eyebrow">DISPLAY SETTINGS</p><h2>探索を快適に</h2>
+    <label class="setting">描画品質<select id="quality"><option value="auto">自動（推奨）</option><option value="high">高画質</option><option value="low">軽量</option></select></label>
+    <label class="setting">視点の感度<input id="sensitivity" type="range" min="0.4" max="2" step="0.1" value="1"></label>
+    <label class="setting">環境音<input id="sound" type="checkbox"></label><p class="muted">環境音は初期状態でオフです。</p><button class="secondary-button" data-close>閉じる</button>
+  </dialog>
+  <dialog id="staff-dialog" class="staff-dialog">
+    <button class="close-button" data-close aria-label="閉じる">×</button><p id="staff-en" class="eyebrow"></p><p id="staff-role" class="muted"></p><h2 id="staff-name"></h2><blockquote id="staff-quote"></blockquote><p id="staff-description"></p><button id="staff-resume" class="primary-button">探索に戻る <span>↗</span></button>
+  </dialog>
+  <script type="module">
+    import('./js/main.js?v=3').catch(error => {
+      console.error(error);
+      document.querySelector('#error-message').textContent = '3Dの読み込みに失敗しました。最新版のSafari・Chromeなどで、再読み込みしてください。';
+      document.querySelector('#error-panel').hidden = false;
+      document.querySelector('#intro').hidden = true;
+    });
+  </script>
+</body>
+</html>

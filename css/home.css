@@ -267,7 +267,7 @@ html:has(.calendar-panel[open]) { overflow: hidden; }
   .home .menu-toggle[hidden] { display: none !important; }
   .lab-header:has(.menu-toggle[hidden]) { height: auto; padding-block: 16px; }
   .lab-nav { width: 100%; justify-content: center; margin: 0; padding-bottom: 12px; }
-  .lab-header.is-enhanced .lab-nav { display: none; position: absolute; left: 0; right: 0; top: 100%; padding: 18px 24px 25px; background: #fff; box-shadow: 0 10px 30px #34305312; border-bottom: 1px solid var(--border); grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .lab-header.is-enhanced .lab-nav { display: none; position: absolute; left: 0; right: 0; top: 100%; padding: 18px 24px 25px; background: #fff; box-shadow: 0 10px 30px #34305312; border-bottom: 1px solid var(--border); grid-template-columns: repeat(2,minmax(0,1fr)); grid-template-rows: repeat(4, auto); grid-auto-flow: column; }
   .lab-header.is-enhanced .lab-nav.is-open { display: grid; }
   .lab-nav a, .lab-nav > button { font-size: 13px; min-height: 44px; text-align: left; }
   .lab-hero { min-height: 730px; }
